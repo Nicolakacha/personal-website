@@ -1,4 +1,6 @@
 ---
+import type { CollectionEntry } from 'astro:content';
+interface Props { works: CollectionEntry<'works'>[]; }
 const { works } = Astro.props;
 ---
 {works.length > 0 && <ul>{works.map((work) => <li><a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a><span class="meta">{work.data.year}</span>{work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}{work.data.deck && <small class="meta">{work.data.deck}</small>}</li>)}</ul>}
