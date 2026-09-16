@@ -1,0 +1,7 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+export async function getStaticPaths() { const notes = await getCollection('notes', ({ data }) => data.status === 'published'); return notes.map((note) => ({ params: { slug: note.data.routeSlug }, props: { note } })); }
+const { note } = Astro.props; const { Content } = await render(note);
+---
+<BaseLayout title={`${note.data.title ?? 'Note'} — Tei Koh`}><article class="text-column prose">{note.data.title && <h1>{note.data.title}</h1>}<p class="meta"><time datetime={note.data.date.toISOString()}>{note.data.date.toISOString().slice(0, 10)}</time></p><Content /></article></BaseLayout>

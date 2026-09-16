@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://teikoh.example/sitemap-index.xml

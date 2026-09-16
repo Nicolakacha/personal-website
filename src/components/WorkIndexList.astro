@@ -1,0 +1,5 @@
+---
+const { works } = Astro.props;
+---
+{works.length > 0 && <ul>{works.map((work) => <li><a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a><span class="meta">{work.data.year}</span>{work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}{work.data.deck && <small class="meta">{work.data.deck}</small>}</li>)}</ul>}
+<style>ul { list-style: none; margin: 0; padding: 0; } li { display: flex; flex-wrap: wrap; gap: var(--space-3xs) var(--space-sm); margin-bottom: var(--space-md); } li a { font-size: var(--font-size-index); } small { flex-basis: 100%; }</style>
