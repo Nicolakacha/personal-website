@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content';
+import Sequence from '../../components/Sequence.astro';
+import WorkLayout from '../../layouts/WorkLayout.astro';
+export async function getStaticPaths() { const works = await getCollection('works', ({ data }) => data.status !== 'hidden'); return works.map((work) => ({ params: { slug: work.data.routeSlug }, props: { work } })); }
+const { work } = Astro.props;
+---
+<WorkLayout work={work}>{work.data.sequence.length > 0 && <Sequence sequence={work.data.sequence} workSlug={work.data.routeSlug} />}</WorkLayout>
+

@@ -1,0 +1,4 @@
+---
+const { size } = Astro.props;
+---
+<div class="sequence-break" style={`height: var(--space-${size === 'large' ? 'xl' : 'pause'})`} aria-hidden="true"></div>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { work } = Astro.props;
+---
+<BaseLayout title={`${work.data.title} — Tei Koh`} description={work.data.deck ?? work.data.description}>
+  <article>
+    <header class="work-intro text-column">
+      <h1>{work.data.title}</h1>
+      {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
+      <p class="meta">{work.data.year}</p>
+      {work.data.description && <p>{work.data.description}</p>}
+    </header>
+    <slot />
+  </article>
+</BaseLayout>
+<style>.work-intro { margin-bottom: var(--space-lg); }</style>

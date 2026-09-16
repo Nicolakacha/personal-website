@@ -1,0 +1,9 @@
+---
+interface Props { src: string; alt?: string; decorative?: boolean; size: 'small' | 'medium' | 'large' | 'full'; eager?: boolean; priority?: boolean; }
+const { src, alt = '', decorative = false, size, eager = false, priority = false } = Astro.props;
+const images = import.meta.glob('/src/assets/works/**/*.{jpg,jpeg,png,webp,avif}', { eager: true, import: 'default' }) as Record<string, string>;
+const asset = images[`/src/assets/works/${src}`];
+if (!asset) throw new Error(`Missing work image: ${src}`);
+const sizes = { small: '(max-width: 767px) 80vw, min(52vw, 480px)', medium: '(max-width: 767px) 72vw, min(72vw, 760px)', large: '(max-width: 767px) 92vw, min(92vw, 1040px)', full: '(max-width: 767px) 96vw, min(96vw, 1280px)' };
+---
+<img src={asset} alt={decorative ? '' : alt} aria-hidden={decorative ? 'true' : undefined} loading={eager ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : 'auto'} sizes={sizes[size]} />

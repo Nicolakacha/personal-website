@@ -1,0 +1,13 @@
+---
+import SequenceBreak from './SequenceBreak.astro';
+import SequenceImage from './SequenceImage.astro';
+import SequencePair from './SequencePair.astro';
+const { sequence, workSlug } = Astro.props;
+---
+<section class="sequence" aria-label="Photograph sequence">
+  {sequence.map((block: any, index: number) => block.type === 'image' ? <SequenceImage block={block} index={index} workSlug={workSlug} /> : block.type === 'pair' ? <SequencePair block={block} index={index} workSlug={workSlug} /> : <SequenceBreak size={block.size} />)}
+</section>
+<style>.sequence { margin: 0 auto var(--space-xl); max-width: var(--width-content); }</style>
+
+
+

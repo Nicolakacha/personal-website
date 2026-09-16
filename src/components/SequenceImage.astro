@@ -1,0 +1,19 @@
+---
+import ResponsiveImage from './ResponsiveImage.astro';
+const { block, index, workSlug } = Astro.props;
+const effectiveAlign = ['large', 'full'].includes(block.size) ? 'center' : block.align;
+const gapToken = ({ tight: 'sm', normal: 'lg', large: 'xl', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'lg';
+---
+<figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`]} style={`--gap-after: var(--space-${gapToken})`}>
+  <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} />
+  {block.caption && <figcaption>{block.caption}</figcaption>}
+</figure>
+<style>
+  figure { margin: 0 auto var(--gap-after); width: 100%; } figcaption { color: var(--color-muted); font-size: var(--font-size-small); margin-top: var(--space-2xs); }
+  .size-small { max-width: var(--image-small-max); } .size-medium { max-width: var(--image-medium-max); } .size-large { max-width: var(--image-large-max); } .size-full { max-width: var(--image-full-max); }
+  @media (min-width: 1080px) { .align-left { margin-left: 0; margin-right: auto; } .align-right { margin-left: auto; margin-right: 0; } }
+</style>
+
+
+
+
