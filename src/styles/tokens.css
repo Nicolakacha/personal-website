@@ -1,0 +1,38 @@
+:root {
+  --color-bg: #F6F4EF;
+  --color-fg: #1E1C19;
+  --color-muted: #706B62;
+  --color-border: #DEDACE;
+  --color-link: #1E1C19;
+  --color-focus: #1E1C19;
+
+  --font-latin: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-cjk: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Microsoft YaHei', sans-serif;
+  --font-body: var(--font-latin), var(--font-cjk);
+  --font-size-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --font-size-small: clamp(0.8rem, 0.78rem + 0.1vw, 0.85rem);
+  --font-size-title: clamp(1.3rem, 1.1rem + 1vw, 1.9rem);
+  --font-size-index: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+  --line-height-body: 1.6;
+  --line-height-title: 1.25;
+  --line-height-small: 1.5;
+
+  --space-3xs: clamp(0.25rem, 0.2rem + 0.2vw, 0.375rem);
+  --space-2xs: clamp(0.5rem, 0.45rem + 0.3vw, 0.75rem);
+  --space-xs: clamp(0.75rem, 0.6rem + 0.6vw, 1rem);
+  --space-sm: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  --space-md: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  --space-lg: clamp(3rem, 2rem + 4vw, 5rem);
+  --space-xl: clamp(5rem, 3rem + 8vw, 8.75rem);
+  --space-pause: clamp(8.75rem, 6rem + 10vw, 15rem);
+
+  --width-text: 38rem;
+  --width-index: 34rem;
+  --width-content: 1400px;
+  --image-small-max: min(52vw, 480px);
+  --image-medium-max: min(72vw, 760px);
+  --image-large-max: min(92vw, 1040px);
+  --image-full-max: min(96vw, 1280px);
+  --bp-tablet: 768px;
+  --bp-desktop: 1080px;
+}
