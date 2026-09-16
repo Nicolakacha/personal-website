@@ -18,7 +18,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/og-default.svg', Astro.site)} />
+    <meta property="og:image" content={new URL('/og-default.jpg', Astro.site)} />
   </head>
   <body>
     <SiteHeader currentPath={Astro.url.pathname} />
