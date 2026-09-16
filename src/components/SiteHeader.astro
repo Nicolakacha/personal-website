@@ -1,0 +1,17 @@
+---
+const { currentPath = '' } = Astro.props;
+---
+<header class="site-header">
+  <a class="site-title" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Tei Koh</a>
+  <nav aria-label="Primary navigation">
+    <a href="/notes/" aria-current={currentPath.startsWith('/notes') ? 'page' : undefined}>Notes</a>
+    <a href="/about/" aria-current={currentPath === '/about/' ? 'page' : undefined}>About</a>
+  </nav>
+</header>
+
+<style>
+  .site-header { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); justify-content: space-between; padding: var(--space-sm); }
+  .site-title, nav a { font-weight: 500; }
+  nav { display: flex; gap: var(--space-sm); }
+  @media (max-width: 420px) { .site-header { display: block; } nav { margin-top: var(--space-xs); } }
+</style>
