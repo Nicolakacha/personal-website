@@ -1,10 +1,19 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkIndexList from '../components/WorkIndexList.astro';
+
+const works = (await getCollection('works', ({ data }) => data.status !== 'hidden')).sort(
+  (a, b) =>
+    a.data.order - b.data.order ||
+    b.data.year.localeCompare(a.data.year) ||
+    a.data.title.localeCompare(b.data.title)
+);
 ---
 <BaseLayout title="Tei Koh — Photographs">
   <section class="index-column">
     <h1>Tei Koh</h1>
-    <p class="meta">Photographs and notes from Japan.</p>
+    <WorkIndexList works={works} />
     <div class="entry-points"><a href="/notes/">Notes</a><a href="/about/">About</a></div>
   </section>
 </BaseLayout>
