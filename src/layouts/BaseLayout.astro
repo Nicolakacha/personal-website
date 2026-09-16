@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standard-normal.woff2?url';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 
@@ -12,6 +13,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="preload" as="font" type="font/woff2" href={interLatinWoff2} crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

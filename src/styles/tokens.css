@@ -6,7 +6,7 @@
   --color-link: #1E1C19;
   --color-focus: #1E1C19;
 
-  --font-latin: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-latin: 'Inter Variable', -apple-system, 'Segoe UI', system-ui, sans-serif;
   --font-cjk: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Microsoft YaHei', sans-serif;
   --font-body: var(--font-latin), var(--font-cjk);
   --font-size-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
