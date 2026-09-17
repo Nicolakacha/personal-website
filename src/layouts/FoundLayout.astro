@@ -3,7 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 const { item } = Astro.props;
 ---
 <BaseLayout title={`${item.data.title} — Nicolas Tei`} description={item.data.deck ?? item.data.description}>
-  <article>
+  <article class="work-article">
     <header class="found-intro text-column">
       <h1>{item.data.title}</h1>
       <p class="meta">
@@ -17,6 +17,10 @@ const { item } = Astro.props;
   </article>
 </BaseLayout>
 <style>
+  .work-article { margin-block: calc(var(--space-sm) - var(--space-xl)); }
+  @media (max-width: 767px) {
+    .work-article { margin-top: calc(var(--space-sm) - var(--space-lg)); }
+  }
   .found-intro { margin-bottom: var(--space-xl); }
   .found-intro .meta { margin-top: var(--space-3xs); }
   .found-intro .description { margin-top: var(--space-sm); }

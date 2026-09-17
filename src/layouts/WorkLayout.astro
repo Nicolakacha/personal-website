@@ -3,7 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 const { work } = Astro.props;
 ---
 <BaseLayout title={`${work.data.title} — Nicolas Tei`} description={work.data.deck ?? work.data.description}>
-  <article>
+  <article class="work-article">
     <header class="work-intro text-column">
       <h1>{work.data.title}</h1>
       {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
@@ -13,6 +13,15 @@ const { work } = Astro.props;
   </article>
 </BaseLayout>
 <style>
+  /* main's own top/bottom padding (--space-xl) is much wider than its
+     left/right padding (--space-sm); pull it back in here so a work page's
+     photos get the same thin margin on every side, matching §4.4's intent. */
+  .work-article {
+    margin-block: calc(var(--space-sm) - var(--space-xl));
+  }
+  @media (max-width: 767px) {
+    .work-article { margin-top: calc(var(--space-sm) - var(--space-lg)); }
+  }
   .work-intro { margin-bottom: var(--space-xl); }
   .work-intro .meta { margin-top: var(--space-3xs); }
   .work-intro .description { margin-top: var(--space-sm); }

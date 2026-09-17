@@ -5,9 +5,12 @@ import SequencePair from './SequencePair.astro';
 const { sequence, workSlug, collection = 'works' } = Astro.props;
 ---
 <section class="sequence" aria-label="Photograph sequence">
-  {sequence.map((block: any, index: number) => block.type === 'image' ? <SequenceImage block={block} index={index} workSlug={workSlug} collection={collection} /> : block.type === 'pair' ? <SequencePair block={block} index={index} workSlug={workSlug} collection={collection} /> : <SequenceBreak size={block.size} />)}
+  {sequence.map((block: any, index: number) => {
+    const isLast = index === sequence.length - 1;
+    return block.type === 'image' ? <SequenceImage block={block} index={index} workSlug={workSlug} collection={collection} isLast={isLast} /> : block.type === 'pair' ? <SequencePair block={block} index={index} workSlug={workSlug} collection={collection} isLast={isLast} /> : <SequenceBreak size={block.size} />;
+  })}
 </section>
-<style>.sequence { margin: 0 auto var(--space-xl); max-width: var(--width-content); }</style>
+<style>.sequence { margin: 0 auto; max-width: var(--width-content); }</style>
 
 
 

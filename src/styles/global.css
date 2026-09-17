@@ -39,6 +39,9 @@ h1, h2, p { margin-top: 0; }
 h1 { font-size: var(--font-size-title); font-weight: 500; line-height: var(--line-height-title); letter-spacing: var(--letter-spacing-title); }
 h2 { font-size: var(--font-size-body); font-weight: 500; }
 main { flex: 1 0 auto; padding: var(--space-xl) var(--space-sm); }
+@media (max-width: 767px) {
+  main { padding-top: var(--space-lg); }
+}
 .text-column { max-width: var(--width-text); }
 .index-column { max-width: var(--width-index); }
 .meta { color: var(--color-muted); font-size: var(--font-size-small); font-variant-numeric: tabular-nums; line-height: var(--line-height-small); }

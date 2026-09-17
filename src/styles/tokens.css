@@ -30,11 +30,23 @@
 
   --width-text: 38rem;
   --width-index: 34rem;
-  --width-content: 1400px;
-  --image-small-max: min(52vw, 480px);
-  --image-medium-max: min(72vw, 760px);
-  --image-large-max: min(92vw, 1040px);
-  --image-full-max: min(96vw, 1280px);
+  --width-content: 1800px;
+  --image-small-max: min(56vw, 560px);
+  --image-medium-max: min(98vw, 1760px);
+  --image-large-max: min(98vw, 1760px);
+  --image-full-max: min(98vw, 1760px);
   --bp-tablet: 768px;
   --bp-desktop: 1080px;
+}
+
+/* Full-bleed (98vw) is right for phones/tablets, where the viewport itself is
+   the constraint — but on a desktop monitor that same rule renders every
+   "medium"/"large" photo at near-full-window size, wiping out the size
+   hierarchy the sequence grammar depends on (spec §5). Rein it back in above
+   --bp-desktop; "full" keeps its full-bleed cap at every width on purpose. */
+@media (min-width: 1080px) {
+  :root {
+    --image-medium-max: min(60vw, 1000px);
+    --image-large-max: min(80vw, 1300px);
+  }
 }

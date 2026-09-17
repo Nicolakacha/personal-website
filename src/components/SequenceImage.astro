@@ -1,10 +1,13 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug, collection = 'works' } = Astro.props;
+const { block, index, workSlug, collection = 'works', isLast = false } = Astro.props;
 const effectiveAlign = ['large', 'full'].includes(block.size) ? 'center' : block.align;
-const gapToken = ({ tight: 'sm', normal: 'lg', large: 'xl', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'lg';
+const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'sm';
+// The last block's own gapAfter is meant for spacing *between* blocks, not the
+// page's trailing margin (that's fixed, see main/work-article) — spec §5.6.
+const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
 ---
-<figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`]} style={`--gap-after: var(--space-${gapToken})`}>
+<figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`]} style={`--gap-after: ${gapValue}`}>
   <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} collection={collection} />
   {block.caption && <figcaption>{block.caption}</figcaption>}
 </figure>

@@ -20,16 +20,16 @@ const image = images[`/src/assets/${collection}/${src}`];
 if (!image) throw new Error(`Missing ${collection} image: ${src}`);
 
 const widthsBySize: Record<Props['size'], number[]> = {
-  small: [480, 960],
-  medium: [760, 1140, 1520],
-  large: [1040, 1560, 2080],
-  full: [1280, 1920, 2560],
+  small: [560, 1120],
+  medium: [1000, 1760, 2560],
+  large: [1300, 1760, 2560],
+  full: [1760, 2560],
 };
 const sizesBySize: Record<Props['size'], string> = {
-  small: '(max-width: 767px) 80vw, min(52vw, 480px)',
-  medium: '(max-width: 767px) 72vw, min(72vw, 760px)',
-  large: '(max-width: 767px) 92vw, min(92vw, 1040px)',
-  full: '(max-width: 767px) 96vw, min(96vw, 1280px)',
+  small: '(max-width: 767px) 80vw, min(56vw, 560px)',
+  medium: '(max-width: 1079px) 98vw, min(60vw, 1000px)',
+  large: '(max-width: 1079px) 98vw, min(80vw, 1300px)',
+  full: 'min(98vw, 1760px)',
 };
 
 // Never upscale past the source image's real dimensions (spec §4.4 / §9.2).
