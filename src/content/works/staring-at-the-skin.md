@@ -20,13 +20,6 @@ sequence:
     alt: "A man leans face-first against a large blank white wall beneath an overpass."
 
   - type: image
-    src: "03.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "Crows perched on power lines and a rooftop against a clear blue sky."
-
-  - type: image
     src: "12.jpg"
     size: medium
     align: center
@@ -69,13 +62,6 @@ sequence:
     alt: "Discarded plastic seat covers with peeling vinyl surfaces, moss growing through, among fallen leaves."
 
   - type: image
-    src: "07.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A tabby cat perched on a hedge in front of a window with metal bars."
-
-  - type: image
     src: "23.jpg"
     size: medium
     align: center
@@ -88,13 +74,6 @@ sequence:
     align: center
     gapAfter: normal
     alt: "A crow perched close to the camera above a river, distant figures sitting on the grass beyond."
-
-  - type: image
-    src: "04.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "Fallen dry leaves scattered along a curb and brick pavement, green foliage above."
 
   - type: image
     src: "16.jpg"
@@ -146,13 +125,6 @@ sequence:
     alt: "A child with a school backpack walks alone past a row of closed blue shutters at a street corner."
 
   - type: image
-    src: "08.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A spider web glows inside a lit garden bollard light at night."
-
-  - type: image
     src: "14.jpg"
     size: medium
     align: center
@@ -193,13 +165,6 @@ sequence:
     align: center
     gapAfter: normal
     alt: "A sparrow perched on a tree stump amid hedges, a market crowd visible in the plaza behind."
-
-  - type: image
-    src: "15.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "Two cats stand among tall dry weeds beside a discarded chair, a graffitied wall behind."
 
   - type: image
     src: "30.jpg"
