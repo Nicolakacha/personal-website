@@ -12,12 +12,11 @@ const works = (await getCollection('works', ({ data }) => data.status !== 'hidde
 ---
 <BaseLayout title="Tei Koh — Photographs">
   <section class="index-column">
-    <h1>Tei Koh</h1>
+    <h1 class="sr-only">Works</h1>
     <WorkIndexList works={works} />
-    <div class="entry-points"><a href="/notes/">Notes</a><a href="/about/">About</a></div>
   </section>
 </BaseLayout>
 
 <style>
-  .entry-points { display: grid; gap: var(--space-xs); margin-top: var(--space-pause); }
+  .index-column { padding-top: var(--space-lg); }
 </style>
