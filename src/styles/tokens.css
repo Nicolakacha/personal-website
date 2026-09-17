@@ -1,10 +1,11 @@
 :root {
-  --color-bg: #F6F4EF;
-  --color-fg: #1E1C19;
-  --color-muted: #706B62;
-  --color-border: #DEDACE;
-  --color-link: #1E1C19;
-  --color-focus: #1E1C19;
+  /* Dark is the site's only theme (see spec.md §4.1) */
+  --color-bg: #1B1917;
+  --color-fg: #EDEAE3;
+  --color-muted: #8C867B;
+  --color-border: #33302B;
+  --color-link: #EDEAE3;
+  --color-focus: #EDEAE3;
 
   --font-latin: 'Inter Variable', -apple-system, 'Segoe UI', system-ui, sans-serif;
   --font-cjk: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Microsoft YaHei', sans-serif;
