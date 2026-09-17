@@ -4,9 +4,31 @@ import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standa
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 
-interface Props { title: string; description?: string; }
-const { title, description = 'Photographs and notes by Nicolas Tei.' } = Astro.props;
+interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; }
+const {
+  title,
+  description = 'Photographs and notes by Nicolas Tei.',
+  image = new URL('/og-default.jpg', Astro.site).toString(),
+  type = 'website',
+  noindex = false,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'Nicolas Tei',
+      url: Astro.site?.toString(),
+    },
+    {
+      '@type': 'Person',
+      name: 'Nicolas Tei',
+      url: Astro.site?.toString(),
+      jobTitle: 'Photographer',
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en" class="no-js">
@@ -14,14 +36,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <script>document.documentElement.classList.replace('no-js', 'js');</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1B1917" />
     <link rel="preload" as="font" type="font/woff2" href={interLatinWoff2} crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/og-default.jpg', Astro.site)} />
+    <meta property="og:image" content={image} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} is:inline />
   </head>
   <body>
     <SiteHeader currentPath={Astro.url.pathname} />

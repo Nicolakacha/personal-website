@@ -10,7 +10,7 @@ const found = (await getCollection('found', ({ data }) => data.status !== 'hidde
     a.data.title.localeCompare(b.data.title)
 );
 ---
-<BaseLayout title="Found — Nicolas Tei" description="Found photographs selected and sequenced by Nicolas Tei.">
+<BaseLayout title="Found — Nicolas Tei" description="Found photographs selected and sequenced by Nicolas Tei." noindex>
   <section class="index-column">
     <h1>Found</h1>
     <FoundIndexList found={found} />

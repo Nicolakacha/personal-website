@@ -1,8 +1,10 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { getEntryOgImage } from '../utils/ogImage';
 const { work } = Astro.props;
+const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'works', Astro.site);
 ---
-<BaseLayout title={`${work.data.title} — Nicolas Tei`} description={work.data.deck ?? work.data.description}>
+<BaseLayout title={`${work.data.title} — Nicolas Tei`} description={work.data.deck ?? work.data.description} image={image} type="article">
   <article class="work-article">
     <header class="work-intro text-column">
       <h1>{work.data.title}</h1>
