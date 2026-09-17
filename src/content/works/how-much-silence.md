@@ -27,11 +27,11 @@ sequence:
     alt: "A fatsia plant leans over a concrete block wall, its leaf shadows cast sharply below."
 
   - type: image
-    src: "18.jpg"
+    src: "04.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A cardboard cutout of a police officer stands beside a stairwell."
+    alt: "A lit window glows behind bare tree branches on a building's exterior at dusk."
 
   - type: image
     src: "11.jpg"
@@ -41,11 +41,18 @@ sequence:
     alt: "A man stands holding an umbrella in a wet parking lot beside fishing gear and bags on the ground."
 
   - type: image
-    src: "04.jpg"
+    src: "18.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A lit window glows behind bare tree branches on a building's exterior at dusk."
+    alt: "A cardboard cutout of a police officer stands beside a stairwell."
+
+  - type: image
+    src: "24.jpg"
+    size: medium
+    align: center
+    gapAfter: normal
+    alt: "A small garden gnome figurine and a driftwood root sit beside a shuttered storefront."
 
   - type: image
     src: "15.jpg"
@@ -76,6 +83,13 @@ sequence:
     alt: "A weathered public sign, its printed warning mostly faded, marked over with graffiti scrawls."
 
   - type: image
+    src: "06.jpg"
+    size: medium
+    align: center
+    gapAfter: normal
+    alt: "Several people crouch under umbrellas around a roadside utility box in the rain."
+
+  - type: image
     src: "10.jpg"
     size: medium
     align: center
@@ -83,32 +97,11 @@ sequence:
     alt: "A crowd of people holding umbrellas stands together in front of a shuttered building."
 
   - type: image
-    src: "17.jpg"
+    src: "25.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A memorial of flowers surrounds a framed photograph of a polar bear."
-
-  - type: image
-    src: "24.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A small garden gnome figurine and a driftwood root sit beside a shuttered storefront."
-
-  - type: image
-    src: "26.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "Two masked people wait in a living room, one seated, one in a wheelchair, shopping bags on the floor."
-
-  - type: image
-    src: "19.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A zookeeper stands alone in an empty polar bear enclosure beside a blue barrel."
+    alt: "A dense nighttime crowd fills a street, faces lit by nearby signs and phone screens."
 
   - type: image
     src: "08.jpg"
@@ -118,11 +111,11 @@ sequence:
     alt: "A close view of a fist resting in a jacket pocket beside a canvas bag."
 
   - type: image
-    src: "23.jpg"
+    src: "19.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A row of houses at dusk with lit windows, seen across an empty overgrown lot."
+    alt: "A zookeeper stands alone in an empty polar bear enclosure beside a blue barrel."
 
   - type: image
     src: "22.jpg"
@@ -132,18 +125,32 @@ sequence:
     alt: "A security guard stands beneath blooming cherry blossoms, looking to the side."
 
   - type: image
+    src: "17.jpg"
+    size: medium
+    align: center
+    gapAfter: normal
+    alt: "A memorial of flowers surrounds a framed photograph of a polar bear."
+
+  - type: image
+    src: "23.jpg"
+    size: medium
+    align: center
+    gapAfter: normal
+    alt: "A row of houses at dusk with lit windows, seen across an empty overgrown lot."
+
+  - type: image
+    src: "26.jpg"
+    size: medium
+    align: center
+    gapAfter: normal
+    alt: "Two masked people wait in a living room, one seated, one in a wheelchair, shopping bags on the floor."
+
+  - type: image
     src: "29.jpg"
     size: medium
     align: center
     gapAfter: normal
     alt: "A living room corner with a dusty pink curtain, a worn armchair, and a wilting plant."
-
-  - type: image
-    src: "06.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "Several people crouch under umbrellas around a roadside utility box in the rain."
 
   - type: image
     src: "14.jpg"
@@ -153,11 +160,11 @@ sequence:
     alt: "A Shiba Inu stands alert on a tiled ledge in a brick corridor, a bicycle behind it."
 
   - type: image
-    src: "28.jpg"
+    src: "03.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A hospital bed lit by a sunlit curtain, a patient resting as a monitor glows nearby."
+    alt: "A person almost hidden behind an open umbrella stands before a fortune-teller's shopfront; a cat crosses the roof tiles above."
 
   - type: image
     src: "16.jpg"
@@ -165,13 +172,6 @@ sequence:
     align: center
     gapAfter: normal
     alt: "People wait outside a restaurant window at night, reflections layered across the glass."
-
-  - type: image
-    src: "03.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A person almost hidden behind an open umbrella stands before a fortune-teller's shopfront; a cat crosses the roof tiles above."
 
   - type: image
     src: "21.jpg"
@@ -188,11 +188,11 @@ sequence:
     alt: "A person asleep on a bench in a hollow, tiled underground station corridor."
 
   - type: image
-    src: "25.jpg"
+    src: "28.jpg"
     size: medium
     align: center
     gapAfter: normal
-    alt: "A dense nighttime crowd fills a street, faces lit by nearby signs and phone screens."
+    alt: "A hospital bed lit by a sunlit curtain, a patient resting as a monitor glows nearby."
 
   - type: image
     src: "05.jpg"
