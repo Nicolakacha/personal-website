@@ -21,12 +21,22 @@ const { found } = Astro.props;
 )}
 <style>
   ul { list-style: none; margin: 0; padding: 0; }
-  li { margin-bottom: var(--space-lg); }
+  li { margin-bottom: var(--space-md); }
   li:last-child { margin-bottom: 0; }
   .row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
-  .row a { font-size: var(--font-size-index); }
+  .row a {
+    font-size: var(--font-size-small);
+    line-height: 1.2;
+    text-wrap: balance;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-muted);
+    text-underline-offset: 0.25em;
+  }
+  .row a:hover, .row a:focus-visible { text-decoration-color: currentColor; }
   .deck { margin-top: var(--space-3xs); }
   @media (max-width: 420px) {
     .row { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
+    li { margin-bottom: var(--space-sm); }
   }
 </style>
