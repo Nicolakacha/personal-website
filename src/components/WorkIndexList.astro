@@ -3,5 +3,30 @@ import type { CollectionEntry } from 'astro:content';
 interface Props { works: CollectionEntry<'works'>[]; }
 const { works } = Astro.props;
 ---
-{works.length > 0 && <ul>{works.map((work) => <li><a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a><span class="meta">{work.data.year}</span>{work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}{work.data.deck && <small class="meta">{work.data.deck}</small>}</li>)}</ul>}
-<style>ul { list-style: none; margin: 0; padding: 0; } li { display: flex; flex-wrap: wrap; gap: var(--space-3xs) var(--space-sm); margin-bottom: var(--space-md); } li a { font-size: var(--font-size-index); } small { flex-basis: 100%; }</style>
+{works.length > 0 && (
+  <ul>
+    {works.map((work) => (
+      <li>
+        <div class="row">
+          <a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a>
+          <span class="meta">
+            {work.data.year}
+            {work.data.nativeTitle && <> · {work.data.nativeTitle}</>}
+          </span>
+        </div>
+        {work.data.deck && <p class="deck meta">{work.data.deck}</p>}
+      </li>
+    ))}
+  </ul>
+)}
+<style>
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { margin-bottom: var(--space-lg); }
+  li:last-child { margin-bottom: 0; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+  .row a { font-size: var(--font-size-index); }
+  .deck { margin-top: var(--space-3xs); }
+  @media (max-width: 420px) {
+    .row { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
+  }
+</style>

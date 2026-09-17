@@ -6,11 +6,17 @@ const { work } = Astro.props;
   <article>
     <header class="work-intro text-column">
       <h1>{work.data.title}</h1>
-      {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
-      <p class="meta">{work.data.year}</p>
-      {work.data.description && <p>{work.data.description}</p>}
+      <p class="meta">
+        {work.data.year}
+        {work.data.nativeTitle && <> · {work.data.nativeTitle}</>}
+      </p>
+      {work.data.description && <p class="description">{work.data.description}</p>}
     </header>
     <slot />
   </article>
 </BaseLayout>
-<style>.work-intro { margin-bottom: var(--space-lg); }</style>
+<style>
+  .work-intro { margin-bottom: var(--space-xl); }
+  .work-intro .meta { margin-top: var(--space-3xs); }
+  .work-intro .description { margin-top: var(--space-sm); }
+</style>
