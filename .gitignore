@@ -2,3 +2,5 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+ngrok.log
+_originals_backup/
