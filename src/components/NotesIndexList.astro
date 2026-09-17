@@ -20,4 +20,11 @@ const { notes } = Astro.props;
   li { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-sm); margin-bottom: var(--space-sm); }
   li:last-child { margin-bottom: 0; }
   time { flex-shrink: 0; }
+  li a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-muted);
+    text-underline-offset: 0.25em;
+  }
+  li a:hover, li a:focus-visible { text-decoration-color: currentColor; }
 </style>

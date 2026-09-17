@@ -1,5 +1,5 @@
 ---
-title: "How much silence can a space hold?"
+title: "How Much Silence Can a Space Hold?"
 routeSlug: how-much-silence
 year: "2026"
 status: published

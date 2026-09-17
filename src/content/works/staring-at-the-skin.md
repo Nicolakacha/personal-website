@@ -1,5 +1,5 @@
 ---
-title: "Staring at the skin of the world until it peels off."
+title: "Staring at the Skin of the World Until It Peels Off."
 routeSlug: staring-at-the-skin
 year: "2026"
 status: published
