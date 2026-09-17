@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 const { note } = Astro.props;
 const { Content } = await render(note);
 ---
-<BaseLayout title={`${note.data.title ?? 'Note'} — Tei Koh`}>
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`}>
   <article class="text-column prose">
     <header class="note-intro">
       {note.data.title && <h1>{note.data.title}</h1>}

@@ -6,7 +6,7 @@ const about = await getEntry('about', 'index');
 if (!about) throw new Error('Missing About content');
 const { Content } = await render(about);
 ---
-<BaseLayout title="About — Tei Koh">
+<BaseLayout title="About — Nicolas Tei">
   <article class="text-column prose">
     <h1>{about.data.title}</h1>
     <Content />

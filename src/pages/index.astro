@@ -10,7 +10,7 @@ const works = (await getCollection('works', ({ data }) => data.status !== 'hidde
     a.data.title.localeCompare(b.data.title)
 );
 ---
-<BaseLayout title="Tei Koh — Photographs">
+<BaseLayout title="Nicolas Tei — Photographs">
   <section class="index-column">
     <h1 class="sr-only">Works</h1>
     <WorkIndexList works={works} />

@@ -7,7 +7,7 @@ const notes = (await getCollection('notes', ({ data }) => data.status === 'publi
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 ---
-<BaseLayout title="Notes — Tei Koh">
+<BaseLayout title="Notes — Nicolas Tei">
   <section class="index-column">
     <h1>Notes</h1>
     <NotesIndexList notes={notes} />
