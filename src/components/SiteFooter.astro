@@ -5,22 +5,25 @@ const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <span>&copy; {year} Nicolas Tei. All rights reserved.</span>
-  {instagram && <a href={instagram} rel="me">Instagram</a>}
-  {email && <a href={`mailto:${email}`}>Email</a>}
+  <div class="links">
+    {instagram && <a href={instagram} rel="me">Instagram</a>}
+    {email && <a href={`mailto:${email}`}>Email</a>}
+  </div>
 </footer>
 
 <style>
   .site-footer {
     border-top: 1px solid var(--color-border);
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs) var(--space-md);
+    flex-direction: column;
+    gap: var(--space-2xs);
     margin: 0 var(--space-sm);
     padding: var(--space-md) 0 var(--space-lg);
     color: var(--color-muted);
     font-size: var(--font-size-small);
     letter-spacing: 0.02em;
   }
+  .links { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
   .site-footer a { color: var(--color-muted); }
   .site-footer a:hover, .site-footer a:focus-visible { color: var(--color-fg); }
 </style>
