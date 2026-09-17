@@ -18,7 +18,7 @@ Priority order governing every decision and every future tradeoff Codex must mak
 
 ## 1. Product Definition
 
-A personal photography website for Tei Koh, structured like a small independently published photo-book rather than a portfolio product. It exists to present sequences of photographs with authored scale, pairing, alignment and rhythm — not to sell services, not to replicate a social feed, and not to demonstrate frontend craft.
+A personal photography website for Nicolas Tei, structured like a small independently published photo-book rather than a portfolio product. It exists to present sequences of photographs with authored scale, pairing, alignment and rhythm — not to sell services, not to replicate a social feed, and not to demonstrate frontend craft.
 
 The site is statically generated, has no backend, no database, no CMS, no auth, and no client-side framework runtime beyond what the browser gives for free (native scroll, native links, `<img>`/`<picture>`). Almost all visual character comes from typography, spacing, image scale and sequencing — not from decoration, animation, or UI chrome.
 
@@ -43,8 +43,10 @@ If a genuinely interactive widget is needed later, Astro's islands architecture 
 ### 2.1 Routes
 
 ```
-/                       Home (index of works + entry points to Notes/About)
+/                       Home (index of works + entry points to Found/Notes/About)
 /works/[slug]/          Individual work page (e.g. /works/almost-home/)
+/found/                 Found index (list of found-photograph pieces)
+/found/[slug]/          Individual found piece (same sequence grammar as a work)
 /notes/                 Notes index
 /notes/[slug]/          Individual note
 /about/                 About page
@@ -53,21 +55,24 @@ If a genuinely interactive widget is needed later, Astro's islands architecture 
 
 There is no separate `/works/` index route distinct from Home. Home *is* the works index (see §3 — `Works` and `Home` are merged per the source document's explicit permission to simplify when they overlap).
 
+`Found` is deliberately **not** merged into Home/works the same way: it is a distinct content collection (§6.1a) with its own index route and its own header nav entry, because found/appropriated photographs are conceptually different from authored works (not made by the photographer) and the photographer wants them kept in a visibly separate section rather than interleaved in the main work index.
+
 ### 2.2 Navigation
 
 Global navigation, present in a `<header>` on every page, minimal and non-sticky by default:
 
 ```
-Tei Koh          Notes   About
+Nicolas Tei     Found   Notes   About
 ```
 
-- "Tei Koh" (site title) links to `/`, set at `--font-size-index`, weight 500 — the one place in the header with any visual weight.
-- `Notes` and `About` are plain text links, right- or right-of-title aligned, set at `--font-size-small` in `--color-muted` (not `--color-fg`), brightening to `--color-fg` on hover/focus. This deliberately makes the header read as quiet utility chrome rather than competing with a page's own content — most visibly on Home, where the work index (in full `--color-fg`) is the page's real navigational moment (§3.1).
+- "Nicolas Tei" (site title) links to `/`, set at `--font-size-index`, weight 500 — the one place in the header with any visual weight.
+- `Found`, `Notes` and `About` are plain text links, right- or right-of-title aligned, set at `--font-size-small` in `--color-muted` (not `--color-fg`), brightening to `--color-fg` on hover/focus. This deliberately makes the header read as quiet utility chrome rather than competing with a page's own content — most visibly on Home, where the work index (in full `--color-fg`) is the page's real navigational moment (§3.1).
+- Each nav link (including the site title) sets `aria-current="page"` when it matches (or, for `Found`/`Notes`, prefixes) the current path — a small accessibility affordance not in the original source document, added because it's essentially free and helps screen-reader/keyboard users confirm where they are without changing the visual design (no visual style is defined for `aria-current` beyond the default browser/AT behavior).
 - A hairline `border-bottom: 1px solid var(--color-border)` under the header (mirrored by a `border-top` above the footer) frames the page content — a restrained structural device, not a decorative box.
 - No hamburger menu at any breakpoint. At the narrowest viewport the header wraps to two lines if needed (title on line 1, links on line 2) rather than collapsing into a menu.
 - The header is `position: static` (scrolls away with content). It does not re-appear as a sticky bar. This is a deliberate rejection of "persistent UI occupying visual space" (source §8, §20).
 - Within a work page, there is no secondary in-page navigation, no progress indicator, and no thumbnail rail. The only way to leave a work is the browser back action or the header links.
-- A minimal footer appears at the bottom of every page: Instagram link, email link — in `--color-muted`, brightening to `--color-fg` on hover/focus, same treatment as the header nav. It does **not** repeat the site name — the header already shows it (and Home's own `<h1>` shows it again as its title-page moment); a third repetition in the footer added no information. If neither Instagram nor email is configured, the footer (including its hairline) is omitted entirely rather than rendering empty. No sitemap-style footer link farm.
+- A minimal footer appears at the bottom of every page: a `© {current year} Nicolas Tei. All rights reserved.` copyright line (year computed at build time, not hardcoded per year), followed by Instagram link and email link — in `--color-muted`, brightening to `--color-fg` on hover/focus for the links (the copyright text itself is not a link and never brightens). It does **not** repeat the site name as a heading — the header already shows it (and Home's own `<h1>` shows it again as its title-page moment); the copyright line is a legal notice, not a redundant name repetition, so this is not a violation of that rule. Instagram/email URLs are hardcoded directly in `SiteFooter.astro` (not environment variables — deliberately simple for a single-maintainer site with no per-environment variation). The footer always renders (the copyright line alone is sufficient content); Instagram/email links within it are still individually omitted if not set. No sitemap-style footer link farm.
 
 ### 2.3 URL structure rules
 
@@ -206,7 +211,7 @@ A reverse-chronological plain list of notes: title (or, if untitled, a truncated
 **Content** (structure, not final copy):
 
 ```
-Tei Koh
+Nicolas Tei
 Based in Japan.
 
 [short intro paragraph — optional, plain text]
@@ -218,11 +223,31 @@ Email
 **Layout**
 
 - Same text column width as Notes body. Left-aligned static content, no photograph required.
-- The schema (§9.4) must allow later, low-effort addition of an `Exhibitions`, `Publications`, or `Selected projects` block as further paragraphs/lists in the same page without restructuring — implement About as a single Markdown/MDX content file (not fully hardcoded in a template) precisely so this is a content edit, not a code change.
+- The schema (§6.3) must allow later, low-effort addition of an `Exhibitions`, `Publications`, or `Selected projects` block as further paragraphs/lists in the same page without restructuring — implement About as a single Markdown/MDX content file (not fully hardcoded in a template) precisely so this is a content edit, not a code change.
 
 **Interaction / empty / edge states**
 
 - None beyond standard link states. If Instagram/email are not yet set, omit those lines rather than showing empty links.
+
+---
+
+### 3.6 Found index (`/found/`) and Found piece (`/found/[slug]/`)
+
+Added after v1: a section for photographs the photographer found or was given rather than made themselves (old prints, someone else's negatives, images "found" in the colloquial photo-book sense) — distinct enough in authorship/intent from `works` that it gets its own content collection and route tree instead of being folded into the works index.
+
+**`/found/` index — content and layout**
+
+- Structurally identical to Home's work index (§3.1): a plain list of `title`, `year` (trailing edge, `--color-muted`), optional `nativeTitle` after the year, optional one-line `deck` beneath the title. `status: hidden` entries are excluded entirely.
+- Unlike Home, this index has a visible `<h1>Found</h1>` (Home's own `<h1>` is visually hidden per §10 — Found's is not, since nothing else on this page needs to be the visual anchor the way Home's index does).
+- Sort order: `order` ascending, then `year` descending, then `title` alphabetical — same rule as Home (§6.1).
+- Empty state: if zero found pieces are published, the index still renders (heading only), same non-404 rule as Notes (§3.3).
+
+**`/found/[slug]/` piece — content and layout**
+
+- Renders with the exact same photography layout grammar as a work page (§5): `sequence` of `image`/`pair`/`break` blocks, same size/align/gapAfter vocabulary, same no-lightbox/no-animation interaction rules (§3.2).
+- Title, optional `nativeTitle`, year, optional `description` render the same way as a work page's intro block.
+- The one schema difference from `works` is an optional `provenance` field (§6.1a) — a short plain-text line (e.g. "Found in a secondhand shop, Ōsaka, 2025.") rendered as a second muted line beneath the description, in the same `.meta` treatment as the year line. This is the one place the site records how an image came to the photographer rather than what it depicts — deliberately kept to plain text, not a structured citation format.
+- Assets live under `src/assets/found/[slug]/` (parallel to `src/assets/works/[slug]/`, §8), kept in a separate top-level asset folder so found-photograph masters are never intermixed with the photographer's own authored work in the repo.
 
 ---
 
@@ -520,7 +545,7 @@ export const works = defineCollection({
   schema: z.object({
     title: z.string(),
     nativeTitle: z.string().optional(),   // e.g. "住民" for Residents
-    slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+    routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
     year: z.string(),                     // "2026" or "2024–2026"
     status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'),
     order: z.number().default(0),         // manual ordering on the Home index
@@ -537,7 +562,35 @@ Notes:
 - `status: hidden` works are excluded from `getStaticPaths` in production builds (see §16) — not merely CSS-hidden.
 - `status: ongoing` behaves like `published` (it *is* built and listed) but the Home index may optionally suffix it with a small muted "ongoing" label — this is the one place a status word may appear in the UI, and it must render as plain muted text, never a badge/pill/chip.
 - `order` is ascending; ties fall back to `year` descending, then `title` alphabetical. In practice the photographer sets `order` explicitly for every published work so this is deterministic and intentional, not incidental.
-- `slug` in frontmatter is redundant with the file-based slug in Astro content collections but is kept explicit to decouple the URL from the filename (so a work's file can be renamed without changing its live URL) — Codex should use the frontmatter `slug` field for routing, not `entry.slug`.
+- The frontmatter field is named `routeSlug`, not `slug` (renamed during implementation to avoid any ambiguity with Astro's own file-based `entry.slug`, which this project does not use for routing). It is redundant with the file-based slug in Astro content collections but is kept explicit to decouple the URL from the filename (so a work's file can be renamed without changing its live URL) — code uses the frontmatter `routeSlug` field for routing, never `entry.slug`. This same rename applies to `notes` (§6.2) and `found` (§6.1a).
+
+### 6.1a `found` collection
+
+A separate collection for found/appropriated photographs (§3.6) — deliberately not folded into `works`, since these pieces are not authored by the photographer and the site keeps that distinction visible via a separate section rather than a shared list with a status flag.
+
+```typescript
+export const found = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    nativeTitle: z.string().optional(),
+    routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+    year: z.string(),
+    status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'),
+    order: z.number().default(0),
+    deck: z.string().max(140).optional(),
+    description: z.string().optional(),
+    provenance: z.string().optional(),   // e.g. "Found in a secondhand shop, Ōsaka, 2025." — see §3.6
+    sequence: z.array(sequenceBlock).default([]),
+  }),
+});
+```
+
+Notes:
+
+- Reuses the exact same `sequenceBlock` union as `works` (§6.1) — `found` pieces are laid out with the identical `image`/`pair`/`break` grammar (§5), so no separate layout vocabulary was introduced for this collection.
+- The only field `found` has that `works` doesn't is `provenance`; the only field `works` has that `found` doesn't is `location`. Everything else (including the `status`/`order`/sort behavior) is identical to §6.1's notes above.
+- Assets for this collection live under `src/assets/found/[slug]/`, resolved the same way as `src/assets/works/[slug]/` (§8) but from a separate top-level folder, keyed by an explicit `collection: 'works' | 'found'` prop threaded through `Sequence.astro` → `SequenceImage.astro`/`SequencePair.astro` → `ResponsiveImage.astro`, so the same image-resolution code serves both collections instead of being duplicated per collection.
 
 ### 6.2 `notes` collection
 
@@ -547,7 +600,7 @@ export const notes = defineCollection({
   schema: z.object({
     title: z.string().optional(),
     date: z.date(),
-    slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+    routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
     status: z.enum(['published', 'hidden']).default('published'),
   }),
 });
@@ -555,16 +608,25 @@ export const notes = defineCollection({
 
 Body (Markdown/MDX) contains the note text and any inline images using standard Markdown image syntax; inline images in note bodies default to `medium` size, centered, via a small MDX component override (§10.4) — content authors do not need to hand-write layout grammar for a one-off note image.
 
-### 6.3 `about` collection (or a single content file)
+### 6.3 `about` collection
 
-A single-entry collection (or simply `src/content/about/index.md`) with Markdown body and minimal frontmatter (`title` only, if any). No schema complexity needed — About is prose.
+Implemented as an explicit single-entry collection (`src/content/about/index.md`, entry id `index`), not left schema-less:
+
+```typescript
+export const about = defineCollection({
+  type: 'content',
+  schema: z.object({ title: z.string().default('About') }),
+});
+```
+
+`title` defaults to `'About'` so the frontmatter can omit it entirely for the common case; the page reads it via `getEntry('about', 'index')`, not a hardcoded string, so the `<h1>` text stays a content edit rather than a template change if it's ever renamed. Body is prose Markdown — no further schema complexity.
 
 ### 6.4 Representative example — `src/content/works/almost-home.md`
 
 ```yaml
 ---
 title: Almost home
-slug: almost-home
+routeSlug: almost-home
 year: "2026"
 status: published
 order: 1
@@ -615,23 +677,30 @@ Astro components, `.astro` files, minimal client-side JS (ideally zero — no `c
 
 ```
 src/components/
-  SiteHeader.astro        Global nav (title + Notes/About links)
-  SiteFooter.astro        Instagram/email links, minimal
+  SiteHeader.astro        Global nav (title + Found/Notes/About links, aria-current on the active one)
+  SiteFooter.astro        Copyright line, Instagram/email links, minimal
   WorkIndexList.astro     Renders the Home page's list of works (title, year, deck)
+  FoundIndexList.astro    Renders the Found index list (title, year, deck) — same shape as WorkIndexList,
+                           kept as a separate component rather than a shared/parameterized one (§7 note below)
   NotesIndexList.astro    Renders the Notes index list (date, title)
-  Sequence.astro          Iterates a work's `sequence` array, dispatches per block type
+  Sequence.astro          Iterates a `sequence` array, dispatches per block type; takes a `collection`
+                           prop ('works' | 'found', default 'works') threaded down to ResponsiveImage
+                           so the same grammar/components serve both collections
   SequenceImage.astro     Renders a single `image` block (uses ResponsiveImage)
   SequencePair.astro      Renders a `pair` block (two ResponsiveImage instances + flex/stack logic)
   SequenceBreak.astro     Renders a `break` block (pure spacing div)
   ResponsiveImage.astro   Wraps Astro's <Image>/<Picture>, applies size-token max-width,
-                           handles alt/decorative logic, reserves aspect ratio
+                           handles alt/decorative logic, reserves aspect ratio; resolves its `src`
+                           against `src/assets/{collection}/**` via the `collection` prop
 ```
 
 Component responsibilities are kept to exactly what's listed — no generic `<Card>`, `<Container>`, `<Section>`, or `<Grid>` components exist, because the design has no card/grid concept (source §6, §28: avoid fragmenting every HTML element into a component).
 
-`Sequence.astro` responsibility: given `sequence: SequenceBlock[]`, render each block via a `switch`/conditional on `type`, passing `gapAfter` down as a CSS custom property (`style={`--gap-after: var(--space-${gapMap[block.gapAfter]})`}`) consumed by a shared `margin-block-end` rule — this keeps spacing logic in one place rather than duplicated per block component.
+`WorkIndexList.astro`/`FoundIndexList.astro` were implemented as two separate components rather than one generic `IndexList` taking a collection prop — the two lists are identical in markup today, but keeping them separate leaves room for the Found index to diverge later (e.g. showing `provenance`) without threading conditional branches through a shared component. Revisit only if a third identical list appears.
 
-`ResponsiveImage.astro` responsibility: the single point where Astro's built-in image optimization (`astro:assets`) is invoked, producing the responsive `srcset`/`sizes` and `width`/`height` attributes from the source file's real dimensions (see §10). It accepts `size` (small/medium/large/full) and translates it into both the CSS max-width token and an appropriate `sizes` attribute.
+`Sequence.astro` responsibility: given `sequence: SequenceBlock[]` and a `collection`, render each block via a conditional on `type`, passing `gapAfter` down as a CSS custom property (`style={`--gap-after: var(--space-${gapMap[block.gapAfter]})`}`) consumed by a shared `margin-block-end` rule, and forwarding `workSlug`/`collection` to each block component so it can resolve its own image paths — this keeps spacing and asset-resolution logic in one place rather than duplicated per block component.
+
+`ResponsiveImage.astro` responsibility: the single point where Astro's built-in image optimization (`astro:assets`) is invoked, producing the responsive `srcset`/`sizes` and `width`/`height` attributes from the source file's real dimensions (see §10). It accepts `size` (small/medium/large/full), translates it into both the CSS max-width token and an appropriate `sizes` attribute, and accepts `collection` ('works' | 'found') to select which top-level asset folder its `import.meta.glob` resolves `src` against.
 
 ---
 
@@ -646,10 +715,13 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 │  ├─ components/            (§7)
 │  ├─ layouts/
 │  │  ├─ BaseLayout.astro    <head>, header, footer, SEO tags
-│  │  └─ WorkLayout.astro    BaseLayout + work-page-specific title/description block
+│  │  ├─ WorkLayout.astro    BaseLayout + work-page-specific title/description block
+│  │  └─ FoundLayout.astro   BaseLayout + found-piece title/description/provenance block (§3.6)
 │  ├─ pages/
 │  │  ├─ index.astro                 → /
 │  │  ├─ works/[slug].astro          → /works/[slug]/
+│  │  ├─ found/index.astro           → /found/
+│  │  ├─ found/[slug].astro          → /found/[slug]/
 │  │  ├─ notes/index.astro           → /notes/
 │  │  ├─ notes/[slug].astro          → /notes/[slug]/
 │  │  ├─ about.astro                 → /about/
@@ -660,6 +732,8 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 │  │  │  ├─ almost-home.md
 │  │  │  ├─ residents.md
 │  │  │  └─ photographs-2026.md
+│  │  ├─ found/
+│  │  │  └─ *.md
 │  │  ├─ notes/
 │  │  │  └─ *.md
 │  │  └─ about/
@@ -668,19 +742,21 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 │     ├─ tokens.css          (§4: color, type, spacing, breakpoints, image widths)
 │     └─ global.css          (reset, base element styles, link/focus states)
 ├─ src/assets/
-│  └─ works/
-│     ├─ almost-home/
-│     │  ├─ 01.jpg   (source masters, see §10 — NOT served directly)
-│     │  └─ ...
-│     ├─ residents/
-│     └─ photographs-2026/
+│  ├─ works/
+│  │  ├─ almost-home/
+│  │  │  ├─ 01.jpg   (source masters, see §10 — NOT served directly)
+│  │  │  └─ ...
+│  │  ├─ residents/
+│  │  └─ photographs-2026/
+│  └─ found/
+│     └─ [slug]/      (one folder per found piece, same convention as works/[slug]/)
 └─ public/
    ├─ favicon.svg
    └─ og-default.jpg
 ```
 
-- Source images live under `src/assets/works/[slug]/` (not `public/`) specifically so Astro's build-time image pipeline (`astro:assets`) processes every reference — anything placed in `public/` bypasses optimization entirely and must never be used for photographic content.
-- `sequence[].src` in frontmatter is a filename relative to that work's asset folder; resolve it in `ResponsiveImage.astro` via Vite's `import.meta.glob` over `src/assets/works/**/*` keyed by relative path, rather than requiring a static `import` statement per image in a `.astro` file (which doesn't scale to dozens of photographs per work).
+- Source images live under `src/assets/works/[slug]/` or `src/assets/found/[slug]/` (not `public/`) specifically so Astro's build-time image pipeline (`astro:assets`) processes every reference — anything placed in `public/` bypasses optimization entirely and must never be used for photographic content.
+- `sequence[].src` in frontmatter is a filename relative to that entry's asset folder; `ResponsiveImage.astro` resolves it via a single Vite `import.meta.glob` over `src/assets/{works,found}/**/*.{jpg,jpeg,png}` keyed by relative path, then looks up `` `/src/assets/${collection}/${src}` `` — one glob shared across both collections, rather than requiring a static `import` statement per image in a `.astro` file (which doesn't scale to dozens of photographs per work) or a separate glob per collection.
 
 ---
 
@@ -688,7 +764,7 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 
 ### 9.1 Source expectations
 
-- Archive masters (TIFF or high-res JPEG) are never committed to the web repository. Only web-ready derivatives that Astro will further process are committed under `src/assets/works/[slug]/`.
+- Archive masters (TIFF or high-res JPEG) are never committed to the web repository. Only web-ready derivatives that Astro will further process are committed under `src/assets/works/[slug]/` or `src/assets/found/[slug]/`.
 - Accepted input format for the pipeline: high-quality JPEG (quality ≥ 90 at source) or PNG, sRGB color profile embedded or convertible to sRGB at ingestion. Do not commit TIFFs into the repo (they bloat the git history and are unnecessary for a static site build).
 - Ingestion step (manual or scripted, outside the site build): from a TIFF master, export an sRGB JPEG at the image's true pixel dimensions (do not pre-downscale below what `full` size could ever need at the widest supported viewport × device-pixel-ratio — practically, ~2560px on the long edge is a sufficient ceiling given `--image-full-max` tops out at 1280 CSS px and accounting for 2x DPR).
 
@@ -730,7 +806,7 @@ Using Astro's built-in `astro:assets` (Sharp-based) image service:
 
 - **Keyboard navigation**: every interactive element (nav links, footer links, in-body links) is a real `<a>`; no `<div onclick>` pseudo-links anywhere. Tab order follows visual/DOM order (no `tabindex` overrides).
 - **Focus states**: `:focus-visible` outline per §4.6 on every link; never remove focus outlines without replacement.
-- **Semantic HTML**: `<header>`, `<nav>` (for the header link group), `<main>`, `<footer>`; one `<h1>` per page; work titles are `<h1>` on their own page and plain link text (not headings) in the Home index list, since the index itself has its own single `<h1>` ("Tei Koh" or a visually-hidden "Works" label — see below).
+- **Semantic HTML**: `<header>`, `<nav>` (for the header link group), `<main>`, `<footer>`; one `<h1>` per page; work titles are `<h1>` on their own page and plain link text (not headings) in the Home index list, since the index itself has its own single `<h1>` ("Nicolas Tei" or a visually-hidden "Works" label — see below).
 - **Heading structure**: Home page `<h1>` is present for correct document structure but visually hidden (`.sr-only`, standard clip-based hidden pattern — not `display: none`, which some screen readers also skip) — the site name already appears once, visibly, in the header on every page, and the photographer's name should appear on-page only in the header nav and on About (not a third time on Home); the hidden `<h1>` text is a plain structural label ("Works"), not the name. Work page `<h1>` = work title. Notes index `<h1>` = "Notes". About `<h1>` = "About" (the name itself appears in the page's own body copy, not the heading).
 - **Contrast**: `--color-fg` on `--color-bg` computes to a contrast ratio well above WCAG AA (>15:1) for body text. `--color-muted` on `--color-bg` clears **4.5:1** (~4.85:1) for any text below `--font-size-small` used as real content (dates, deck lines) — re-verify and do not ship muted text that fails AA if either hex value changes.
 - **Reduced motion**: since v1 ships with no animation at all, there is technically nothing to gate — but if any transition is added later (e.g. a hover underline transition), wrap it in `@media (prefers-reduced-motion: no-preference)`.
@@ -801,6 +877,12 @@ Codex must **not** implement any of the following, even if they seem like natura
 - [ ] No CLS: forcing a slow network throttle, scrolling through a work page produces no visible image-load reflow.
 - [ ] `status: hidden` work produces no route in `astro build` output (`dist/works/[slug]/` absent).
 
+**Found**
+- [ ] Renders only `published`/`ongoing` found pieces, same sort rule as Home (`order` then `year` desc then `title`).
+- [ ] `status: hidden` found piece produces no route in `astro build` output (`dist/found/[slug]/` absent), same as a hidden work.
+- [ ] A found piece's sequence renders with the identical size/align/gapAfter/pair rules as a work page — no visual or behavioral divergence beyond the optional `provenance` line.
+- [ ] `/found/` still renders (heading only) with zero published entries — never a 404, never a "coming soon" message.
+
 **Notes**
 - [ ] A note with only a date and one sentence of body text renders without visual "emptiness" artifacts (no forced min-height, no broken card).
 - [ ] Notes index paginates only once entries exceed ~40, and never before.
@@ -834,3 +916,4 @@ Each checkpoint should leave the site in a working, deployable state.
 10. **Accessibility pass**: heading structure, focus states, contrast check on `--color-muted`, alt-text lint check, full keyboard pass.
 11. **Second and third works** (Residents, Photographs 2026) added purely as content — no component changes should be required; if any are needed, that's a signal the grammar in step 4 was under-specified and should be revisited before adding more content.
 12. **Deploy**: Cloudflare Pages (or equivalent static host), verify production build matches dev in image quality and hidden-content exclusion.
+13. **Found section** (added after v1, §3.6/§6.1a): `found` collection, `FoundLayout.astro`, `FoundIndexList.astro`, `/found/` + `/found/[slug]/` routes, `src/assets/found/`, header nav entry. Reused `Sequence.astro`/`SequenceImage.astro`/`SequencePair.astro`/`ResponsiveImage.astro` unchanged in logic except for the added `collection` prop — confirming step 4's layout grammar was in fact reusable across collections, per the caution in step 11.
