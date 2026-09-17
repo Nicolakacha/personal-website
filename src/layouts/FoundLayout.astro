@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { item } = Astro.props;
+---
+<BaseLayout title={`${item.data.title} — Nicolas Tei`} description={item.data.deck ?? item.data.description}>
+  <article>
+    <header class="found-intro text-column">
+      <h1>{item.data.title}</h1>
+      <p class="meta">
+        {item.data.year}
+        {item.data.nativeTitle && <> · {item.data.nativeTitle}</>}
+      </p>
+      {item.data.description && <p class="description">{item.data.description}</p>}
+      {item.data.provenance && <p class="provenance meta">{item.data.provenance}</p>}
+    </header>
+    <slot />
+  </article>
+</BaseLayout>
+<style>
+  .found-intro { margin-bottom: var(--space-xl); }
+  .found-intro .meta { margin-top: var(--space-3xs); }
+  .found-intro .description { margin-top: var(--space-sm); }
+  .found-intro .provenance { margin-top: var(--space-sm); }
+</style>

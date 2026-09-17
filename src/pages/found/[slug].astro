@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import Sequence from '../../components/Sequence.astro';
+import FoundLayout from '../../layouts/FoundLayout.astro';
+
+export async function getStaticPaths() {
+  const found = await getCollection('found', ({ data }) => data.status !== 'hidden');
+  return found.map((item) => ({
+    params: { slug: item.data.routeSlug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+---
+<FoundLayout item={item}>
+  {item.data.sequence.length > 0 && (
+    <Sequence sequence={item.data.sequence} workSlug={item.data.routeSlug} collection="found" />
+  )}
+</FoundLayout>

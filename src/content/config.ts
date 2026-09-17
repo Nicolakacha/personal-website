@@ -24,6 +24,8 @@ const pairBlock = z.object({
 });
 const breakBlock = z.object({ type: z.literal('break'), size: z.enum(['large', 'pause']).default('pause') });
 
+const sequence = z.array(z.union([imageBlock, pairBlock, breakBlock])).default([]);
+
 const works = defineCollection({
   type: 'content',
   schema: z.object({
@@ -31,12 +33,23 @@ const works = defineCollection({
     routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), year: z.string(),
     status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'), order: z.number().default(0),
     deck: z.string().max(140).optional(), description: z.string().optional(), location: z.string().optional(),
-    sequence: z.array(z.union([imageBlock, pairBlock, breakBlock])).default([]),
+    sequence,
+  }),
+});
+const found = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(), nativeTitle: z.string().optional(),
+    routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), year: z.string(),
+    status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'), order: z.number().default(0),
+    deck: z.string().max(140).optional(), description: z.string().optional(),
+    provenance: z.string().optional(),
+    sequence,
   }),
 });
 const notes = defineCollection({ type: 'content', schema: z.object({ title: z.string().optional(), date: z.date(), routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), status: z.enum(['published', 'hidden']).default('published') }) });
 const about = defineCollection({ type: 'content', schema: z.object({ title: z.string().default('About') }) });
-export const collections = { works, notes, about };
+export const collections = { works, found, notes, about };
 
 
 

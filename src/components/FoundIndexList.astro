@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { found: CollectionEntry<'found'>[]; }
+const { found } = Astro.props;
+---
+{found.length > 0 && (
+  <ul>
+    {found.map((item) => (
+      <li>
+        <div class="row">
+          <a href={`/found/${item.data.routeSlug}/`}>{item.data.title}</a>
+          <span class="meta">
+            {item.data.year}
+            {item.data.nativeTitle && <> · {item.data.nativeTitle}</>}
+          </span>
+        </div>
+        {item.data.deck && <p class="deck meta">{item.data.deck}</p>}
+      </li>
+    ))}
+  </ul>
+)}
+<style>
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { margin-bottom: var(--space-lg); }
+  li:last-child { margin-bottom: 0; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+  .row a { font-size: var(--font-size-index); }
+  .deck { margin-top: var(--space-3xs); }
+  @media (max-width: 420px) {
+    .row { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
+  }
+</style>

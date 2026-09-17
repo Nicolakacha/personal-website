@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FoundIndexList from '../../components/FoundIndexList.astro';
+
+const found = (await getCollection('found', ({ data }) => data.status !== 'hidden')).sort(
+  (a, b) =>
+    a.data.order - b.data.order ||
+    b.data.year.localeCompare(a.data.year) ||
+    a.data.title.localeCompare(b.data.title)
+);
+---
+<BaseLayout title="Found — Nicolas Tei" description="Found photographs selected and sequenced by Nicolas Tei.">
+  <section class="index-column">
+    <h1>Found</h1>
+    <FoundIndexList found={found} />
+  </section>
+</BaseLayout>
+
+<style>
+  h1 { margin-bottom: var(--space-lg); }
+</style>

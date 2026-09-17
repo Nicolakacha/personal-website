@@ -1,11 +1,11 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug } = Astro.props;
+const { block, index, workSlug, collection = 'works' } = Astro.props;
 const effectiveAlign = ['large', 'full'].includes(block.size) ? 'center' : block.align;
 const gapToken = ({ tight: 'sm', normal: 'lg', large: 'xl', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'lg';
 ---
 <figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`]} style={`--gap-after: var(--space-${gapToken})`}>
-  <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} />
+  <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} collection={collection} />
   {block.caption && <figcaption>{block.caption}</figcaption>}
 </figure>
 <style>
