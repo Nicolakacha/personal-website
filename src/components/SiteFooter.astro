@@ -1,14 +1,13 @@
 ---
-const instagram = import.meta.env.PUBLIC_INSTAGRAM_URL;
-const email = import.meta.env.PUBLIC_EMAIL;
-const hasLinks = Boolean(instagram || email);
+const instagram = 'https://instagram.com/teikoh_';
+const email = 'nicolakacha@gmail.com';
+const year = new Date().getFullYear();
 ---
-{hasLinks && (
-  <footer class="site-footer">
-    {instagram && <a href={instagram} rel="me">Instagram</a>}
-    {email && <a href={`mailto:${email}`}>Email</a>}
-  </footer>
-)}
+<footer class="site-footer">
+  <span>&copy; {year} Nicolas Tei. All rights reserved.</span>
+  {instagram && <a href={instagram} rel="me">Instagram</a>}
+  {email && <a href={`mailto:${email}`}>Email</a>}
+</footer>
 
 <style>
   .site-footer {
