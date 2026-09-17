@@ -10,6 +10,14 @@ html { background: var(--color-bg); color: var(--color-fg); font-family: var(--f
 body { margin: 0; min-width: 320px; font-size: var(--font-size-body); line-height: var(--line-height-body); }
 img { display: block; height: auto; max-width: 100%; }
 
+.fade-img { opacity: 0; }
+.fade-img.is-loaded { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .fade-img { transition: opacity 0.5s ease; }
+}
+/* No-JS fallback: never leave a photo invisible if the loader script didn't run. */
+.no-js .fade-img { opacity: 1; }
+
 /* Standalone links (nav, footer, index lists): the surrounding text is never
    the same colour, so a permanent underline isn't needed for them to read as
    interactive — it appears on hover/focus instead. Inline links inside prose
