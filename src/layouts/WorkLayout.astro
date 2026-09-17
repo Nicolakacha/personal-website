@@ -6,10 +6,7 @@ const { work } = Astro.props;
   <article>
     <header class="work-intro text-column">
       <h1>{work.data.title}</h1>
-      <p class="meta">
-        {work.data.year}
-        {work.data.nativeTitle && <> · {work.data.nativeTitle}</>}
-      </p>
+      {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
       {work.data.description && <p class="description">{work.data.description}</p>}
     </header>
     <slot />

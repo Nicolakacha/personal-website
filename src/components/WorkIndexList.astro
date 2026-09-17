@@ -9,10 +9,7 @@ const { works } = Astro.props;
       <li>
         <div class="row">
           <a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a>
-          <span class="meta">
-            {work.data.year}
-            {work.data.nativeTitle && <> · {work.data.nativeTitle}</>}
-          </span>
+          {work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}
         </div>
         {work.data.deck && <p class="deck meta">{work.data.deck}</p>}
       </li>
