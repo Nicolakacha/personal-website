@@ -61,12 +61,13 @@ Global navigation, present in a `<header>` on every page, minimal and non-sticky
 Tei Koh          Notes   About
 ```
 
-- "Tei Koh" (site title) links to `/`.
-- `Notes` and `About` are plain text links, right- or right-of-title aligned.
+- "Tei Koh" (site title) links to `/`, set at `--font-size-index`, weight 500 — the one place in the header with any visual weight.
+- `Notes` and `About` are plain text links, right- or right-of-title aligned, set at `--font-size-small` in `--color-muted` (not `--color-fg`), brightening to `--color-fg` on hover/focus. This deliberately makes the header read as quiet utility chrome rather than competing with a page's own content — most visibly on Home, where the work index (in full `--color-fg`) is the page's real navigational moment (§3.1).
+- A hairline `border-bottom: 1px solid var(--color-border)` under the header (mirrored by a `border-top` above the footer) frames the page content — a restrained structural device, not a decorative box.
 - No hamburger menu at any breakpoint. At the narrowest viewport the header wraps to two lines if needed (title on line 1, links on line 2) rather than collapsing into a menu.
 - The header is `position: static` (scrolls away with content). It does not re-appear as a sticky bar. This is a deliberate rejection of "persistent UI occupying visual space" (source §8, §20).
 - Within a work page, there is no secondary in-page navigation, no progress indicator, and no thumbnail rail. The only way to leave a work is the browser back action or the header links.
-- A minimal footer appears at the bottom of every page: site title (or © line optional), Instagram link, email link. No sitemap-style footer link farm.
+- A minimal footer appears at the bottom of every page: Instagram link, email link — in `--color-muted`, brightening to `--color-fg` on hover/focus, same treatment as the header nav. It does **not** repeat the site name — the header already shows it (and Home's own `<h1>` shows it again as its title-page moment); a third repetition in the footer added no information. If neither Instagram nor email is configured, the footer (including its hairline) is omitted entirely rather than rendering empty. No sitemap-style footer link farm.
 
 ### 2.3 URL structure rules
 
@@ -82,24 +83,23 @@ Tei Koh          Notes   About
 
 **Content**
 
-A quiet textual index, in authored order (not auto-sorted by date), of all `published` and `ongoing` works, plus a short identity line and links to Notes/About. Structure:
+A quiet textual index, in authored order (not auto-sorted by date), of all `published` and `ongoing` works. Structure:
 
 ```
-Tei Koh
-
-[Almost home]      2026
-[Residents]        2026    住民
-[Photographs]      2026
-
-Notes
-About
+Almost home                          2026
+Residents                      2026 · 住民
+Photographs                          2026
 ```
 
-- Each work title is a link to its work page. Year is set in `--color-muted`, right-aligned or trailing-aligned to the title on the same line (desktop); stacked beneath the title (mobile, see §3.1 mobile behaviour).
-- A work's native-script subtitle (e.g. 住民 for Residents), if present in frontmatter, is shown as small muted text after the year.
+Home does **not** display the site name as a visible heading, and does not repeat `Notes`/`About` either — both are earlier drafts of this spec that were removed as redundant:
+
+- The site name already appears once, visibly, in the header (§2.2) on every page including Home — the photographer wants their name on-page only there and on About, not a third time as a Home title. Home's `<h1>` still exists for document structure but is visually hidden (§10 Accessibility) — its text is a plain structural label, not the name.
+- `Notes` and `About` links already exist in that same persistent header on every page, so a second copy at the bottom of Home would duplicate them rather than add information.
+
+- Each work title is a link to its work page. Year sits at the trailing edge of the same line, in `--color-muted` (desktop); stacks beneath the title only if it doesn't fit on mobile (see mobile behaviour below).
+- A work's native-script subtitle (e.g. 住民 for Residents), if present in frontmatter, is shown after the year on the same muted line, separated by " · ".
 - Hidden/draft works are excluded entirely from this list (not shown greyed-out, not shown with a "coming soon" label — see §16 Project status).
 - No thumbnails, no hover-preview images, no descriptions on this index by default. A work MAY optionally carry a one-line `deck` (short description) in frontmatter; if present, it renders as a small muted line beneath the title, wrapped to the text column width. Most works will omit it.
-- Below the list of works, a visual break (spacing token `pause`, see §7.5) then the `Notes` / `About` links stacked as a secondary, visually quieter list (smaller type or muted color — implementation detail: use `--font-size-body` at `--color-muted` versus `--color-fg` for work titles).
 
 **Desktop layout**
 
@@ -117,7 +117,7 @@ About
 
 **Empty / edge states**
 
-- If zero works are published (all draft/hidden), the works list section is omitted entirely and only the identity line + Notes/About remain. Never render an empty list, an empty heading, or a "no works yet" message.
+- If zero works are published (all draft/hidden), the works list section is omitted entirely and only the identity line remains (the header's Notes/About links are still present, as on every page). Never render an empty list, an empty heading, or a "no works yet" message.
 
 ---
 
@@ -230,20 +230,20 @@ Email
 
 ### 4.1 Color
 
+Dark is the site's only theme — no light variant, no toggle, no `prefers-color-scheme` handling. This is a deliberate choice (revising an earlier draft of this spec that considered a toggle): one considered palette, not a switch.
+
 ```css
 :root {
-  --color-bg:        #F6F4EF;  /* warm off-white, not pure white */
-  --color-fg:         #1E1C19;  /* warm near-black, not pure #000 */
-  --color-muted:      #706B62;  /* muted warm grey-brown for metadata/secondary text */
-  --color-border:     #DEDACE;  /* hairline rules only, used sparingly (e.g. footer separator) */
-  --color-link:       #1E1C19;  /* links are same as body text color, underlined — no blue */
-  --color-focus:      #1E1C19;  /* focus ring color, see §12.3 */
+  --color-bg:     #1B1917;  /* warm near-black, not pure #000 — avoids OLED-crush around photographs */
+  --color-fg:     #EDEAE3;  /* warm off-white, not pure #FFF — avoids glare */
+  --color-muted:  #8C867B;  /* muted warm grey for metadata/secondary text — verified ≥4.5:1 on --color-bg */
+  --color-border: #33302B;  /* hairline rules only, used sparingly (e.g. footer separator) */
+  --color-link:   #EDEAE3;  /* links are the same colour as body text, underlined — no blue */
+  --color-focus:  #EDEAE3;  /* focus ring colour */
 }
 ```
 
-Rationale for concrete values: the warmth is a very slight, deliberately subtle shift off neutral gray (not a "cream" or sepia tone) so it reads as considered rather than mechanically "artistic." These values must be verified to keep image color perception neutral — background luminance is high (~93% L) and low-saturation (<4% S in HSL) specifically so it does not visibly tint photographs sitting on it.
-
-Dark mode: not implemented in v1 (source §32). Do not add a `prefers-color-scheme` block. If added later, it will be an explicit, separately designed token set — do not build "for free" dark mode by inverting these values.
+Rationale for concrete values: the warmth is a very slight, deliberately subtle shift off neutral gray (not a "cream," "sepia," or blue-black tone) so it reads as considered rather than mechanically "artistic" or "techy." The background is verified to keep image colour perception neutral (low saturation, no visible colour cast), and `--color-muted` is verified to clear WCAG AA's 4.5:1 contrast ratio against `--color-bg` — re-verify if either hex value is ever adjusted.
 
 ### 4.2 Typography
 
@@ -263,15 +263,16 @@ Dark mode: not implemented in v1 (source §32). Do not add a `prefers-color-sche
 **Type scale** (fluid, `clamp()`-based, so it needs no discrete breakpoint switches):
 
 ```css
---font-size-body:     clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);   /* 15.2–16.8px */
---font-size-small:    clamp(0.8rem, 0.78rem + 0.1vw, 0.85rem);   /* 12.8–13.6px, metadata/dates/captions */
---font-size-title:    clamp(1.3rem, 1.1rem + 1vw, 1.9rem);       /* work/page titles */
---font-size-index:    clamp(1.05rem, 1rem + 0.4vw, 1.25rem);     /* home index work titles */
+--font-size-body:     clamp(1.05rem, 1rem + 0.25vw, 1.15rem);    /* 16.8–18.4px */
+--font-size-small:    clamp(0.85rem, 0.83rem + 0.1vw, 0.9rem);   /* 13.6–14.4px, metadata/dates/captions */
+--font-size-title:    clamp(1.4rem, 1.2rem + 1.1vw, 2.05rem);    /* work/page titles */
+--font-size-index:    clamp(1.15rem, 1.08rem + 0.45vw, 1.35rem); /* home index work titles, site title */
 
---line-height-body:   1.6;
---line-height-title:  1.25;
+--line-height-body:   1.65;
+--line-height-title:  1.3;
 --line-height-small:  1.5;
 
+--letter-spacing-title: -0.01em;  /* h1/site-title only — a hair tighter at larger sizes */
 --letter-spacing-caps: 0.02em;  /* used only if any all-caps label is ever introduced; none exist in v1 */
 ```
 
@@ -353,13 +354,24 @@ Used only where the photographic composition genuinely needs to change (pair sta
 
 ### 4.6 Links, hover, focus (see also §12)
 
+Two link contexts, two treatments — both share the same ink color (`--color-link`) and never change hue on hover/visited (source §6, §20: subtle hover states acceptable, no hover distortion):
+
+**Standalone links** (nav, footer, index-list titles — a link that is the only text in its row/element, not embedded in a sentence):
+
 ```css
-a { color: var(--color-link); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
-a:hover { text-decoration-thickness: 1.5px; }
+a { color: var(--color-link); text-decoration: none; }
+a:hover, a:focus-visible { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 ```
 
-No color change on hover/visited — underline weight is the only hover cue, keeping the palette to a single ink color throughout (source §6, §20: subtle hover states acceptable, no hover distortion).
+No permanent underline: each of these links is already unambiguous from its position (one link per list row, per nav item), so a hover/focus-only underline is sufficient affordance without the visual clutter of underlining every navigational element on the page.
+
+**Inline (prose) links** — inside About/Notes body text, where a link sits next to plain text of the same color and needs a permanent, position-independent cue to read as a link:
+
+```css
+.prose a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.prose a:hover { text-decoration-thickness: 1.5px; }
+```
 
 ---
 
@@ -719,8 +731,8 @@ Using Astro's built-in `astro:assets` (Sharp-based) image service:
 - **Keyboard navigation**: every interactive element (nav links, footer links, in-body links) is a real `<a>`; no `<div onclick>` pseudo-links anywhere. Tab order follows visual/DOM order (no `tabindex` overrides).
 - **Focus states**: `:focus-visible` outline per §4.6 on every link; never remove focus outlines without replacement.
 - **Semantic HTML**: `<header>`, `<nav>` (for the header link group), `<main>`, `<footer>`; one `<h1>` per page; work titles are `<h1>` on their own page and plain link text (not headings) in the Home index list, since the index itself has its own single `<h1>` ("Tei Koh" or a visually-hidden "Works" label — see below).
-- **Heading structure**: Home page `<h1>` = site name (can be visually styled small; screen-reader structure still correct). Work page `<h1>` = work title. Notes index `<h1>` = "Notes". About `<h1>` = "About" or the page's own heading text.
-- **Contrast**: `--color-fg` (#1E1C19) on `--color-bg` (#F6F4EF) computes to a contrast ratio well above WCAG AA (>15:1) for body text. `--color-muted` (#706B62) on `--color-bg` must be checked to clear **4.5:1** for any text below `--font-size-small` used as real content (dates, deck lines) — verify at implementation time with the final hex values and adjust `--color-muted` darker if the measured ratio falls short; do not ship muted text that fails AA.
+- **Heading structure**: Home page `<h1>` is present for correct document structure but visually hidden (`.sr-only`, standard clip-based hidden pattern — not `display: none`, which some screen readers also skip) — the site name already appears once, visibly, in the header on every page, and the photographer's name should appear on-page only in the header nav and on About (not a third time on Home); the hidden `<h1>` text is a plain structural label ("Works"), not the name. Work page `<h1>` = work title. Notes index `<h1>` = "Notes". About `<h1>` = "About" (the name itself appears in the page's own body copy, not the heading).
+- **Contrast**: `--color-fg` on `--color-bg` computes to a contrast ratio well above WCAG AA (>15:1) for body text. `--color-muted` on `--color-bg` clears **4.5:1** (~4.85:1) for any text below `--font-size-small` used as real content (dates, deck lines) — re-verify and do not ship muted text that fails AA if either hex value changes.
 - **Reduced motion**: since v1 ships with no animation at all, there is technically nothing to gate — but if any transition is added later (e.g. a hover underline transition), wrap it in `@media (prefers-reduced-motion: no-preference)`.
 - **Alt text strategy** (source §24 — this needs explicit rules, not vibes):
   - Every `image`/`pair` image block requires either a real `alt` string or an explicit `decorative: true` flag (enforced by the Zod schema in §6.1 — a build-time validation error if neither is present).
@@ -765,7 +777,7 @@ Codex must **not** implement any of the following, even if they seem like natura
 - Card UI, drop shadows, rounded "app" containers, gradients, glossy effects around photographs.
 - Camera/lens/aperture/shutter/film-stock metadata display, unless a specific project explicitly opts in via a future schema extension (none exist in v1).
 - Tags, related-content recommendations, comments, reading-time badges, social share buttons, author cards.
-- Dark mode.
+- A light theme or a theme toggle of any kind — the site ships dark only (§4.1), and does not follow OS `prefers-color-scheme`.
 - A CMS, database, authentication, or server backend of any kind.
 - Full i18n / translated content duplication requirements — content is whatever language it's authored in; no `[lang]` routing tree in v1.
 - Cookie banners or invasive analytics (no analytics at all in v1 unless the user separately requests a specific privacy-respecting tool later).
@@ -802,6 +814,7 @@ Codex must **not** implement any of the following, even if they seem like natura
 - [ ] Lighthouse a11y score ≥ 95 on Home, a work page, and a note.
 - [ ] `astro build` succeeds with `@astrojs/sitemap` producing a sitemap that excludes hidden content.
 - [ ] Keyboard-only pass: every link on every page type is reachable and visibly focused via Tab, in logical order.
+- [ ] Every page loads dark regardless of the visitor's OS `prefers-color-scheme` setting — there is no light variant and no toggle anywhere in the UI.
 
 ---
 
