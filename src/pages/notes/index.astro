@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NotesIndexList from '../../components/NotesIndexList.astro';
 
 const notes = (await getCollection('notes', ({ data }) => data.status === 'published')).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
 );
 ---
 <BaseLayout title="Notes — Nicolas Tei">

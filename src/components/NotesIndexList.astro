@@ -6,9 +6,11 @@ const { notes } = Astro.props;
 <ul>
   {notes.map((note) => (
     <li>
-      <time class="meta" datetime={note.data.date.toISOString()}>
-        {note.data.date.toISOString().slice(0, 10)}
-      </time>
+      {note.data.date && (
+        <time class="meta" datetime={note.data.date.toISOString()}>
+          {note.data.date.toISOString().slice(0, 10)}
+        </time>
+      )}
       <a href={`/notes/${note.data.routeSlug}/`}>{note.data.title ?? '—'}</a>
     </li>
   ))}

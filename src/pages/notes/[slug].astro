@@ -14,9 +14,11 @@ const { Content } = await render(note);
   <article class="text-column prose">
     <header class="note-intro">
       {note.data.title && <h1>{note.data.title}</h1>}
-      <p class="meta">
-        <time datetime={note.data.date.toISOString()}>{note.data.date.toISOString().slice(0, 10)}</time>
-      </p>
+      {note.data.date && (
+        <p class="meta">
+          <time datetime={note.data.date.toISOString()}>{note.data.date.toISOString().slice(0, 10)}</time>
+        </p>
+      )}
     </header>
     <Content />
   </article>
