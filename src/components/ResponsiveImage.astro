@@ -21,9 +21,9 @@ if (!image) throw new Error(`Missing ${collection} image: ${src}`);
 
 const widthsBySize: Record<Props['size'], number[]> = {
   small: [560, 1120],
-  medium: [1000, 1760, 2560],
-  large: [1300, 1760, 2560],
-  full: [1760, 2560],
+  medium: [1000, 1760],
+  large: [1300, 1760],
+  full: [1760],
 };
 const sizesBySize: Record<Props['size'], string> = {
   small: '(max-width: 767px) 80vw, min(56vw, 560px)',
@@ -39,6 +39,8 @@ const workSizesBySize: Record<Props['size'], string> = {
 };
 const sizes = collection === 'works' ? workSizesBySize[size] : sizesBySize[size];
 
+// Widths stop at 1760px on purpose: the largest file a visitor can save is not print-resolution.
+// `width` matters too — without it the <img> fallback src is rendered at the source's full width.
 // Never upscale past the source image's real dimensions (spec §4.4 / §9.2).
 const requestedWidths = widthsBySize[size].filter((w) => w <= image.default.width);
 const widths = requestedWidths.length > 0 ? requestedWidths : [image.default.width];
@@ -47,6 +49,7 @@ const widths = requestedWidths.length > 0 ? requestedWidths : [image.default.wid
   src={image.default}
   formats={['webp', 'jpeg']}
   widths={widths}
+  width={widths[widths.length - 1]}
   sizes={sizes}
   quality={82}
   alt={decorative ? '' : alt}
