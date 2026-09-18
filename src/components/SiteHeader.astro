@@ -33,8 +33,24 @@ const { currentPath = '' } = Astro.props;
     letter-spacing: 0.02em;
   }
   nav a:hover, nav a:focus-visible { color: var(--color-fg); }
-  @media (max-width: 420px) {
-    .site-header { display: block; }
-    nav { margin-top: var(--space-xs); }
+  nav a[aria-current='page'] {
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-decoration-color: var(--color-muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+  @media (min-width: 768px) {
+    .site-header { padding-block: 16px; }
+  }
+  @media (max-width: 767px) {
+    .site-title { font-size: var(--font-size-body); font-weight: 400; opacity: 0.82; }
+    nav { margin-block: -13px; }
+    nav a {
+      align-items: center;
+      display: inline-flex;
+      min-height: 44px;
+      padding-inline: 4px;
+    }
   }
 </style>

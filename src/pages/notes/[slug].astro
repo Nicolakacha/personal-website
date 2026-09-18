@@ -11,7 +11,7 @@ const { note } = Astro.props;
 const { Content } = await render(note);
 ---
 <BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`}>
-  <article class="text-column prose">
+  <article class="text-column prose note-body">
     <header class="note-intro">
       {note.data.title && <h1>{note.data.title}</h1>}
       {note.data.date && (
@@ -25,6 +25,7 @@ const { Content } = await render(note);
 </BaseLayout>
 
 <style>
+  .note-body { line-height: 1.65; }
   .note-intro { margin-bottom: var(--space-lg); }
   .note-intro .meta { margin-top: var(--space-3xs); }
 </style>

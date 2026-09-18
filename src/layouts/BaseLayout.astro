@@ -4,13 +4,14 @@ import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standa
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 
-interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; }
+interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; }
 const {
   title,
   description = 'Photographs and notes by Nicolas Tei.',
   image = new URL('/og-default.jpg', Astro.site).toString(),
   type = 'website',
   noindex = false,
+  bodyClass = '',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const siteJsonLd = {
@@ -53,7 +54,7 @@ const siteJsonLd = {
     <meta name="twitter:image" content={image} />
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} is:inline />
   </head>
-  <body>
+  <body class={bodyClass}>
     <SiteHeader currentPath={Astro.url.pathname} />
     <main><slot /></main>
     <SiteFooter />

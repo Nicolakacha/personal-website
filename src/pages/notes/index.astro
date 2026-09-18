@@ -7,8 +7,8 @@ const notes = (await getCollection('notes', ({ data }) => data.status === 'publi
   (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
 );
 ---
-<BaseLayout title="Notes — Nicolas Tei">
-  <section class="index-column">
+<BaseLayout title="Notes — Nicolas Tei" bodyClass="footer-after-fold">
+  <section class="text-column">
     <h1>Notes</h1>
     <NotesIndexList notes={notes} />
   </section>

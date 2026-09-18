@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
     flex-direction: column;
     gap: var(--space-2xs);
     margin: 0 var(--space-sm);
-    padding: var(--space-md) 0 var(--space-lg);
+    padding: var(--space-md) 0;
     color: var(--color-muted);
     font-size: var(--font-size-small);
     letter-spacing: 0.02em;
@@ -26,4 +26,7 @@ const year = new Date().getFullYear();
   .links { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
   .site-footer a { color: var(--color-muted); }
   .site-footer a:hover, .site-footer a:focus-visible { color: var(--color-fg); }
+  @media (min-width: 768px) {
+    .site-footer { align-items: center; flex-direction: row; gap: var(--space-md); justify-content: center; margin-inline: 0; padding-block: 16px; padding-inline: var(--space-sm); }
+  }
 </style>
