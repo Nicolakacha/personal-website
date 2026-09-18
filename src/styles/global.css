@@ -26,7 +26,7 @@ body {
 }
 img { display: block; height: auto; max-width: 100%; }
 
-.fade-img { opacity: 0; }
+.fade-img { -webkit-touch-callout: none; -webkit-user-drag: none; opacity: 0; user-select: none; }
 .fade-img.is-loaded { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
   .fade-img { transition: opacity 0.5s ease; }

@@ -64,6 +64,10 @@ const siteJsonLd = {
         if (el.complete) el.classList.add('is-loaded');
         else el.addEventListener('load', () => el.classList.add('is-loaded'), { once: true });
       });
+      // Deters casual saving only — the file is still reachable via DevTools or its URL.
+      document.addEventListener('contextmenu', (e) => {
+        if (e.target instanceof HTMLImageElement && e.target.classList.contains('fade-img')) e.preventDefault();
+      });
     </script>
   </body>
 </html>
