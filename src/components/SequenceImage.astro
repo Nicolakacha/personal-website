@@ -1,22 +1,56 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug, collection = 'works', isLast = false } = Astro.props;
+const { block, index, workSlug, collection = 'works', isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
 const effectiveAlign = ['large', 'full'].includes(block.size) ? 'center' : block.align;
 const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'sm';
 // The last block's own gapAfter is meant for spacing *between* blocks, not the
 // page's trailing margin (that's fixed, see main/work-article) — spec §5.6.
 const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
 ---
-<figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`]} style={`--gap-after: ${gapValue}`}>
+<figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`, `gap-${block.gapAfter}`, { 'work-frame': viewportFrame, 'is-first': index === 0, 'is-last': isLast }]} style={`--gap-after: ${gapValue}`}>
   <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} collection={collection} />
   {block.caption && <figcaption>{block.caption}</figcaption>}
+  {showScrollHint && <span class="scroll-hint" data-scroll-hint aria-hidden="true">↓</span>}
 </figure>
 <style>
   figure { margin: 0 auto var(--gap-after); width: 100%; } figcaption { color: var(--color-muted); font-size: var(--font-size-small); margin-top: var(--space-2xs); }
   .size-small { max-width: var(--image-small-max); } .size-medium { max-width: var(--image-medium-max); } .size-large { max-width: var(--image-large-max); } .size-full { max-width: var(--image-full-max); }
   @media (min-width: 1080px) { .align-left { margin-left: 0; margin-right: auto; } .align-right { margin-left: auto; margin-right: 0; } }
+  .work-frame {
+    --frame-image-max-height: calc(100svh - 8rem);
+    --work-frame-height: 110svh;
+    --work-header-offset: 11rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+    min-height: var(--work-frame-height);
+    position: relative;
+    touch-action: manipulation;
+  }
+  .work-frame.is-first { justify-content: flex-start; min-height: calc(var(--work-frame-height) - var(--work-header-offset)); padding-top: var(--space-xs); }
+  .work-frame.is-last { min-height: auto; padding-bottom: var(--space-md); padding-top: var(--space-xl); }
+  .work-frame.gap-large { --work-frame-height: 125svh; }
+  .work-frame.gap-pause { --work-frame-height: 145svh; }
+  .work-frame img { max-height: var(--frame-image-max-height); object-fit: contain; }
+  .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both, scroll-hint-drift 3.6s ease-in-out 1.25s infinite; bottom: calc(2rem + env(safe-area-inset-bottom)); color: var(--color-muted); font-size: 1.1rem; left: 50%; line-height: 1; pointer-events: none; position: fixed; transform: translateX(-50%); transition: opacity 300ms ease; z-index: 2; }
+  .scroll-hint.is-hidden { animation: none; opacity: 0; }
+  @media (max-width: 767px) {
+    .work-frame.is-first .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both; margin-top: var(--space-xs); position: static; transform: none; }
+  }
+  @media (min-width: 768px) {
+    .work-frame { --frame-image-max-height: calc(100svh - 10rem); --work-frame-height: 120svh; --work-header-offset: 13rem; }
+    .work-frame.gap-large { --work-frame-height: 135svh; }
+    .work-frame.gap-pause { --work-frame-height: 155svh; }
+    .scroll-hint { bottom: 3rem; font-size: 1.25rem; }
+  }
+  @media (min-width: 1080px) {
+    .work-frame { --work-frame-height: 130svh; }
+    .work-frame.gap-large { --work-frame-height: 145svh; }
+    .work-frame.gap-pause { --work-frame-height: 165svh; }
+  }
+  @keyframes scroll-hint-enter { from { opacity: 0; } to { opacity: 0.9; } }
+  @keyframes scroll-hint-drift { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 4px); } }
+  @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; opacity: 0.9; transition: none; } }
 </style>
-
-
-
-

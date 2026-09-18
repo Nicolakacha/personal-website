@@ -22,9 +22,26 @@ const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'wo
     margin-block: calc(var(--space-sm) - var(--space-xl));
   }
   @media (max-width: 767px) {
-    .work-article { margin-top: calc(var(--space-sm) - var(--space-lg)); }
+    .work-article { margin-top: 0; }
   }
   .work-intro { margin-bottom: var(--space-xl); }
   .work-intro .meta { margin-top: var(--space-3xs); }
   .work-intro .description { margin-top: var(--space-sm); }
+  @media (min-width: 768px) {
+    .work-intro { margin-bottom: var(--space-md); }
+    .work-article {
+      --image-small-max: 60vw;
+      --image-medium-max: 60vw;
+      --image-large-max: 60vw;
+      --image-full-max: 60vw;
+    }
+  }
+  @media (min-width: 1080px) {
+    .work-article {
+      --image-small-max: 40vw;
+      --image-medium-max: 40vw;
+      --image-large-max: 40vw;
+      --image-full-max: 40vw;
+    }
+  }
 </style>

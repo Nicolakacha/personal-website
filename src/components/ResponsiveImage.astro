@@ -31,6 +31,13 @@ const sizesBySize: Record<Props['size'], string> = {
   large: '(max-width: 1079px) 98vw, min(80vw, 1300px)',
   full: 'min(98vw, 1760px)',
 };
+const workSizesBySize: Record<Props['size'], string> = {
+  small: '(max-width: 767px) 80vw, (max-width: 1079px) 60vw, 40vw',
+  medium: '(max-width: 767px) 98vw, (max-width: 1079px) 60vw, 40vw',
+  large: '(max-width: 767px) 98vw, (max-width: 1079px) 60vw, 40vw',
+  full: '(max-width: 767px) 98vw, (max-width: 1079px) 60vw, 40vw',
+};
+const sizes = collection === 'works' ? workSizesBySize[size] : sizesBySize[size];
 
 // Never upscale past the source image's real dimensions (spec §4.4 / §9.2).
 const requestedWidths = widthsBySize[size].filter((w) => w <= image.default.width);
@@ -40,7 +47,7 @@ const widths = requestedWidths.length > 0 ? requestedWidths : [image.default.wid
   src={image.default}
   formats={['avif', 'webp', 'jpeg']}
   widths={widths}
-  sizes={sizesBySize[size]}
+  sizes={sizes}
   quality={82}
   alt={decorative ? '' : alt}
   aria-hidden={decorative ? 'true' : undefined}

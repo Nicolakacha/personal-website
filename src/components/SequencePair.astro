@@ -1,21 +1,54 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug, collection = 'works', isLast = false } = Astro.props;
+const { block, index, workSlug, collection = 'works', isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
 const ratioClass = `ratio-${block.ratio}`;
 const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'sm';
 const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
 ---
-<figure class:list={['sequence-pair', `size-${block.size}`, ratioClass]} style={`--gap-after: ${gapValue}`}>
+<figure class:list={['sequence-pair', `size-${block.size}`, ratioClass, `gap-${block.gapAfter}`, { 'work-frame': viewportFrame, 'is-first': index === 0, 'is-last': isLast }]} style={`--gap-after: ${gapValue}`}>
   {block.images.map((image: any, imageIndex: number) => <div><ResponsiveImage src={`${workSlug}/${image.src}`} alt={image.alt} decorative={image.decorative} size={block.size} eager={index < 2} priority={index === 0 && imageIndex === 0} collection={collection} /></div>)}
   {block.caption && <figcaption>{block.caption}</figcaption>}
+  {showScrollHint && <span class="scroll-hint" data-scroll-hint aria-hidden="true">↓</span>}
 </figure>
 <style>
   figure { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin: 0 auto var(--gap-after); width: 100%; } figure > div { flex: 1 1 0; min-width: 0; } figcaption { color: var(--color-muted); flex-basis: 100%; font-size: var(--font-size-small); }
   .size-small { max-width: var(--image-small-max); } .size-medium { max-width: var(--image-medium-max); } .size-large { max-width: var(--image-large-max); }
   .ratio-left-heavy > :first-child { flex-grow: 1.4; } .ratio-right-heavy > :nth-child(2) { flex-grow: 1.4; }
   @media (max-width: 767px) { figure { display: grid; gap: var(--space-2xs); } figure > div { width: 100%; } .ratio-left-heavy > :first-child, .ratio-right-heavy > :nth-child(2) { flex-grow: 1; } }
+  .work-frame {
+    --frame-image-max-height: calc(100svh - 8rem);
+    --work-frame-height: 110svh;
+    --work-header-offset: 11rem;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    min-height: var(--work-frame-height);
+    position: relative;
+    touch-action: manipulation;
+  }
+  .work-frame.is-first { justify-content: flex-start; min-height: calc(var(--work-frame-height) - var(--work-header-offset)); padding-top: var(--space-xs); }
+  .work-frame.is-last { min-height: auto; padding-bottom: var(--space-md); padding-top: var(--space-xl); }
+  .work-frame.gap-large { --work-frame-height: 125svh; }
+  .work-frame.gap-pause { --work-frame-height: 145svh; }
+  .work-frame img { max-height: var(--frame-image-max-height); object-fit: contain; }
+  .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both, scroll-hint-drift 3.6s ease-in-out 1.25s infinite; bottom: calc(2rem + env(safe-area-inset-bottom)); color: var(--color-muted); font-size: 1.1rem; left: 50%; line-height: 1; pointer-events: none; position: fixed; transform: translateX(-50%); transition: opacity 300ms ease; z-index: 2; }
+  .scroll-hint.is-hidden { animation: none; opacity: 0; }
+  @media (max-width: 767px) {
+    .work-frame.is-first .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both; margin-top: var(--space-xs); position: static; transform: none; }
+  }
+  @media (min-width: 768px) {
+    .work-frame { --frame-image-max-height: calc(100svh - 10rem); --work-frame-height: 120svh; --work-header-offset: 13rem; }
+    .work-frame.gap-large { --work-frame-height: 135svh; }
+    .work-frame.gap-pause { --work-frame-height: 155svh; }
+    .scroll-hint { bottom: 3rem; font-size: 1.25rem; }
+  }
+  @media (min-width: 1080px) {
+    .work-frame { --work-frame-height: 130svh; }
+    .work-frame.gap-large { --work-frame-height: 145svh; }
+    .work-frame.gap-pause { --work-frame-height: 165svh; }
+  }
+  @keyframes scroll-hint-enter { from { opacity: 0; } to { opacity: 0.9; } }
+  @keyframes scroll-hint-drift { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 4px); } }
+  @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; opacity: 0.9; transition: none; } }
 </style>
-
-
-
-
