@@ -1,0 +1,71 @@
+---
+import ResponsiveImage from './ResponsiveImage.astro';
+
+const { sequence, workSlug } = Astro.props;
+const images = sequence.filter((block: any) => block.type === 'image');
+---
+
+<section class="work-image-gallery" data-work-image-gallery aria-label="Inhabitant Portraits gallery">
+  <button class="gallery-advance" type="button" aria-label="Show next photograph">
+    {images.map((image: any, index: number) => (
+      <span class:list={['gallery-slide', { 'is-active': index === 0 }]} aria-hidden={index === 0 ? undefined : 'true'}>
+        <ResponsiveImage
+          src={`${workSlug}/${image.src}`}
+          alt={image.alt}
+          decorative={image.decorative}
+          size={image.size}
+          eager={index === 0}
+          priority={index === 0}
+        />
+      </span>
+    ))}
+    <span class="gallery-tap-pulse" aria-hidden="true"></span>
+  </button>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-work-image-gallery]').forEach((gallery) => {
+    const slides = Array.from(gallery.querySelectorAll<HTMLElement>('.gallery-slide'));
+    const advance = gallery.querySelector<HTMLButtonElement>('.gallery-advance');
+    if (!advance || slides.length < 2) return;
+
+    let activeIndex = 0;
+    const show = (index: number) => {
+      slides[activeIndex].classList.remove('is-active');
+      slides[activeIndex].setAttribute('aria-hidden', 'true');
+      activeIndex = index % slides.length;
+      slides[activeIndex].classList.add('is-active');
+      slides[activeIndex].removeAttribute('aria-hidden');
+    };
+    advance.addEventListener('click', () => {
+      show((activeIndex + 1) % slides.length);
+    });
+  });
+</script>
+
+<style>
+  .work-image-gallery { margin: 0 auto; max-width: var(--width-content); }
+  .gallery-advance {
+    appearance: none;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    display: grid;
+    margin: 0 auto;
+    max-width: var(--image-medium-max);
+    padding: 0;
+    position: relative;
+    touch-action: manipulation;
+    width: 100%;
+  }
+  .gallery-slide { grid-area: 1 / 1; opacity: 0; transition: opacity 600ms ease; }
+  .gallery-slide.is-active { opacity: 1; z-index: 1; }
+  .gallery-tap-pulse { display: none; }
+  @media (max-width: 767px) {
+    .gallery-tap-pulse { align-self: end; animation: gallery-tap-pulse 1.4s ease-out 900ms both; border: 1px solid var(--color-fg); border-radius: 50%; display: block; grid-area: 1 / 1; height: 18px; justify-self: center; margin-bottom: var(--space-sm); opacity: 0; width: 18px; z-index: 2; }
+  }
+  @keyframes gallery-tap-pulse { 0% { opacity: 0; transform: scale(0.65); } 20% { opacity: 0.55; } 100% { opacity: 0; transform: scale(2.2); } }
+  @media (prefers-reduced-motion: reduce) { .gallery-slide { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .gallery-tap-pulse { animation: none; display: none; } }
+</style>
