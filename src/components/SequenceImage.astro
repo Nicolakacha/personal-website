@@ -37,7 +37,8 @@ const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
   .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both, scroll-hint-drift 3.6s ease-in-out 1.25s infinite; bottom: calc(2rem + env(safe-area-inset-bottom)); color: var(--color-muted); font-size: 1.1rem; left: 50%; line-height: 1; pointer-events: none; position: fixed; transform: translateX(-50%); transition: opacity 300ms ease; z-index: 2; }
   .scroll-hint.is-hidden { animation: none; opacity: 0; }
   @media (max-width: 767px) {
-    .work-frame.is-first .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both; margin-top: var(--space-xs); position: static; transform: none; }
+    .work-frame.is-first .scroll-hint { animation: scroll-hint-enter 900ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both, scroll-hint-drift-inline 3s ease-in-out 1.25s infinite; margin-top: calc(var(--space-xs) + 0.75rem); position: static; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .work-frame.is-first .scroll-hint { animation: none; opacity: 0.9; } }
     .work-frame.is-first .scroll-hint.is-hidden { animation: none; opacity: 0; }
   }
   @media (min-width: 768px) {
@@ -52,6 +53,7 @@ const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
     .work-frame.gap-pause { --work-frame-height: 165svh; }
   }
   @keyframes scroll-hint-enter { from { opacity: 0; } to { opacity: 0.9; } }
+  @keyframes scroll-hint-drift-inline { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
   @keyframes scroll-hint-drift { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 4px); } }
   @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; opacity: 0.9; transition: none; } }
 </style>
