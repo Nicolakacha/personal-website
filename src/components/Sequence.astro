@@ -12,6 +12,19 @@ const viewportFrames = viewportFramesProp ?? collection === 'works';
   })}
 </section>
 <script>
+  // On touch browsers the toolbar sliding in and out changes innerHeight mid-scroll. Frame sizes are
+  // svh-based, so every frame would resize with it and the page jumps when the scroll direction flips.
+  // Pin the unit to the height measured at load and re-measure only when the width changes (rotation).
+  if (matchMedia('(pointer: coarse)').matches) {
+    let pinnedWidth = 0;
+    const pinUnit = () => {
+      if (window.innerWidth === pinnedWidth) return;
+      pinnedWidth = window.innerWidth;
+      document.documentElement.style.setProperty('--svh-unit', `${window.innerHeight / 100}px`);
+    };
+    pinUnit();
+    window.addEventListener('resize', pinUnit);
+  }
   const hints = document.querySelectorAll<HTMLElement>('[data-scroll-hint]');
   const hideHints = () => {
     if (window.scrollY <= 30) return;
