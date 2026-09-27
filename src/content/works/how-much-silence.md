@@ -27,13 +27,6 @@ sequence:
     alt: "A fatsia plant leans over a concrete block wall, its leaf shadows cast sharply below."
 
   - type: image
-    src: "04.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A lit window glows behind bare tree branches on a building's exterior at dusk."
-
-  - type: image
     src: "11.jpg"
     size: medium
     align: center
@@ -46,13 +39,6 @@ sequence:
     align: center
     gapAfter: normal
     alt: "A cardboard cutout of a police officer stands beside a stairwell."
-
-  - type: image
-    src: "24.jpg"
-    size: medium
-    align: center
-    gapAfter: normal
-    alt: "A small garden gnome figurine and a driftwood root sit beside a shuttered storefront."
 
   - type: image
     src: "15.jpg"
