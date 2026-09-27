@@ -1,5 +1,6 @@
 ---
 title: "Inhabitant Portraits"
+titleJa: "住人たちの肖像"
 routeSlug: inhabitant-portraits
 year: "2026"
 status: published

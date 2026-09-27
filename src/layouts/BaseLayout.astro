@@ -20,6 +20,11 @@ const {
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const works = await getVisibleWorks();
+const isJp = Astro.url.pathname === '/jp' || Astro.url.pathname.startsWith('/jp/');
+const navBasePath = isJp ? '/jp' : '';
+const navWorks = isJp
+  ? works.map((work) => ({ ...work, data: { ...work.data, title: work.data.titleJa ?? work.data.title } }))
+  : works;
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -68,7 +73,7 @@ const siteJsonLd = {
     {mobileBackgroundImage && (
       <div class="mobile-bg-image" style={`background-image: url(${mobileBackgroundImage})`}></div>
     )}
-    <SiteHeader currentPath={Astro.url.pathname} works={works} transparentNav={transparentNav} />
+    <SiteHeader currentPath={Astro.url.pathname} works={navWorks} transparentNav={transparentNav} basePath={navBasePath} />
     <div class="page-content" data-page-content>
       <main><slot /></main>
       <SiteFooter />

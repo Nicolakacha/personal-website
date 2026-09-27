@@ -2,7 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import ProjectEquipment from '../components/ProjectEquipment.astro';
 import { getEntryOgImage } from '../utils/ogImage';
-const { work } = Astro.props;
+const { work, titleOverride, lang, noindex } = Astro.props;
+const displayTitle = titleOverride ?? work.data.title;
 const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'works', Astro.site);
 const mobileEdgeToEdgeWorks = new Set([
   'how-much-silence',
@@ -10,10 +11,10 @@ const mobileEdgeToEdgeWorks = new Set([
   'the-room-was-not-dark',
 ]);
 ---
-<BaseLayout title={`${work.data.title} — Nicolas Tei`} description={work.data.deck ?? work.data.description} image={image} type="article">
+<BaseLayout title={`${displayTitle} — Nicolas Tei`} description={work.data.deck ?? work.data.description} image={image} type="article" lang={lang} noindex={noindex}>
   <article class:list={['work-article', { 'mobile-edge-to-edge': mobileEdgeToEdgeWorks.has(work.data.routeSlug) }]}>
     <header class="work-intro text-column">
-      <h1>{work.data.title}</h1>
+      <h1>{displayTitle}</h1>
       {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
       {work.data.description && <p class="description">{work.data.description}</p>}
     </header>

@@ -4,26 +4,31 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   currentPath?: string;
   works: CollectionEntry<'works'>[];
+  basePath?: string;
 }
 
-const { currentPath = '', works } = Astro.props;
+const { currentPath = '', works, basePath = '' } = Astro.props;
 const normalizePath = (path: string) => path === '/' ? path : `${path.replace(/\/$/, '')}/`;
 const path = normalizePath(currentPath);
+const homeHref = `${basePath}/`;
+const projectsHref = `${basePath}/projects/`;
+const notesHref = `${basePath}/notes/`;
+const aboutHref = `${basePath}/about/`;
 ---
 
 <div class="site-menu" id="site-menu" data-site-menu hidden>
   <nav class="site-menu-inner" aria-label="Site directory">
     <div class="site-menu-primary">
-      <a href="/projects/" aria-current={path === '/' || path === '/projects/' ? 'page' : undefined}>Projects</a>
-      <a href="/notes/" aria-current={path.includes('/notes/') ? 'page' : undefined}>Notes</a>
-      <a href="/about/" aria-current={path.endsWith('/about/') ? 'page' : undefined}>About</a>
+      <a href={projectsHref} aria-current={path === homeHref || path === projectsHref ? 'page' : undefined}>Projects</a>
+      <a href={notesHref} aria-current={path.includes(notesHref) ? 'page' : undefined}>Notes</a>
+      <a href={aboutHref} aria-current={path.endsWith(aboutHref) ? 'page' : undefined}>About</a>
     </div>
 
     <div class="site-menu-projects">
       <p class="site-menu-label">Index</p>
       <ul>
         {works.map((work) => {
-          const href = `/projects/${work.data.routeSlug}/`;
+          const href = `${basePath}/projects/${work.data.routeSlug}/`;
           return (
             <li>
               <a href={href} aria-current={path === href ? 'page' : undefined}>

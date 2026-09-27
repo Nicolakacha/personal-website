@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { works: CollectionEntry<'works'>[]; dividers?: boolean; }
-const { works, dividers = false } = Astro.props;
+interface Props { works: CollectionEntry<'works'>[]; dividers?: boolean; basePath?: string; }
+const { works, dividers = false, basePath = '/projects' } = Astro.props;
 ---
 {works.length > 0 && (
   <ul class:list={[{ 'has-dividers': dividers }]}>
     {works.map((work) => (
       <li>
         <div class="row">
-          <a href={`/projects/${work.data.routeSlug}/`}>{work.data.title}</a>
+          <a href={`${basePath}/${work.data.routeSlug}/`}>{work.data.title}</a>
           {work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}
         </div>
         {work.data.deck && <p class="deck meta">{work.data.deck}</p>}

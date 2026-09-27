@@ -1,5 +1,6 @@
 ---
 title: "Staring at the Skin of the World Until It Peels Off."
+titleJa: "世界の皮膚を、剥がれ落ちるまで見つめる"
 routeSlug: staring-at-the-skin
 year: "2026"
 status: published

@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NotesIndexList from '../../../components/NotesIndexList.astro';
+
+const notes = (await getCollection('notes', ({ data }) => data.status === 'published' && data.lang === 'ja')).sort(
+  (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
+);
+---
+<BaseLayout title="Notes — Nicolas Tei" bodyClass="footer-after-fold" lang="ja" noindex>
+  <section class="text-column">
+    <h1>Notes</h1>
+    <NotesIndexList notes={notes} basePath="/jp/notes" />
+  </section>
+</BaseLayout>
+
+<style>
+  h1 { margin-bottom: var(--space-lg); }
+</style>

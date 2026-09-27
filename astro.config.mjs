@@ -6,9 +6,9 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      // Found is hidden from nav and has no content yet — keep it out of the
-      // sitemap so search engines don't index an empty section.
-      filter: (page) => !page.includes('/found/'),
+      // Found is hidden from nav and has no content yet, and /jp is an
+      // unlinked trial Japanese mirror — keep both out of the sitemap.
+      filter: (page) => !page.includes('/found/') && !page.includes('/jp/'),
     }),
   ],
   server: {

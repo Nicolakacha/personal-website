@@ -6,12 +6,14 @@ interface Props {
   currentPath?: string;
   works: CollectionEntry<'works'>[];
   transparentNav?: boolean;
+  basePath?: string;
 }
-const { currentPath = '', works, transparentNav = false } = Astro.props;
+const { currentPath = '', works, transparentNav = false, basePath = '' } = Astro.props;
+const homeHref = `${basePath}/`;
 ---
 <div class:list={['site-navigation', { 'is-transparent': transparentNav }]} data-site-navigation>
   <header class="site-header">
-    <a class="site-title" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Nicolas Tei</a>
+    <a class="site-title" href={homeHref} aria-current={currentPath === homeHref ? 'page' : undefined}>Nicolas Tei</a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span class="menu-icon" aria-hidden="true">
         <span></span>
@@ -21,7 +23,7 @@ const { currentPath = '', works, transparentNav = false } = Astro.props;
       <span class="sr-only" data-menu-label>Menu</span>
     </button>
   </header>
-  <FullscreenMenu currentPath={currentPath} works={works} />
+  <FullscreenMenu currentPath={currentPath} works={works} basePath={basePath} />
 </div>
 
 <noscript>

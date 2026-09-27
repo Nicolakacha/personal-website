@@ -1,5 +1,6 @@
 ---
 title: "The Room Was Not Dark."
+titleJa: "部屋は暗くなかった"
 routeSlug: the-room-was-not-dark
 year: "2026"
 status: published

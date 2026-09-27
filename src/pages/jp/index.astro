@@ -1,0 +1,24 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkIndexList from '../../components/WorkIndexList.astro';
+import { getVisibleWorks } from '../../utils/works';
+import homeMobileBackground from '../../assets/background/home-mobile.jpg';
+
+const works = await getVisibleWorks();
+const jpWorks = works.map((work) => ({ ...work, data: { ...work.data, title: work.data.titleJa ?? work.data.title } }));
+const mobileBackground = await getImage({ src: homeMobileBackground, format: 'webp', width: 1200, quality: 72 });
+---
+<BaseLayout
+  title="Nicolas Tei — Photographs"
+  description="Photography by Nicolas Tei — sequences of photographs presented as a photo-book, based in Japan."
+  mobileBackgroundImage={mobileBackground.src}
+  transparentNav
+  lang="ja"
+  noindex
+>
+  <section class="page-grid">
+    <h1 class="sr-only">Projects</h1>
+    <WorkIndexList works={jpWorks} dividers basePath="/jp/projects" />
+  </section>
+</BaseLayout>

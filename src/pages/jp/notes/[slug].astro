@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteContent from '../../../components/NoteContent.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes', ({ data }) => data.status === 'published' && data.lang === 'ja');
+  return notes.map((note) => ({ params: { slug: note.data.routeSlug }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const translations = await getCollection('notes', ({ data }) =>
+  data.status === 'published' && data.translationKey === note.data.translationKey
+);
+const languageOrder = ['zh', 'en', 'ja'] as const;
+const languageLinks = languageOrder
+  .filter((code) => translations.some((entry) => entry.data.lang === code))
+  .map((code) => ({
+    code,
+    href:
+      code === 'zh' ? `/notes/${note.data.routeSlug}/` :
+      code === 'ja' ? `/jp/notes/${note.data.routeSlug}/` :
+      `/${code}/notes/${note.data.routeSlug}/`,
+  }));
+---
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang="ja" noindex>
+  <NoteContent note={note} languageLinks={languageLinks} />
+</BaseLayout>

@@ -29,7 +29,7 @@ const sequence = z.array(z.union([imageBlock, pairBlock, breakBlock])).default([
 const works = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(), nativeTitle: z.string().optional(),
+    title: z.string(), nativeTitle: z.string().optional(), titleJa: z.string().optional(),
     routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), year: z.string(),
     status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'), order: z.number().default(0),
     deck: z.string().max(140).optional(), description: z.string().optional(), location: z.string().optional(), equipment: z.array(z.string()).optional(), equipmentPosition: z.enum(['afterSequence', 'beforeLastImage']).optional(),

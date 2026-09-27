@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { notes: CollectionEntry<'notes'>[]; }
-const { notes } = Astro.props;
+interface Props { notes: CollectionEntry<'notes'>[]; basePath?: string; }
+const { notes, basePath = '/notes' } = Astro.props;
 ---
 <ul>
   {notes.map((note) => (
@@ -11,7 +11,7 @@ const { notes } = Astro.props;
           {note.data.date.toISOString().slice(0, 10)}
         </time>
       )}
-      <a href={`/notes/${note.data.routeSlug}/`}>{note.data.title ?? '—'}</a>
+      <a href={`${basePath}/${note.data.routeSlug}/`}>{note.data.title ?? '—'}</a>
     </li>
   ))}
 </ul>
