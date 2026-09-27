@@ -24,6 +24,7 @@ const { works, dividers = false } = Astro.props;
     border-bottom: 1px solid rgba(237, 234, 227, 0.25);
     padding-bottom: var(--space-sm);
   }
+  .has-dividers .row a { font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.6rem); }
   .row { display: block; }
   .row a {
     display: inline-block;
@@ -44,6 +45,7 @@ const { works, dividers = false } = Astro.props;
   @media (max-width: 420px) {
     li { margin-bottom: var(--space-lg); }
     .row a { font-size: clamp(1.9rem, 8.5vw, 2.3rem); }
+    .has-dividers .row a { font-size: clamp(1.5rem, 7vw, 1.9rem); }
   }
   @media (prefers-reduced-motion: reduce) { .row a { transition: none; } }
 </style>
