@@ -3,9 +3,9 @@ import '../styles/global.css';
 import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standard-normal.woff2?url';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import { getVisibleWorks } from '../utils/works';
+import { getVisibleWorks, withJapaneseTitles } from '../utils/works';
 
-interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; mobileBackgroundImage?: string; transparentNav?: boolean; }
+interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; mobileBackgroundImage?: string; transparentNav?: boolean; canonicalOverride?: string; }
 const {
   title,
   description = 'Photographs and notes by Nicolas Tei.',
@@ -17,14 +17,13 @@ const {
   alternates = [],
   mobileBackgroundImage,
   transparentNav = false,
+  canonicalOverride,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = new URL(canonicalOverride ?? Astro.url.pathname, Astro.site);
 const works = await getVisibleWorks();
 const isJp = Astro.url.pathname === '/jp' || Astro.url.pathname.startsWith('/jp/');
 const navBasePath = isJp ? '/jp' : '';
-const navWorks = isJp
-  ? works.map((work) => ({ ...work, data: { ...work.data, title: work.data.titleJa ?? work.data.title } }))
-  : works;
+const navWorks = isJp ? withJapaneseTitles(works) : works;
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [

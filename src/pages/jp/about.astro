@@ -11,7 +11,12 @@ if (!about) throw new Error('Missing Japanese About content');
   description="Nicolas Teiは台湾出身の写真家で、現在は一時的に大阪を拠点に活動しています。"
   bodyClass="footer-after-fold"
   lang="ja"
-  noindex
+  alternates={[
+    { hreflang: 'en', href: '/about/' },
+    { hreflang: 'ja', href: '/jp/about/' },
+    { hreflang: 'zh-TW', href: '/zh/about/' },
+    { hreflang: 'x-default', href: '/about/' },
+  ]}
 >
-  <AboutContent about={about} />
+  <AboutContent about={about} showLanguageSwitcher={false} />
 </BaseLayout>

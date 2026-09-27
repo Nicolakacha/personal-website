@@ -7,7 +7,12 @@ const notes = (await getCollection('notes', ({ data }) => data.status === 'publi
   (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
 );
 ---
-<BaseLayout title="Notes — Nicolas Tei" bodyClass="footer-after-fold" lang="ja" noindex>
+<BaseLayout
+  title="Notes — Nicolas Tei"
+  description="写真家 Nicolas Tei によるノート。日々の記録と、短い文章。"
+  bodyClass="footer-after-fold"
+  lang="ja"
+>
   <section class="text-column">
     <h1>Notes</h1>
     <NotesIndexList notes={notes} basePath="/jp/notes" />

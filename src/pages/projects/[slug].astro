@@ -1,40 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import Sequence from '../../components/Sequence.astro';
-import WorkImageGallery from '../../components/WorkImageGallery.astro';
-import ProjectEquipment from '../../components/ProjectEquipment.astro';
-import WorkLayout from '../../layouts/WorkLayout.astro';
+import ProjectPage from '../../components/ProjectPage.astro';
 export async function getStaticPaths() { const works = await getCollection('works', ({ data }) => data.status !== 'hidden'); return works.map((work) => ({ params: { slug: work.data.routeSlug }, props: { work } })); }
 const { work } = Astro.props;
-const continuousSequenceWorks = new Set([
-  'how-much-silence',
-  'staring-at-the-skin',
-  'the-room-was-not-dark',
-]);
-const equipmentBeforeLastImage = work.data.equipmentPosition === 'beforeLastImage' && work.data.equipment;
 ---
-<WorkLayout work={work}>
-  {work.data.routeSlug === 'inhabitant-portraits'
-    ? <WorkImageGallery sequence={work.data.sequence} workSlug={work.data.routeSlug} />
-    : equipmentBeforeLastImage ? (
-      <>
-        <Sequence
-          sequence={work.data.sequence.slice(0, -1)}
-          workSlug={work.data.routeSlug}
-          viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
-        />
-        <ProjectEquipment items={equipmentBeforeLastImage} />
-        <Sequence
-          sequence={work.data.sequence.slice(-1)}
-          workSlug={work.data.routeSlug}
-          viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
-        />
-      </>
-    ) : work.data.sequence.length > 0 && (
-      <Sequence
-        sequence={work.data.sequence}
-        workSlug={work.data.routeSlug}
-        viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
-      />
-    )}
-</WorkLayout>
+<ProjectPage work={work} />

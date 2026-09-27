@@ -18,21 +18,28 @@ const translations = await getCollection('notes', ({ data }) =>
   data.status === 'published' && data.translationKey === note.data.translationKey
 );
 const languageOrder = ['zh', 'en', 'ja'] as const;
-const languageLinks = languageOrder
-  .filter((code) => translations.some((entry) => entry.data.lang === code))
-  .map((code) => ({
-    code,
-    href: code === 'zh' ? `/notes/${note.data.routeSlug}/` : `/${code}/notes/${note.data.routeSlug}/`,
-  }));
+const hrefFor = (code: typeof languageOrder[number]) =>
+  code === 'zh' ? `/notes/${note.data.routeSlug}/` :
+  code === 'ja' ? `/jp/notes/${note.data.routeSlug}/` :
+  `/${code}/notes/${note.data.routeSlug}/`;
+const availableLanguages = languageOrder.filter((code) => translations.some((entry) => entry.data.lang === code));
+// The Japanese version lives at /jp (a full site), so it isn't offered as a
+// switcher option here — it's reached from the "日本語" link in the main nav.
+const languageLinks = availableLanguages
+  .filter((code) => code !== 'ja')
+  .map((code) => ({ code, href: hrefFor(code) }));
 const alternates = [
-  ...languageLinks.map((link) => ({
-    hreflang: link.code === 'zh' ? 'zh-TW' : link.code,
-    href: link.href,
+  ...availableLanguages.map((code) => ({
+    hreflang: code === 'zh' ? 'zh-TW' : code,
+    href: hrefFor(code),
   })),
   { hreflang: 'x-default', href: `/notes/${note.data.routeSlug}/` },
 ];
+// This page's own /ja/notes/{slug}/ URL is now a legacy duplicate of the
+// canonical /jp/notes/{slug}/ page; /en/notes/{slug}/ is unaffected.
+const canonicalOverride = note.data.lang === 'ja' ? `/jp/notes/${note.data.routeSlug}/` : undefined;
 ---
 
-<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang={note.data.lang} alternates={alternates}>
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang={note.data.lang} alternates={alternates} canonicalOverride={canonicalOverride}>
   <NoteContent note={note} languageLinks={languageLinks} />
 </BaseLayout>

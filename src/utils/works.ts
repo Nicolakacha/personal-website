@@ -9,6 +9,10 @@ export function sortWorks(works: CollectionEntry<'works'>[]) {
   );
 }
 
+export function withJapaneseTitles(works: CollectionEntry<'works'>[]) {
+  return works.map((work) => ({ ...work, data: { ...work.data, title: work.data.titleJa ?? work.data.title } }));
+}
+
 export async function getVisibleWorks() {
   const works = await getCollection('works', ({ data }) => data.status !== 'hidden');
   return sortWorks(works);

@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Sequence from './Sequence.astro';
+import WorkImageGallery from './WorkImageGallery.astro';
+import ProjectEquipment from './ProjectEquipment.astro';
+import WorkLayout from '../layouts/WorkLayout.astro';
+
+interface Props {
+  work: CollectionEntry<'works'>;
+  titleOverride?: string;
+  lang?: string;
+  noindex?: boolean;
+}
+
+const { work, titleOverride, lang, noindex } = Astro.props;
+const continuousSequenceWorks = new Set([
+  'how-much-silence',
+  'staring-at-the-skin',
+  'the-room-was-not-dark',
+]);
+const equipmentBeforeLastImage = work.data.equipmentPosition === 'beforeLastImage' && work.data.equipment;
+---
+<WorkLayout work={work} titleOverride={titleOverride} lang={lang} noindex={noindex}>
+  {work.data.routeSlug === 'inhabitant-portraits'
+    ? <WorkImageGallery sequence={work.data.sequence} workSlug={work.data.routeSlug} />
+    : equipmentBeforeLastImage ? (
+      <>
+        <Sequence
+          sequence={work.data.sequence.slice(0, -1)}
+          workSlug={work.data.routeSlug}
+          viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
+        />
+        <ProjectEquipment items={equipmentBeforeLastImage} />
+        <Sequence
+          sequence={work.data.sequence.slice(-1)}
+          workSlug={work.data.routeSlug}
+          viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
+        />
+      </>
+    ) : work.data.sequence.length > 0 && (
+      <Sequence
+        sequence={work.data.sequence}
+        workSlug={work.data.routeSlug}
+        viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
+      />
+    )}
+</WorkLayout>

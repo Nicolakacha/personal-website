@@ -10,6 +10,7 @@ interface Props {
 }
 const { currentPath = '', works, transparentNav = false, basePath = '' } = Astro.props;
 const homeHref = `${basePath}/`;
+const isJp = basePath === '/jp';
 ---
 <div class:list={['site-navigation', { 'is-transparent': transparentNav }]} data-site-navigation>
   <header class="site-header">
@@ -28,9 +29,10 @@ const homeHref = `${basePath}/`;
 
 <noscript>
   <nav class="noscript-navigation" aria-label="Primary navigation">
-    <a href="/projects/">Projects</a>
-    <a href="/notes/">Notes</a>
-    <a href="/about/">About</a>
+    <a href={homeHref}>Projects</a>
+    <a href={`${basePath}/notes/`}>Notes</a>
+    <a href={`${basePath}/about/`}>About</a>
+    {!isJp && <a href="/jp/">日本語</a>}
   </nav>
 </noscript>
 

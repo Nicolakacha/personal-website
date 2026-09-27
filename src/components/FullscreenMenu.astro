@@ -14,14 +14,16 @@ const homeHref = `${basePath}/`;
 const projectsHref = `${basePath}/projects/`;
 const notesHref = `${basePath}/notes/`;
 const aboutHref = `${basePath}/about/`;
+const isJp = basePath === '/jp';
 ---
 
 <div class="site-menu" id="site-menu" data-site-menu hidden>
   <nav class="site-menu-inner" aria-label="Site directory">
     <div class="site-menu-primary">
-      <a href={projectsHref} aria-current={path === homeHref || path === projectsHref ? 'page' : undefined}>Projects</a>
+      <a href={homeHref} aria-current={path === homeHref || path === projectsHref ? 'page' : undefined}>Projects</a>
       <a href={notesHref} aria-current={path.includes(notesHref) ? 'page' : undefined}>Notes</a>
       <a href={aboutHref} aria-current={path.endsWith(aboutHref) ? 'page' : undefined}>About</a>
+      {!isJp && <a class="site-menu-jp-link" href="/jp/">日本語</a>}
     </div>
 
     <div class="site-menu-projects">
@@ -66,6 +68,11 @@ const aboutHref = `${basePath}/about/`;
     line-height: 1.2;
     width: fit-content;
   }
+  .site-menu-primary a.site-menu-jp-link {
+    color: var(--color-muted);
+    font-size: var(--font-size-small);
+    margin-top: var(--space-2xs);
+  }
   .site-menu-label {
     color: var(--color-muted);
     font-size: var(--font-size-small);
@@ -78,12 +85,17 @@ const aboutHref = `${basePath}/about/`;
   }
   li { margin-bottom: var(--space-xs); }
   li:last-child { margin-bottom: 0; }
+  li:not(:last-child) {
+    border-bottom: 1px solid rgba(237, 234, 227, 0.25);
+    padding-bottom: var(--space-xs);
+  }
   .site-menu-projects a {
     display: inline-block;
     font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.6rem);
     letter-spacing: var(--letter-spacing-title);
     line-height: 1.18;
   }
+  .site-menu-projects a:lang(ja) { letter-spacing: 0; word-break: auto-phrase; }
   a[aria-current='page'] {
     text-decoration: underline;
     text-decoration-color: var(--color-muted);
@@ -98,6 +110,7 @@ const aboutHref = `${basePath}/about/`;
     }
     .site-menu-label { display: none; }
     li { margin-bottom: var(--space-sm); }
+    li:not(:last-child) { padding-bottom: var(--space-sm); }
     .site-menu-projects a {
       font-size: clamp(1.4rem, 1.15rem + 0.8vw, 2rem);
     }

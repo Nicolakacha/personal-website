@@ -13,16 +13,22 @@ const translations = await getCollection('notes', ({ data }) =>
   data.status === 'published' && data.translationKey === note.data.translationKey
 );
 const languageOrder = ['zh', 'en', 'ja'] as const;
-const languageLinks = languageOrder
-  .filter((code) => translations.some((entry) => entry.data.lang === code))
-  .map((code) => ({
-    code,
-    href:
-      code === 'zh' ? `/notes/${note.data.routeSlug}/` :
-      code === 'ja' ? `/jp/notes/${note.data.routeSlug}/` :
-      `/${code}/notes/${note.data.routeSlug}/`,
-  }));
+const hrefFor = (code: typeof languageOrder[number]) =>
+  code === 'zh' ? `/notes/${note.data.routeSlug}/` :
+  code === 'ja' ? `/jp/notes/${note.data.routeSlug}/` :
+  `/${code}/notes/${note.data.routeSlug}/`;
+const alternates = [
+  ...languageOrder
+    .filter((code) => translations.some((entry) => entry.data.lang === code))
+    .map((code) => ({ hreflang: code === 'zh' ? 'zh-TW' : code, href: hrefFor(code) })),
+  { hreflang: 'x-default', href: `/notes/${note.data.routeSlug}/` },
+];
 ---
-<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang="ja" noindex>
-  <NoteContent note={note} languageLinks={languageLinks} />
+<BaseLayout
+  title={`${note.data.title ?? 'Note'} — Nicolas Tei`}
+  description={note.data.description}
+  lang="ja"
+  alternates={alternates}
+>
+  <NoteContent note={note} languageLinks={[]} />
 </BaseLayout>

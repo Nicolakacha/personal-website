@@ -37,6 +37,7 @@ const { works, dividers = false, basePath = '/projects' } = Astro.props;
     transition: opacity 160ms ease;
     width: 100%;
   }
+  .row a:lang(ja) { letter-spacing: 0; word-break: auto-phrase; }
   .row a:hover, .row a:focus-visible { opacity: 0.62; text-decoration: none; }
   .row .meta { display: block; margin-top: var(--space-2xs); }
   .deck { display: none; }

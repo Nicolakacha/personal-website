@@ -1,17 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import WorkIndexList from '../../../components/WorkIndexList.astro';
-import { getVisibleWorks } from '../../../utils/works';
+import { getVisibleWorks, withJapaneseTitles } from '../../../utils/works';
 
 const works = await getVisibleWorks();
-const jpWorks = works.map((work) => ({ ...work, data: { ...work.data, title: work.data.titleJa ?? work.data.title } }));
+const jpWorks = withJapaneseTitles(works);
 ---
 <BaseLayout
   title="Projects — Nicolas Tei"
-  description="Photography by Nicolas Tei — sequences of photographs presented as a photo-book, based in Japan."
+  description="写真家 Nicolas Teiによる作品一覧。日本を拠点に制作された、フォトブックとして構成される写真のシークエンス。"
   bodyClass="footer-after-fold"
   lang="ja"
-  noindex
 >
   <section class="page-grid">
     <h1 class="sr-only">Projects</h1>
