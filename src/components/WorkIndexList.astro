@@ -18,22 +18,28 @@ const { works } = Astro.props;
 )}
 <style>
   ul { list-style: none; margin: 0; padding: 0; }
-  li { margin-bottom: var(--space-md); }
+  li { margin-bottom: clamp(2rem, 4.5vw, 5rem); }
   li:last-child { margin-bottom: 0; }
-  .row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+  .row { display: block; }
   .row a {
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
-    text-wrap: balance;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: var(--color-muted);
-    text-underline-offset: 0.25em;
+    display: inline-block;
+    font-size: clamp(1.9rem, 1.35rem + 1.8vw, 3.1rem);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    overflow-wrap: normal;
+    transition: opacity 160ms ease;
+    width: 100%;
   }
-  .row a:hover, .row a:focus-visible { text-decoration-color: currentColor; }
-  .deck { margin-top: var(--space-3xs); }
+  .row a:hover, .row a:focus-visible { opacity: 0.62; text-decoration: none; }
+  .row .meta { display: block; margin-top: var(--space-2xs); }
+  .deck { display: none; }
+  @media (max-width: 767px) {
+    .row a:active { opacity: 0.62; }
+  }
   @media (max-width: 420px) {
-    .row { flex-direction: column; align-items: flex-start; gap: var(--space-3xs); }
-    li { margin-bottom: var(--space-sm); }
+    li { margin-bottom: var(--space-lg); }
+    .row a { font-size: clamp(1.9rem, 8.5vw, 2.3rem); }
   }
+  @media (prefers-reduced-motion: reduce) { .row a { transition: none; } }
 </style>

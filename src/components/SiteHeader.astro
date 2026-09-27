@@ -1,56 +1,259 @@
 ---
-interface Props { currentPath?: string; }
-const { currentPath = '' } = Astro.props;
+import type { CollectionEntry } from 'astro:content';
+import FullscreenMenu from './FullscreenMenu.astro';
+
+interface Props {
+  currentPath?: string;
+  works: CollectionEntry<'works'>[];
+}
+const { currentPath = '', works } = Astro.props;
 ---
-<header class="site-header">
-  <a class="site-title" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Nicolas Tei</a>
-  <nav aria-label="Primary navigation">
-    {/* Found nav entry hidden for now — no content yet; routes still exist at /found/. */}
-    <a href="/notes/" aria-current={currentPath.startsWith('/notes') ? 'page' : undefined}>Notes</a>
-    <a href="/about/" aria-current={currentPath === '/about/' ? 'page' : undefined}>About</a>
+<div class="site-navigation" data-site-navigation>
+  <header class="site-header">
+    <a class="site-title" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Nicolas Tei</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+      <span class="menu-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="sr-only" data-menu-label>Menu</span>
+    </button>
+  </header>
+  <FullscreenMenu currentPath={currentPath} works={works} />
+</div>
+
+<noscript>
+  <nav class="noscript-navigation" aria-label="Primary navigation">
+    <a href="/works/">Projects</a>
+    <a href="/notes/">Notes</a>
+    <a href="/about/">About</a>
   </nav>
-</header>
+</noscript>
+
+<script>
+  const navigation = document.querySelector<HTMLElement>('[data-site-navigation]');
+  const menu = navigation?.querySelector<HTMLElement>('[data-site-menu]');
+  const toggle = navigation?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const label = navigation?.querySelector<HTMLElement>('[data-menu-label]');
+  const pageContent = document.querySelector<HTMLElement>('[data-page-content]');
+
+  if (navigation && menu && toggle && label && pageContent) {
+    let savedScrollY = 0;
+    let previousBodyStyles: Partial<CSSStyleDeclaration> = {};
+
+    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(navigation.querySelectorAll<HTMLElement>(focusableSelector))
+      .filter((element) => !element.closest('[hidden]'));
+
+    const openMenu = () => {
+      navigation.classList.remove('is-hidden');
+      savedScrollY = window.scrollY;
+      previousBodyStyles = {
+        position: document.body.style.position,
+        top: document.body.style.top,
+        width: document.body.style.width,
+        paddingRight: document.body.style.paddingRight,
+      };
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      menu.hidden = false;
+      navigation.classList.add('is-open');
+      navigation.setAttribute('role', 'dialog');
+      navigation.setAttribute('aria-modal', 'true');
+      navigation.setAttribute('aria-label', 'Site menu');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      label.textContent = 'Close';
+      pageContent.inert = true;
+      pageContent.setAttribute('aria-hidden', 'true');
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY}px`;
+      document.body.style.width = '100%';
+      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+      requestAnimationFrame(() => {
+        const firstMenuLink = menu.querySelector<HTMLElement>('a[href]');
+        (firstMenuLink ?? toggle).focus();
+      });
+    };
+
+    const closeMenu = (restoreFocus = true) => {
+      navigation.classList.remove('is-open');
+      navigation.removeAttribute('role');
+      navigation.removeAttribute('aria-modal');
+      navigation.removeAttribute('aria-label');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      label.textContent = 'Menu';
+      pageContent.inert = false;
+      pageContent.removeAttribute('aria-hidden');
+      menu.hidden = true;
+
+      document.body.style.position = previousBodyStyles.position ?? '';
+      document.body.style.top = previousBodyStyles.top ?? '';
+      document.body.style.width = previousBodyStyles.width ?? '';
+      document.body.style.paddingRight = previousBodyStyles.paddingRight ?? '';
+      window.scrollTo(0, savedScrollY);
+      if (restoreFocus) toggle.focus({ preventScroll: true });
+    };
+
+    toggle.addEventListener('click', () => {
+      if (navigation.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+
+    let scrollReference = window.scrollY;
+    let scrollFrame: number | null = null;
+    const updateNavigationVisibility = () => {
+      const currentScrollY = Math.max(window.scrollY, 0);
+      const delta = currentScrollY - scrollReference;
+
+      if (navigation.classList.contains('is-open') || currentScrollY <= 24) {
+        navigation.classList.remove('is-hidden');
+      } else if (delta > 6) {
+        navigation.classList.add('is-hidden');
+      } else if (delta < -6) {
+        navigation.classList.remove('is-hidden');
+      }
+
+      if (Math.abs(delta) > 6 || currentScrollY <= 24) scrollReference = currentScrollY;
+      scrollFrame = null;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (scrollFrame !== null) return;
+      scrollFrame = window.requestAnimationFrame(updateNavigationVisibility);
+    }, { passive: true });
+
+    document.addEventListener('keydown', (event) => {
+      if (!navigation.classList.contains('is-open')) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = getFocusable();
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+</script>
 
 <style>
+  .site-navigation {
+    background: var(--color-bg);
+    flex: 0 0 auto;
+    min-width: 0;
+    position: sticky;
+    top: 0;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%;
+    z-index: 10;
+  }
+  .site-navigation.is-hidden { pointer-events: none; transform: translateY(-100%); }
+  .site-navigation.is-open {
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    inset: 0;
+    position: fixed;
+    transform: none;
+    z-index: 10;
+  }
   .site-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     gap: var(--space-xs) var(--space-md);
     justify-content: space-between;
     padding: var(--space-md) var(--space-sm);
-    border-bottom: 1px solid var(--color-border);
   }
   .site-title {
     font-weight: 500;
-    font-size: var(--font-size-index);
+    font-size: clamp(1.3rem, 1.2rem + 0.45vw, 1.55rem);
     letter-spacing: var(--letter-spacing-title);
+    line-height: 1;
   }
-  nav { display: flex; gap: var(--space-sm); }
-  nav a {
+  .menu-toggle {
+    appearance: none;
+    background: none;
+    border: 0;
     color: var(--color-muted);
+    cursor: pointer;
+    font: inherit;
     font-size: var(--font-size-small);
     letter-spacing: 0.02em;
+    margin: 0;
+    padding: 6px;
   }
-  nav a:hover, nav a:focus-visible { color: var(--color-fg); }
-  nav a[aria-current='page'] {
+  .menu-icon {
+    display: block;
+    height: 15px;
+    position: relative;
+    width: 24px;
+  }
+  .menu-icon span {
+    background: currentColor;
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transform-origin: center;
+    transition: opacity 160ms ease, transform 160ms ease;
+    width: 100%;
+  }
+  .menu-icon span:first-child { top: 0; }
+  .menu-icon span:nth-child(2) { top: 7px; }
+  .menu-icon span:last-child { top: 14px; }
+  .is-open .menu-icon span:first-child { transform: translateY(7px) rotate(45deg); }
+  .is-open .menu-icon span:nth-child(2) { opacity: 0; }
+  .is-open .menu-icon span:last-child { transform: translateY(-7px) rotate(-45deg); }
+  .menu-toggle:hover { color: var(--color-fg); }
+  .menu-toggle:focus-visible {
     color: var(--color-fg);
-    text-decoration: underline;
-    text-decoration-color: var(--color-muted);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+  .noscript-navigation {
+    display: flex;
+    gap: var(--space-sm);
+    padding: 0 var(--space-sm) var(--space-sm);
+  }
+  .noscript-navigation a {
+    color: var(--color-muted);
+    font-size: var(--font-size-small);
   }
   @media (min-width: 768px) {
     .site-header { padding-block: 16px; }
   }
   @media (max-width: 767px) {
-    .site-title { font-size: var(--font-size-body); font-weight: 400; opacity: 0.82; }
-    nav { margin-block: -13px; }
-    nav a {
+    .site-title { font-size: 1.35rem; font-weight: 400; opacity: 0.9; }
+    .menu-toggle {
       align-items: center;
       display: inline-flex;
+      justify-content: flex-end;
       min-height: 44px;
-      padding-inline: 4px;
+      margin-block: -10px;
+      padding: 10px 4px 10px 10px;
     }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-navigation { transition: none; }
+    .menu-icon span { transition: none; }
   }
 </style>

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standard-normal.woff2?url';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { getVisibleWorks } from '../utils/works';
 
 interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; }
 const {
@@ -16,6 +17,7 @@ const {
   alternates = [],
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const works = await getVisibleWorks();
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -61,9 +63,11 @@ const siteJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} is:inline />
   </head>
   <body class={bodyClass}>
-    <SiteHeader currentPath={Astro.url.pathname} />
-    <main><slot /></main>
-    <SiteFooter />
+    <SiteHeader currentPath={Astro.url.pathname} works={works} />
+    <div class="page-content" data-page-content>
+      <main><slot /></main>
+      <SiteFooter />
+    </div>
     <script>
       document.querySelectorAll('img.fade-img').forEach((img) => {
         const el = img as HTMLImageElement;
