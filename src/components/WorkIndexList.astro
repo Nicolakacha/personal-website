@@ -20,9 +20,10 @@ const { works, dividers = false } = Astro.props;
   ul { list-style: none; margin: 0; padding: 0; }
   li { margin-bottom: clamp(2rem, 4.5vw, 5rem); }
   li:last-child { margin-bottom: 0; }
+  .has-dividers li { margin-bottom: clamp(1.7rem, 3.8vw, 4.25rem); }
   .has-dividers li:not(:last-child) {
     border-bottom: 1px solid rgba(237, 234, 227, 0.25);
-    padding-bottom: var(--space-sm);
+    padding-bottom: clamp(0.85rem, 0.7rem + 0.85vw, 1.3rem);
   }
   .has-dividers .row a { font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.6rem); }
   .row { display: block; }
@@ -45,6 +46,7 @@ const { works, dividers = false } = Astro.props;
   @media (max-width: 420px) {
     li { margin-bottom: var(--space-lg); }
     .row a { font-size: clamp(1.9rem, 8.5vw, 2.3rem); }
+    .has-dividers li { margin-bottom: clamp(2.55rem, 1.7rem + 3.4vw, 4.25rem); }
     .has-dividers .row a { font-size: clamp(1.5rem, 7vw, 1.9rem); }
   }
   @media (prefers-reduced-motion: reduce) { .row a { transition: none; } }
