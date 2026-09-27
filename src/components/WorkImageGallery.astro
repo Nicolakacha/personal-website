@@ -37,7 +37,10 @@ const images = sequence.filter((block: any) => block.type === 'image');
       slides[activeIndex].classList.add('is-active');
       slides[activeIndex].removeAttribute('aria-hidden');
     };
-    advance.addEventListener('click', () => {
+    // The whole page (minus the header/footer) advances the slide, not just the
+    // image, since the mobile tap hint sits below it and reads as its own target.
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('[data-site-navigation], #site-footer')) return;
       gallery.classList.add('has-advanced');
       show((activeIndex + 1) % slides.length);
     });
