@@ -1,0 +1,22 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<aside class="work-equipment text-column" aria-label="Project equipment">
+  {items.map((item) => <p>{item}</p>)}
+</aside>
+
+<style>
+  .work-equipment {
+    color: var(--color-muted);
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-small);
+    margin-block: var(--space-md);
+  }
+  .work-equipment p { margin: 0; }
+  .work-equipment p + p { margin-top: 0.2em; }
+</style>

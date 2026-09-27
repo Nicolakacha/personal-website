@@ -4,6 +4,11 @@ routeSlug: the-room-was-not-dark
 year: "2026"
 status: published
 order: 3
+equipment:
+  - "Camera: Pentax Espio Mini"
+  - "Film: Kentmere Pan 400"
+  - "Printer: Canon CP1500"
+equipmentPosition: beforeLastImage
 sequence:
   - type: image
     src: "01.jpg"

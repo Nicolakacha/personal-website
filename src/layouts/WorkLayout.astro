@@ -1,17 +1,24 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ProjectEquipment from '../components/ProjectEquipment.astro';
 import { getEntryOgImage } from '../utils/ogImage';
 const { work } = Astro.props;
 const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'works', Astro.site);
+const mobileEdgeToEdgeWorks = new Set([
+  'how-much-silence',
+  'staring-at-the-skin',
+  'the-room-was-not-dark',
+]);
 ---
 <BaseLayout title={`${work.data.title} — Nicolas Tei`} description={work.data.deck ?? work.data.description} image={image} type="article">
-  <article class="work-article">
+  <article class:list={['work-article', { 'mobile-edge-to-edge': mobileEdgeToEdgeWorks.has(work.data.routeSlug) }]}>
     <header class="work-intro text-column">
       <h1>{work.data.title}</h1>
       {work.data.nativeTitle && <p class="meta">{work.data.nativeTitle}</p>}
       {work.data.description && <p class="description">{work.data.description}</p>}
     </header>
     <slot />
+    {work.data.equipment && work.data.equipmentPosition !== 'beforeLastImage' && <ProjectEquipment items={work.data.equipment} />}
   </article>
 </BaseLayout>
 <style>
@@ -23,6 +30,18 @@ const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'wo
   }
   @media (max-width: 767px) {
     .work-article { margin-top: 0; }
+    .work-intro { margin-bottom: var(--space-sm); }
+    .mobile-edge-to-edge {
+      --image-small-max: 100vw;
+      --image-medium-max: 100vw;
+      --image-large-max: 100vw;
+      --image-full-max: 100vw;
+    }
+    .mobile-edge-to-edge :global(.sequence) {
+      margin-left: calc(var(--space-sm) * -1);
+      margin-right: calc(var(--space-sm) * -1);
+      width: calc(100% + (var(--space-sm) * 2));
+    }
   }
   .work-intro { margin-bottom: var(--space-xl); }
   .work-intro .meta { margin-top: var(--space-3xs); }
@@ -38,10 +57,10 @@ const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'wo
   }
   @media (min-width: 1080px) {
     .work-article {
-      --image-small-max: 40vw;
-      --image-medium-max: 40vw;
-      --image-large-max: 40vw;
-      --image-full-max: 40vw;
+      --image-small-max: 50vw;
+      --image-medium-max: 50vw;
+      --image-large-max: 50vw;
+      --image-full-max: 50vw;
     }
   }
 </style>

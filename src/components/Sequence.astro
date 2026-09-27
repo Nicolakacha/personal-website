@@ -3,7 +3,8 @@ import SequenceBreak from './SequenceBreak.astro';
 import SequenceImage from './SequenceImage.astro';
 import SequencePair from './SequencePair.astro';
 const { sequence, workSlug, collection = 'works', viewportFrames: viewportFramesProp } = Astro.props;
-const viewportFrames = viewportFramesProp ?? collection === 'works';
+const requestedViewportFrames = viewportFramesProp ?? collection === 'works';
+const viewportFrames = requestedViewportFrames !== false;
 ---
 <section class="sequence" aria-label="Photograph sequence">
   {sequence.map((block: any, index: number) => {
