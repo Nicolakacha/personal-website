@@ -46,6 +46,12 @@ const { currentPath = '', works } = Astro.props;
     const getFocusable = () => Array.from(navigation.querySelectorAll<HTMLElement>(focusableSelector))
       .filter((element) => !element.closest('[hidden]'));
 
+    let openedByKeyboard = false;
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Tab' || event.key === 'Enter' || event.key === ' ') openedByKeyboard = true;
+    }, true);
+    document.addEventListener('pointerdown', () => { openedByKeyboard = false; }, true);
+
     const openMenu = () => {
       navigation.classList.remove('is-hidden');
       savedScrollY = window.scrollY;
@@ -73,14 +79,17 @@ const { currentPath = '', works } = Astro.props;
       document.body.style.width = '100%';
       if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
 
+      if (!openedByKeyboard) navigation.classList.add('suppress-focus-ring');
+
       requestAnimationFrame(() => {
         const firstMenuLink = menu.querySelector<HTMLElement>('a[href]');
-        (firstMenuLink ?? toggle).focus();
+        (firstMenuLink ?? toggle).focus({ preventScroll: true });
       });
     };
 
     const closeMenu = (restoreFocus = true) => {
       navigation.classList.remove('is-open');
+      navigation.classList.remove('suppress-focus-ring');
       navigation.removeAttribute('role');
       navigation.removeAttribute('aria-modal');
       navigation.removeAttribute('aria-label');
@@ -136,6 +145,7 @@ const { currentPath = '', works } = Astro.props;
       }
       if (event.key !== 'Tab') return;
 
+      navigation.classList.remove('suppress-focus-ring');
       const focusable = getFocusable();
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -164,6 +174,7 @@ const { currentPath = '', works } = Astro.props;
     z-index: 10;
   }
   .site-navigation.is-hidden { pointer-events: none; transform: translateY(-100%); }
+  .site-navigation.suppress-focus-ring :focus { outline: none; }
   .site-navigation.is-open {
     background: var(--color-bg);
     display: flex;
