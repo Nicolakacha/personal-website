@@ -5,10 +5,11 @@ import FullscreenMenu from './FullscreenMenu.astro';
 interface Props {
   currentPath?: string;
   works: CollectionEntry<'works'>[];
+  transparentNav?: boolean;
 }
-const { currentPath = '', works } = Astro.props;
+const { currentPath = '', works, transparentNav = false } = Astro.props;
 ---
-<div class="site-navigation" data-site-navigation>
+<div class:list={['site-navigation', { 'is-transparent': transparentNav }]} data-site-navigation>
   <header class="site-header">
     <a class="site-title" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Nicolas Tei</a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
@@ -172,6 +173,7 @@ const { currentPath = '', works } = Astro.props;
     width: 100%;
     z-index: 10;
   }
+  .site-navigation.is-transparent { background: transparent; }
   .site-navigation.is-hidden { pointer-events: none; transform: translateY(-100%); }
   .site-navigation.is-open {
     background: var(--color-bg);
@@ -233,6 +235,8 @@ const { currentPath = '', works } = Astro.props;
   .is-open .menu-icon span:nth-child(2) { opacity: 0; }
   .is-open .menu-icon span:last-child { transform: translateY(-7px) rotate(-45deg); }
   .menu-toggle:hover { color: var(--color-fg); }
+  .site-navigation.is-transparent .menu-toggle { color: var(--color-fg); }
+  .site-navigation.is-transparent .menu-icon span { filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7)); }
   .menu-toggle:focus-visible {
     color: var(--color-fg);
     outline: 2px solid var(--color-focus);

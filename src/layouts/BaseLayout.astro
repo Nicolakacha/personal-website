@@ -5,7 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { getVisibleWorks } from '../utils/works';
 
-interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; }
+interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; mobileBackgroundImage?: string; transparentNav?: boolean; }
 const {
   title,
   description = 'Photographs and notes by Nicolas Tei.',
@@ -15,6 +15,8 @@ const {
   bodyClass = '',
   lang = 'en',
   alternates = [],
+  mobileBackgroundImage,
+  transparentNav = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const works = await getVisibleWorks();
@@ -63,7 +65,10 @@ const siteJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} is:inline />
   </head>
   <body class={bodyClass}>
-    <SiteHeader currentPath={Astro.url.pathname} works={works} />
+    {mobileBackgroundImage && (
+      <div class="mobile-bg-image" style={`background-image: url(${mobileBackgroundImage})`}></div>
+    )}
+    <SiteHeader currentPath={Astro.url.pathname} works={works} transparentNav={transparentNav} />
     <div class="page-content" data-page-content>
       <main><slot /></main>
       <SiteFooter />
@@ -81,3 +86,18 @@ const siteJsonLd = {
     </script>
   </body>
 </html>
+
+<style>
+  .mobile-bg-image {
+    display: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    inset: 0;
+    position: fixed;
+    z-index: -1;
+  }
+  @media (max-width: 767px) {
+    .mobile-bg-image { display: block; }
+  }
+</style>

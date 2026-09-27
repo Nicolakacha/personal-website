@@ -1,10 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { works: CollectionEntry<'works'>[]; }
-const { works } = Astro.props;
+interface Props { works: CollectionEntry<'works'>[]; dividers?: boolean; }
+const { works, dividers = false } = Astro.props;
 ---
 {works.length > 0 && (
-  <ul>
+  <ul class:list={[{ 'has-dividers': dividers }]}>
     {works.map((work) => (
       <li>
         <div class="row">
@@ -20,6 +20,10 @@ const { works } = Astro.props;
   ul { list-style: none; margin: 0; padding: 0; }
   li { margin-bottom: clamp(2rem, 4.5vw, 5rem); }
   li:last-child { margin-bottom: 0; }
+  .has-dividers li:not(:last-child) {
+    border-bottom: 1px solid rgba(237, 234, 227, 0.25);
+    padding-bottom: var(--space-sm);
+  }
   .row { display: block; }
   .row a {
     display: inline-block;
