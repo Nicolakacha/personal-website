@@ -46,11 +46,12 @@ const { currentPath = '', works } = Astro.props;
     const getFocusable = () => Array.from(navigation.querySelectorAll<HTMLElement>(focusableSelector))
       .filter((element) => !element.closest('[hidden]'));
 
-    let openedByKeyboard = false;
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Tab' || event.key === 'Enter' || event.key === ' ') openedByKeyboard = true;
-    }, true);
-    document.addEventListener('pointerdown', () => { openedByKeyboard = false; }, true);
+    // iOS Safari shows a focus ring on any element focused via script, even the
+    // one the user just tapped, so only move focus programmatically when the
+    // interaction is actually keyboard-driven.
+    let usingKeyboard = false;
+    document.addEventListener('keydown', () => { usingKeyboard = true; }, true);
+    document.addEventListener('pointerdown', () => { usingKeyboard = false; }, true);
 
     const openMenu = () => {
       navigation.classList.remove('is-hidden');
@@ -79,17 +80,16 @@ const { currentPath = '', works } = Astro.props;
       document.body.style.width = '100%';
       if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
 
-      if (!openedByKeyboard) navigation.classList.add('suppress-focus-ring');
-
-      requestAnimationFrame(() => {
-        const firstMenuLink = menu.querySelector<HTMLElement>('a[href]');
-        (firstMenuLink ?? toggle).focus({ preventScroll: true });
-      });
+      if (usingKeyboard) {
+        requestAnimationFrame(() => {
+          const firstMenuLink = menu.querySelector<HTMLElement>('a[href]');
+          (firstMenuLink ?? toggle).focus({ preventScroll: true });
+        });
+      }
     };
 
     const closeMenu = (restoreFocus = true) => {
       navigation.classList.remove('is-open');
-      navigation.classList.remove('suppress-focus-ring');
       navigation.removeAttribute('role');
       navigation.removeAttribute('aria-modal');
       navigation.removeAttribute('aria-label');
@@ -105,7 +105,7 @@ const { currentPath = '', works } = Astro.props;
       document.body.style.width = previousBodyStyles.width ?? '';
       document.body.style.paddingRight = previousBodyStyles.paddingRight ?? '';
       window.scrollTo(0, savedScrollY);
-      if (restoreFocus) toggle.focus({ preventScroll: true });
+      if (restoreFocus && usingKeyboard) toggle.focus({ preventScroll: true });
     };
 
     toggle.addEventListener('click', () => {
@@ -145,7 +145,6 @@ const { currentPath = '', works } = Astro.props;
       }
       if (event.key !== 'Tab') return;
 
-      navigation.classList.remove('suppress-focus-ring');
       const focusable = getFocusable();
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -174,7 +173,6 @@ const { currentPath = '', works } = Astro.props;
     z-index: 10;
   }
   .site-navigation.is-hidden { pointer-events: none; transform: translateY(-100%); }
-  .site-navigation.suppress-focus-ring :focus { outline: none; }
   .site-navigation.is-open {
     background: var(--color-bg);
     display: flex;
