@@ -14,7 +14,7 @@ const path = normalizePath(currentPath);
 <div class="site-menu" id="site-menu" data-site-menu hidden>
   <nav class="site-menu-inner" aria-label="Site directory">
     <div class="site-menu-primary">
-      <a href="/works/" aria-current={path === '/' || path === '/works/' ? 'page' : undefined}>Projects</a>
+      <a href="/projects/" aria-current={path === '/' || path === '/projects/' ? 'page' : undefined}>Projects</a>
       <a href="/notes/" aria-current={path.includes('/notes/') ? 'page' : undefined}>Notes</a>
       <a href="/about/" aria-current={path.endsWith('/about/') ? 'page' : undefined}>About</a>
     </div>
@@ -23,7 +23,7 @@ const path = normalizePath(currentPath);
       <p class="site-menu-label">Index</p>
       <ul>
         {works.map((work) => {
-          const href = `/works/${work.data.routeSlug}/`;
+          const href = `/projects/${work.data.routeSlug}/`;
           return (
             <li>
               <a href={href} aria-current={path === href ? 'page' : undefined}>

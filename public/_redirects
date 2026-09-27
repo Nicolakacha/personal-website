@@ -1,0 +1,2 @@
+/works/   /projects/   301
+/works/*  /projects/:splat  301
