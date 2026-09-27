@@ -1,11 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import NoteContent from '../../components/NoteContent.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteContent from '../../../components/NoteContent.astro';
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes', ({ data }) => data.status === 'published' && data.lang === 'zh');
-  return notes.map((note) => ({ params: { slug: note.data.routeSlug }, props: { note } }));
+  const notes = await getCollection('notes', ({ data }) =>
+    data.status === 'published' && (data.lang === 'en' || data.lang === 'ja')
+  );
+  return notes.map((note) => ({
+    params: { lang: note.data.lang, slug: note.data.routeSlug },
+    props: { note },
+  }));
 }
 
 const { note } = Astro.props;
@@ -24,6 +29,7 @@ const alternates = languageLinks.map((link) => ({
   href: link.href,
 }));
 ---
-<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} lang="zh-TW" alternates={alternates}>
+
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} lang={note.data.lang} alternates={alternates}>
   <NoteContent note={note} languageLinks={languageLinks} />
 </BaseLayout>

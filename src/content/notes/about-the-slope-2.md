@@ -1,7 +1,10 @@
 ---
 title: "關於超好斜坡之二"
 routeSlug: about-the-slope-2
+translationKey: about-the-slope-2
+lang: zh
 status: published
+date: 2026-08-23
 ---
 
 超好斜坡其實有真正的名字，叫做「愛染坂」。

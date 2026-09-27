@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  about: CollectionEntry<'about'>;
+}
+
+const { about } = Astro.props;
+const { Content } = await render(about);
+const links = [
+  { code: 'zh' as const, href: '/zh/about/' },
+  { code: 'en' as const, href: '/about/' },
+  { code: 'ja' as const, href: '/ja/about/' },
+];
+---
+
+<article class="text-column prose">
+  <header class="about-heading">
+    <h1>{about.data.title}</h1>
+    <LanguageSwitcher current={about.data.lang} links={links} inline />
+  </header>
+  <Content />
+</article>
+
+<style>
+  .about-heading {
+    align-items: baseline;
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+  }
+  h1 {
+    font-size: clamp(1.9rem, 1.55rem + 1.2vw, 2.6rem);
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+  @media (max-width: 420px) {
+    .about-heading { gap: var(--space-xs); }
+  }
+</style>

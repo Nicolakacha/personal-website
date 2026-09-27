@@ -47,7 +47,16 @@ const found = defineCollection({
     sequence,
   }),
 });
-const notes = defineCollection({ type: 'content', schema: z.object({ title: z.string().optional(), date: z.date().optional(), routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), status: z.enum(['published', 'hidden']).default('published') }) });
-const about = defineCollection({ type: 'content', schema: z.object({ title: z.string().default('About') }) });
+const notes = defineCollection({ type: 'content', schema: z.object({
+  title: z.string().optional(), date: z.date().optional(),
+  routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+  translationKey: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+  lang: z.enum(['en', 'ja', 'zh']),
+  status: z.enum(['published', 'hidden']).default('published'),
+}) });
+const about = defineCollection({ type: 'content', schema: z.object({
+  title: z.string().default('About'),
+  lang: z.enum(['en', 'ja', 'zh']),
+}) });
 export const collections = { works, found, notes, about };
 

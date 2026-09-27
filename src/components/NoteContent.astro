@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface LanguageLink {
+  code: 'en' | 'ja' | 'zh';
+  href: string;
+}
+
+interface Props {
+  note: CollectionEntry<'notes'>;
+  languageLinks: LanguageLink[];
+}
+
+const { note, languageLinks } = Astro.props;
+const { Content } = await render(note);
+---
+
+<article class="text-column prose note-body">
+  <LanguageSwitcher current={note.data.lang} links={languageLinks} />
+  <header class="note-intro">
+    {note.data.title && <h1>{note.data.title}</h1>}
+    {note.data.date && (
+      <p class="meta">
+        <time datetime={note.data.date.toISOString()}>{note.data.date.toISOString().slice(0, 10)}</time>
+      </p>
+    )}
+  </header>
+  <Content />
+</article>
+
+<style>
+  .note-body { line-height: 1.65; }
+  .note-intro { margin-bottom: var(--space-lg); }
+  .note-intro .meta { margin-top: var(--space-3xs); }
+</style>

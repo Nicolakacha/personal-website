@@ -1,0 +1,51 @@
+---
+interface LanguageLink {
+  code: 'en' | 'ja' | 'zh';
+  href: string;
+}
+
+interface Props {
+  current: LanguageLink['code'];
+  links: LanguageLink[];
+  inline?: boolean;
+}
+
+const { current, links, inline = false } = Astro.props;
+const labels = { en: 'EN', ja: '日本語', zh: '台灣華語' };
+---
+
+{links.length > 1 && (
+  <nav class:list={['language-switcher', { inline }]} aria-label="Language">
+    {links.map((link) => (
+      <a href={link.href} lang={link.code === 'zh' ? 'zh-TW' : link.code} aria-current={link.code === current ? 'page' : undefined}>
+        {labels[link.code]}
+      </a>
+    ))}
+  </nav>
+)}
+
+<style>
+  .language-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-md);
+  }
+  .language-switcher.inline {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+  }
+  a {
+    color: var(--color-muted);
+    font-size: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
+    letter-spacing: 0.02em;
+  }
+  a:hover, a:focus-visible { color: var(--color-fg); }
+  a[aria-current='page'] {
+    color: var(--color-muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+</style>

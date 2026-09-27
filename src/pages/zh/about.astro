@@ -1,14 +1,16 @@
 ---
 import { getEntry } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import AboutContent from '../components/AboutContent.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutContent from '../../components/AboutContent.astro';
 
-const about = await getEntry('about', 'index');
-if (!about) throw new Error('Missing About content');
+const about = await getEntry('about', 'index-zh');
+if (!about) throw new Error('Missing Chinese About content');
 ---
+
 <BaseLayout
   title="About — Nicolas Tei"
   bodyClass="footer-after-fold"
+  lang="zh-TW"
   alternates={[
     { hreflang: 'en', href: '/about/' },
     { hreflang: 'ja', href: '/ja/about/' },

@@ -1,7 +1,10 @@
 ---
 title: "關於超好斜坡"
 routeSlug: about-the-slope
+translationKey: about-the-slope
+lang: zh
 status: published
+date: 2026-05-18
 ---
 
 從家裡要去搭谷町線，一定要經過一個不太平緩的斜坡。
