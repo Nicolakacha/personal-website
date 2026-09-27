@@ -3,6 +3,7 @@ title: "關於超好斜坡之二"
 routeSlug: about-the-slope-2
 translationKey: about-the-slope-2
 lang: zh
+description: 超好斜坡的本名叫愛染坂，關於一片已經看不到的海和消失的夕陽。
 status: published
 date: 2026-08-23
 ---

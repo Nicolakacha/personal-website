@@ -3,6 +3,7 @@ title: "About the Really Good Slope"
 routeSlug: about-the-slope
 translationKey: about-the-slope
 lang: en
+description: Every commute means climbing a slope that isn't exactly gentle — on how it got the name "Really Good Slope."
 status: published
 date: 2026-05-18
 ---

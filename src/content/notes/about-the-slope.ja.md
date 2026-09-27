@@ -3,6 +3,7 @@ title: "すごくいい坂について"
 routeSlug: about-the-slope
 translationKey: about-the-slope
 lang: ja
+description: 通勤のたびに上らなければならない、あまり緩やかではない坂。「すごくいい坂」と呼ぶことにした理由について。
 status: published
 date: 2026-05-18
 ---

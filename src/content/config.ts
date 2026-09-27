@@ -52,6 +52,7 @@ const notes = defineCollection({ type: 'content', schema: z.object({
   routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
   translationKey: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
   lang: z.enum(['en', 'ja', 'zh']),
+  description: z.string().max(160).optional(),
   status: z.enum(['published', 'hidden']).default('published'),
 }) });
 const about = defineCollection({ type: 'content', schema: z.object({

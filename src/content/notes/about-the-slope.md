@@ -3,6 +3,7 @@ title: "關於超好斜坡"
 routeSlug: about-the-slope
 translationKey: about-the-slope
 lang: zh
+description: 每天上班都要爬過一個不太平緩的斜坡，關於這條路和「超好斜坡」這個名字的由來。
 status: published
 date: 2026-05-18
 ---

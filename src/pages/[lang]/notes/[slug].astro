@@ -24,12 +24,15 @@ const languageLinks = languageOrder
     code,
     href: code === 'zh' ? `/notes/${note.data.routeSlug}/` : `/${code}/notes/${note.data.routeSlug}/`,
   }));
-const alternates = languageLinks.map((link) => ({
-  hreflang: link.code === 'zh' ? 'zh-TW' : link.code,
-  href: link.href,
-}));
+const alternates = [
+  ...languageLinks.map((link) => ({
+    hreflang: link.code === 'zh' ? 'zh-TW' : link.code,
+    href: link.href,
+  })),
+  { hreflang: 'x-default', href: `/notes/${note.data.routeSlug}/` },
+];
 ---
 
-<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} lang={note.data.lang} alternates={alternates}>
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang={note.data.lang} alternates={alternates}>
   <NoteContent note={note} languageLinks={languageLinks} />
 </BaseLayout>

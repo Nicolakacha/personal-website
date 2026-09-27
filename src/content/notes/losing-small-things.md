@@ -3,6 +3,7 @@ title: "一些很小的東西"
 routeSlug: losing-small-things
 translationKey: losing-small-things
 lang: zh
+description: 枯掉的花、丟掉的豆苗、乾掉的小蜘蛛——關於生活裡一邊活著一邊慢慢失去的小事。
 status: published
 date: 2026-07-09
 ---
