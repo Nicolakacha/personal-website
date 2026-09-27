@@ -8,7 +8,7 @@ const { works } = Astro.props;
     {works.map((work) => (
       <li>
         <div class="row">
-          <a href={`/works/${work.data.routeSlug}/`}>{work.data.title}</a>
+          <a href={`/projects/${work.data.routeSlug}/`}>{work.data.title}</a>
           {work.data.nativeTitle && <span class="meta">{work.data.nativeTitle}</span>}
         </div>
         {work.data.deck && <p class="deck meta">{work.data.deck}</p>}
