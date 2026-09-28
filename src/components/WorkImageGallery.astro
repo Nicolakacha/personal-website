@@ -5,7 +5,7 @@ const { sequence, workSlug } = Astro.props;
 const images = sequence.filter((block: any) => block.type === 'image');
 ---
 
-<section class="work-image-gallery" data-work-image-gallery aria-label="Inhabitant Portraits gallery">
+<section class="work-image-gallery" data-work-image-gallery aria-label="Inhabitant portraits gallery">
   <button class="gallery-advance" type="button" aria-label="Show next photograph">
     {images.map((image: any, index: number) => (
       <span class:list={['gallery-slide', { 'is-active': index === 0 }]} aria-hidden={index === 0 ? undefined : 'true'}>

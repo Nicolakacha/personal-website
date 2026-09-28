@@ -1,5 +1,5 @@
 ---
-title: "Inhabitant Portraits"
+title: "Inhabitant portraits"
 titleJa: "住人たちの肖像"
 routeSlug: inhabitant-portraits
 year: "2026"

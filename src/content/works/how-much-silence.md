@@ -1,5 +1,5 @@
 ---
-title: "How Much Silence Can a Space Hold?"
+title: "How much silence can a space hold?"
 titleJa: "空間はどれだけの沈黙を抱えられるか？"
 routeSlug: how-much-silence
 year: "2026"
