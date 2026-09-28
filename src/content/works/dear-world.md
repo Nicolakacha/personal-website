@@ -1,7 +1,7 @@
 ---
-title: "Staring at the Skin of the World Until It Peels Off."
-titleJa: "世界の皮膚を、剥がれるまで見つめる。"
-routeSlug: staring-at-the-skin
+title: "Dear world, I don’t always know what to say to you."
+titleJa: "世界へ。何を話せばいいのか、いつもわかるわけじゃない。"
+routeSlug: dear-world
 year: "2026"
 status: published
 order: 2
