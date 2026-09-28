@@ -11,7 +11,7 @@ interface Props {
 const { about, showLanguageSwitcher = true } = Astro.props;
 const { Content } = await render(about);
 // The Japanese version lives at /jp (a full site, not just this page), so it
-// isn't offered here — it's reached from the "日本語" link in the main nav.
+// isn't offered here — it's reached from the language link in the main nav.
 const links = showLanguageSwitcher ? [
   { code: 'zh' as const, href: '/zh/about/' },
   { code: 'en' as const, href: '/about/' },

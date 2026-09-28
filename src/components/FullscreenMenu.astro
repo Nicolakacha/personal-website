@@ -23,7 +23,9 @@ const isJp = basePath === '/jp';
       <a href={homeHref} aria-current={path === homeHref || path === projectsHref ? 'page' : undefined}>Projects</a>
       <a href={notesHref} aria-current={path.includes(notesHref) ? 'page' : undefined}>Notes</a>
       <a href={aboutHref} aria-current={path.endsWith(aboutHref) ? 'page' : undefined}>About</a>
-      {!isJp && <a class="site-menu-jp-link" href="/jp/">日本語</a>}
+      {isJp
+        ? <a class="site-menu-lang-link" href="/" lang="en">English site</a>
+        : <a class="site-menu-lang-link" href="/jp/" lang="ja">日本語サイト</a>}
     </div>
 
     <div class="site-menu-projects">
@@ -68,7 +70,7 @@ const isJp = basePath === '/jp';
     line-height: 1.2;
     width: fit-content;
   }
-  .site-menu-primary a.site-menu-jp-link {
+  .site-menu-primary a.site-menu-lang-link {
     color: var(--color-muted);
     font-size: var(--font-size-small);
     margin-top: var(--space-2xs);

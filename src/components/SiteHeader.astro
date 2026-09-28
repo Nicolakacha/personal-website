@@ -32,7 +32,7 @@ const isJp = basePath === '/jp';
     <a href={homeHref}>Projects</a>
     <a href={`${basePath}/notes/`}>Notes</a>
     <a href={`${basePath}/about/`}>About</a>
-    {!isJp && <a href="/jp/">日本語</a>}
+    {isJp ? <a href="/" lang="en">English site</a> : <a href="/jp/" lang="ja">日本語サイト</a>}
   </nav>
 </noscript>
 

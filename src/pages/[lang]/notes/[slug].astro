@@ -24,7 +24,7 @@ const hrefFor = (code: typeof languageOrder[number]) =>
   `/${code}/notes/${note.data.routeSlug}/`;
 const availableLanguages = languageOrder.filter((code) => translations.some((entry) => entry.data.lang === code));
 // The Japanese version lives at /jp (a full site), so it isn't offered as a
-// switcher option here — it's reached from the "日本語" link in the main nav.
+// switcher option here — it's reached from the "日本語サイト" link in the main nav.
 const languageLinks = availableLanguages
   .filter((code) => code !== 'ja')
   .map((code) => ({ code, href: hrefFor(code) }));
