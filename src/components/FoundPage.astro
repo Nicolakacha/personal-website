@@ -4,19 +4,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FoundSequence from './FoundSequence.astro';
 import { getAssetOgImage } from '../utils/ogImage';
 
+// One page in two languages: /found/ (en) and /jp/found/ (ja). Only the text differs —
+// meta description, optional intro description and alt text; the photos and order are shared.
+interface Props { lang?: 'en' | 'ja'; }
+const { lang = 'en' } = Astro.props;
+const isJa = lang === 'ja';
 const found = await getEntry('found', 'found');
 if (!found) throw new Error('Missing src/content/found/found.md');
-const { title, description, photos } = found.data;
+const { title, photos } = found.data;
+const description = isJa ? found.data.descriptionJa : found.data.description;
+const metaDescription = description ?? (isJa ? 'Nicolas Teiが見つけ、集めた古い写真。' : 'Found photographs collected by Nicolas Tei.');
+const alternates = [
+  { hreflang: 'en', href: '/found/' },
+  { hreflang: 'ja', href: '/jp/found/' },
+  { hreflang: 'x-default', href: '/found/' },
+];
 const first = photos.find((block) => block.type === 'image');
 const image = first?.type === 'image' ? await getAssetOgImage(`found/${first.src}`, Astro.site) : undefined;
 ---
-<BaseLayout title={`${title} — Nicolas Tei`} description={description ?? 'Found photographs collected by Nicolas Tei.'} image={image}>
+<BaseLayout title={`${title} — Nicolas Tei`} description={metaDescription} image={image} lang={lang} alternates={alternates}>
   <article class="found-article">
     <header class="found-intro text-column">
       <h1>{title}</h1>
       {description && <p class="description">{description}</p>}
     </header>
-    <FoundSequence photos={photos} />
+    <FoundSequence photos={photos} lang={lang} />
   </article>
 </BaseLayout>
 <style>

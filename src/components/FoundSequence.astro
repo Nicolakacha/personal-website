@@ -13,7 +13,7 @@ const MARGIN_MM = 4;
 const FULL_WIDTH_MM = 127 + 2 * MARGIN_MM;
 const CSS_PX_PER_MM = 96 / 25.4;
 
-const { photos } = Astro.props;
+const { photos, lang = 'en' } = Astro.props;
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/found/*.{jpg,jpeg,png}', { eager: true });
 const widthMm = (src: string) => {
   const image = images[`/src/assets/found/${src}`];
@@ -21,7 +21,7 @@ const widthMm = (src: string) => {
   return (image.default.width / FOUND_DPI) * 25.4;
 };
 ---
-<section class="found-sequence" aria-label="Found photographs">
+<section class="found-sequence" aria-label={lang === 'ja' ? '見つけた写真' : 'Found photographs'}>
   {photos.map((block: any, index: number) => {
     if (block.type === 'break') return <SequenceBreak size={block.size} />;
     const mm = widthMm(block.src);
@@ -31,7 +31,7 @@ const widthMm = (src: string) => {
       <figure class="found-photo" style={`--print-mm: ${mm.toFixed(1)}; --print-vw: ${mobileVw.toFixed(2)}`}>
         <ResponsiveImage
           src={block.src}
-          alt={block.alt}
+          alt={lang === 'ja' ? (block.altJa ?? block.alt) : block.alt}
           decorative={block.decorative}
           size="medium"
           collection="found"

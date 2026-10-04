@@ -39,13 +39,13 @@ const works = defineCollection({
 // Found is a single page of found prints (src/content/found/found.md), not a list of series.
 // Photos carry no size: the page sizes each print from its real dimensions (FoundSequence.astro).
 const foundPhoto = z.object({
-  type: z.literal('image'), src: z.string(), alt: z.string().optional(),
+  type: z.literal('image'), src: z.string(), alt: z.string().optional(), altJa: z.string().optional(),
   decorative: z.boolean().default(false), caption: z.string().optional(),
 }).refine((image) => image.decorative || Boolean(image.alt?.trim()), { message: 'alt is required unless decorative: true' });
 const found = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string().default('Found'), description: z.string().optional(),
+    title: z.string().default('Found'), description: z.string().optional(), descriptionJa: z.string().optional(),
     photos: z.array(z.union([foundPhoto, breakBlock])).default([]),
   }),
 });

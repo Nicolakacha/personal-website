@@ -12,7 +12,7 @@ const normalizePath = (path: string) => path === '/' ? path : `${path.replace(/\
 const path = normalizePath(currentPath);
 const homeHref = `${basePath}/`;
 const projectsHref = `${basePath}/projects/`;
-const foundHref = '/found/';
+const foundHref = `${basePath}/found/`;
 const notesHref = `${basePath}/notes/`;
 const aboutHref = `${basePath}/about/`;
 const isJp = basePath === '/jp';
