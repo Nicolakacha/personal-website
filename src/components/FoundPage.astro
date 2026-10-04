@@ -10,7 +10,7 @@ const { title, description, photos } = found.data;
 const first = photos.find((block) => block.type === 'image');
 const image = first?.type === 'image' ? await getAssetOgImage(`found/${first.src}`, Astro.site) : undefined;
 ---
-<BaseLayout title={`${title} — Nicolas Tei`} description={description ?? 'Found photographs collected by Nicolas Tei.'} image={image} noindex>
+<BaseLayout title={`${title} — Nicolas Tei`} description={description ?? 'Found photographs collected by Nicolas Tei.'} image={image}>
   <article class="found-article">
     <header class="found-intro text-column">
       <h1>{title}</h1>

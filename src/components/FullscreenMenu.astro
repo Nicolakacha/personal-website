@@ -12,6 +12,7 @@ const normalizePath = (path: string) => path === '/' ? path : `${path.replace(/\
 const path = normalizePath(currentPath);
 const homeHref = `${basePath}/`;
 const projectsHref = `${basePath}/projects/`;
+const foundHref = '/found/';
 const notesHref = `${basePath}/notes/`;
 const aboutHref = `${basePath}/about/`;
 const isJp = basePath === '/jp';
@@ -21,6 +22,7 @@ const isJp = basePath === '/jp';
   <nav class="site-menu-inner" aria-label="Site directory">
     <div class="site-menu-primary">
       <a href={homeHref} aria-current={path === homeHref || path === projectsHref ? 'page' : undefined}>Projects</a>
+      <a href={foundHref} aria-current={path === foundHref ? 'page' : undefined}>Found</a>
       <a href={notesHref} aria-current={path.includes(notesHref) ? 'page' : undefined}>Notes</a>
       <a href={aboutHref} aria-current={path.endsWith(aboutHref) ? 'page' : undefined}>About</a>
       {isJp

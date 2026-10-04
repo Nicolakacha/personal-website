@@ -6,12 +6,10 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      // Found is hidden from nav and has no content yet. /ja/about and
-      // /ja/notes/* are legacy duplicates of the canonical /jp/about and
-      // /jp/notes/* pages (see their canonicalOverride) — keep those
-      // duplicates out so the sitemap only lists canonical URLs.
+      // /ja/about and /ja/notes/* are legacy duplicates of the canonical
+      // /jp/about and /jp/notes/* pages (see their canonicalOverride) — keep
+      // those duplicates out so the sitemap only lists canonical URLs.
       filter: (page) =>
-        !page.includes('/found/') &&
         !page.endsWith('/ja/about/') &&
         !/\/ja\/notes\/[^/]+\/$/.test(page),
     }),
