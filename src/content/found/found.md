@@ -1,5 +1,7 @@
 ---
 title: "Found"
+description: "Anonymous photographs I have found and collected."
+descriptionJa: "見つけて、集めてきた、撮り手の分からない写真。"
 photos:
   - type: image
     src: "found_13.jpg"

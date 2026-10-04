@@ -57,6 +57,7 @@ const siteJsonLd = {
     {alternates.map((alternate) => (
       <link rel="alternate" hreflang={alternate.hreflang} href={new URL(alternate.href, Astro.site)} />
     ))}
+    <meta property="og:site_name" content="Nicolas Tei" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
