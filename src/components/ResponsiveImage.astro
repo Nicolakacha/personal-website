@@ -9,8 +9,11 @@ interface Props {
   eager?: boolean;
   priority?: boolean;
   collection?: 'works' | 'found';
+  /** Override the size-token defaults (Found sizes each print from its physical size). */
+  widths?: number[];
+  sizes?: string;
 }
-const { src, alt = '', decorative = false, size, eager = false, priority = false, collection = 'works' } = Astro.props;
+const { src, alt = '', decorative = false, size, eager = false, priority = false, collection = 'works', widths: widthsOverride, sizes: sizesOverride } = Astro.props;
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/{works,found}/**/*.{jpg,jpeg,png}',
@@ -37,12 +40,12 @@ const workSizesBySize: Record<Props['size'], string> = {
   large: '(max-width: 767px) 98vw, (max-width: 1079px) 60vw, 40vw',
   full: '(max-width: 767px) 98vw, (max-width: 1079px) 60vw, 40vw',
 };
-const sizes = collection === 'works' ? workSizesBySize[size] : sizesBySize[size];
+const sizes = sizesOverride ?? (collection === 'works' ? workSizesBySize[size] : sizesBySize[size]);
 
 // Widths stop at 1760px on purpose: the largest file a visitor can save is not print-resolution.
 // `width` matters too — without it the <img> fallback src is rendered at the source's full width.
 // Never upscale past the source image's real dimensions (spec §4.4 / §9.2).
-const requestedWidths = widthsBySize[size].filter((w) => w <= image.default.width);
+const requestedWidths = (widthsOverride ?? widthsBySize[size]).filter((w) => w <= image.default.width);
 const widths = requestedWidths.length > 0 ? requestedWidths : [image.default.width];
 ---
 <Picture

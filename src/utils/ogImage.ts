@@ -22,7 +22,12 @@ export async function getEntryOgImage(
 ): Promise<string | undefined> {
   const filename = firstImageFilename(sequence);
   if (!filename) return undefined;
-  const image = images[`/src/assets/${collection}/${routeSlug}/${filename}`];
+  return getAssetOgImage(`${collection}/${routeSlug}/${filename}`, site);
+}
+
+/** Absolute OG image URL for one photo under src/assets (e.g. "found/found_01.jpg"). */
+export async function getAssetOgImage(path: string, site: URL | undefined): Promise<string | undefined> {
+  const image = images[`/src/assets/${path}`];
   if (!image) return undefined;
   const optimized = await getImage({ src: image.default, width: 1200, format: 'jpg' });
   return site ? new URL(optimized.src, site).toString() : optimized.src;

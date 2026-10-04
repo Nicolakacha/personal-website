@@ -1,0 +1,31 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FoundSequence from './FoundSequence.astro';
+import { getAssetOgImage } from '../utils/ogImage';
+
+const found = await getEntry('found', 'found');
+if (!found) throw new Error('Missing src/content/found/found.md');
+const { title, description, photos } = found.data;
+const first = photos.find((block) => block.type === 'image');
+const image = first?.type === 'image' ? await getAssetOgImage(`found/${first.src}`, Astro.site) : undefined;
+---
+<BaseLayout title={`${title} — Nicolas Tei`} description={description ?? 'Found photographs collected by Nicolas Tei.'} image={image} noindex>
+  <article class="found-article">
+    <header class="found-intro text-column">
+      <h1>{title}</h1>
+      {description && <p class="description">{description}</p>}
+    </header>
+    <FoundSequence photos={photos} />
+  </article>
+</BaseLayout>
+<style>
+  /* Same frame as a project page (WorkLayout): pull main's tall top/bottom padding back in. */
+  .found-article { margin-block: calc(var(--space-sm) - var(--space-xl)); }
+  .found-intro { margin-bottom: var(--space-md); }
+  .found-intro .description { margin-top: var(--space-sm); }
+  @media (max-width: 767px) {
+    .found-article { margin-top: 0; }
+    .found-intro { margin-bottom: var(--space-sm); }
+  }
+</style>

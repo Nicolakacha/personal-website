@@ -1,0 +1,59 @@
+---
+import ResponsiveImage from './ResponsiveImage.astro';
+import SequenceBreak from './SequenceBreak.astro';
+
+// Found prints are shown at their physical size, not at a size token:
+// - desktop/tablet: actual size (CSS mm), so a small print reads as a small object;
+// - phone: one shared scale where an L-size print (89 × 127 mm) spans the screen edge to edge,
+//   and every smaller print shrinks in proportion. Anything larger than L is capped at full width.
+// The physical size comes from the file itself: scripts/process-found-scans.py writes every
+// scan out at FOUND_DPI, including the same 4 mm margin around each print.
+const FOUND_DPI = 600;
+const MARGIN_MM = 4;
+const FULL_WIDTH_MM = 127 + 2 * MARGIN_MM;
+const CSS_PX_PER_MM = 96 / 25.4;
+
+const { photos } = Astro.props;
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/found/*.{jpg,jpeg,png}', { eager: true });
+const widthMm = (src: string) => {
+  const image = images[`/src/assets/found/${src}`];
+  if (!image) throw new Error(`Missing found image: ${src}`);
+  return (image.default.width / FOUND_DPI) * 25.4;
+};
+---
+<section class="found-sequence" aria-label="Found photographs">
+  {photos.map((block: any, index: number) => {
+    if (block.type === 'break') return <SequenceBreak size={block.size} />;
+    const mm = widthMm(block.src);
+    const mobileVw = Math.min(100, (mm / FULL_WIDTH_MM) * 100);
+    const desktopPx = Math.round(mm * CSS_PX_PER_MM);
+    return (
+      <figure class="found-photo" style={`--print-mm: ${mm.toFixed(1)}; --print-vw: ${mobileVw.toFixed(2)}`}>
+        <ResponsiveImage
+          src={block.src}
+          alt={block.alt}
+          decorative={block.decorative}
+          size="medium"
+          collection="found"
+          widths={[640, 1080, 1440, 1760]}
+          sizes={`(max-width: 767px) ${mobileVw.toFixed(1)}vw, ${desktopPx}px`}
+          eager={index < 2}
+          priority={index === 0}
+        />
+        {block.caption && <figcaption>{block.caption}</figcaption>}
+      </figure>
+    );
+  })}
+</section>
+<style>
+  .found-sequence { margin: 0 auto; max-width: var(--width-content); }
+  .found-photo { margin: 0 auto var(--space-lg); width: min(100%, calc(var(--print-mm) * 1mm)); }
+  .found-photo:last-child { margin-bottom: 0; }
+  figcaption { color: var(--color-muted); font-size: var(--font-size-small); margin-top: var(--space-2xs); }
+  @media (max-width: 767px) {
+    /* Edge to edge like the continuous project pages: cancel main's side padding. */
+    .found-sequence { margin-inline: calc(var(--space-sm) * -1); }
+    .found-photo { margin-bottom: var(--space-md); width: calc(var(--print-vw) * 1%); }
+    figcaption { padding-inline: var(--space-sm); }
+  }
+</style>
