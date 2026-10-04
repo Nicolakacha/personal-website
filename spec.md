@@ -45,8 +45,7 @@ If a genuinely interactive widget is needed later, Astro's islands architecture 
 ```
 /                       Home (index of works + entry points to Found/Notes/About)
 /works/[slug]/          Individual work page (e.g. /works/almost-home/)
-/found/                 Found index (list of found-photograph pieces)
-/found/[slug]/          Individual found piece (same sequence grammar as a work)
+/found/                 Found — one page of found prints (§3.6); Japanese at /jp/found/
 /notes/                 Notes index
 /notes/[slug]/          Individual note
 /about/                 About page
@@ -231,23 +230,24 @@ Email
 
 ---
 
-### 3.6 Found index (`/found/`) and Found piece (`/found/[slug]/`)
+### 3.6 Found (`/found/`)
 
-Added after v1: a section for photographs the photographer found or was given rather than made themselves (old prints, someone else's negatives, images "found" in the colloquial photo-book sense) — distinct enough in authorship/intent from `works` that it gets its own content collection and route tree instead of being folded into the works index.
+A section for photographs the photographer found rather than made (old vernacular prints by unknown photographers) — distinct enough in authorship from `works` that it gets its own content and route instead of being folded into the works index. Revised after launch from "an index of found series" to **one single page**: found prints arrive a few at a time from mixed sources, so forcing them into titled series would make them read like the photographer's own projects.
 
-**`/found/` index — content and layout**
+**Content and layout**
 
-- Structurally identical to Home's work index (§3.1): a plain list of `title`, `year` (trailing edge, `--color-muted`), optional `nativeTitle` after the year, optional one-line `deck` beneath the title. `status: hidden` entries are excluded entirely.
-- Unlike Home, this index has a visible `<h1>Found</h1>` (Home's own `<h1>` is visually hidden per §10 — Found's is not, since nothing else on this page needs to be the visual anchor the way Home's index does).
-- Sort order: `order` ascending, then `year` descending, then `title` alphabetical — same rule as Home (§6.1).
-- Empty state: if zero found pieces are published, the index still renders (heading only), same non-404 rule as Notes (§3.3).
+- One page: a visible `<h1>Found</h1>` (optional `description` beneath it), then every photo in authored order. Same page frame as a project page (WorkLayout's intro spacing). No per-photo titles; optional `caption`.
+- Only `image` and `break` blocks (§5). There is no `size`/`align`/`pair`: each print is sized from its **physical dimensions** instead of a size token:
+  - **≥ 768px:** actual size (`width: <print width> mm` in CSS), so a 4 cm print reads as a small object next to an L-size one.
+  - **< 768px:** one shared scale where an L-size print (89 × 127 mm) spans the screen edge to edge (same edge-to-edge treatment as the continuous project pages); smaller prints shrink in proportion; anything larger than L is capped at full width.
+  - Never wider than the content column.
+- Gaps: `--space-lg` between prints on desktop, `--space-md` on phones — more air than a continuous project, because the prints are much smaller than project photographs.
+- Indexable (no `noindex`), listed in the sitemap, and linked from the site menu.
+- Two languages, one page: `/found/` (en) and `/jp/found/` (ja, linked from the Japanese menu), cross-linked with hreflang (`x-default` → `/found/`). Only text differs — meta description, optional `description`/`descriptionJa`, and per-photo `alt`/`altJa`; photos and order are shared. No zh version (only About has one).
 
-**`/found/[slug]/` piece — content and layout**
+**Assets**
 
-- Renders with the exact same photography layout grammar as a work page (§5): `sequence` of `image`/`pair`/`break` blocks, same size/align/gapAfter vocabulary, same no-lightbox/no-animation interaction rules (§3.2).
-- Title, optional `nativeTitle`, year, optional `description` render the same way as a work page's intro block.
-- The one schema difference from `works` is an optional `provenance` field (§6.1a) — a short plain-text line (e.g. "Found in a secondhand shop, Ōsaka, 2025.") rendered as a second muted line beneath the description, in the same `.meta` treatment as the year line. This is the one place the site records how an image came to the photographer rather than what it depicts — deliberately kept to plain text, not a structured citation format.
-- Assets live under `src/assets/found/[slug]/` (parallel to `src/assets/works/[slug]/`, §8), kept in a separate top-level asset folder so found-photograph masters are never intermixed with the photographer's own authored work in the repo.
+- Scans are kept outside git in `_originals_backup/founds/` (A4 sheets, several prints each, 1200 dpi). `scripts/process-found-scans.py` splits them into `src/assets/found/found_NN.jpg`: deskew, keep each print's own worn/rounded edges, place it on a flat 4 mm margin (identical on every side of every print), conservative dust removal (small, sharp, neutral, isolated specks in smooth areas only — scratches, foxing, stains and anything printed into the photo are kept; classical inpainting, no generative model), and save at **600 dpi** so pixel width ↔ physical size is fixed. `FoundSequence.astro` relies on that 600 dpi + 4 mm convention.
 
 ---
 
@@ -566,31 +566,27 @@ Notes:
 
 ### 6.1a `found` collection
 
-A separate collection for found/appropriated photographs (§3.6) — deliberately not folded into `works`, since these pieces are not authored by the photographer and the site keeps that distinction visible via a separate section rather than a shared list with a status flag.
+A single entry, `src/content/found/found.md` (§3.6).
 
 ```typescript
+const foundPhoto = z.object({
+  type: z.literal('image'), src: z.string(),   // file name under src/assets/found/
+  alt: z.string().optional(), altJa: z.string().optional(),   // alt required unless decorative; altJa for /jp/found/
+  decorative: z.boolean().default(false),
+  caption: z.string().optional(),
+});
 export const found = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
-    nativeTitle: z.string().optional(),
-    routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
-    year: z.string(),
-    status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'),
-    order: z.number().default(0),
-    deck: z.string().max(140).optional(),
-    description: z.string().optional(),
-    provenance: z.string().optional(),   // e.g. "Found in a secondhand shop, Ōsaka, 2025." — see §3.6
-    sequence: z.array(sequenceBlock).default([]),
+    title: z.string().default('Found'),
+    description: z.string().optional(), descriptionJa: z.string().optional(),
+    photos: z.array(z.union([foundPhoto, breakBlock])).default([]),
   }),
 });
 ```
 
-Notes:
-
-- Reuses the exact same `sequenceBlock` union as `works` (§6.1) — `found` pieces are laid out with the identical `image`/`pair`/`break` grammar (§5), so no separate layout vocabulary was introduced for this collection.
-- The only field `found` has that `works` doesn't is `provenance`; the only field `works` has that `found` doesn't is `location`. Everything else (including the `status`/`order`/sort behavior) is identical to §6.1's notes above.
-- Assets for this collection live under `src/assets/found/[slug]/`, resolved the same way as `src/assets/works/[slug]/` (§8) but from a separate top-level folder, keyed by an explicit `collection: 'works' | 'found'` prop threaded through `Sequence.astro` → `SequenceImage.astro`/`SequencePair.astro` → `ResponsiveImage.astro`, so the same image-resolution code serves both collections instead of being duplicated per collection.
+- No `size`: display size comes from the file's pixel width at 600 dpi (§3.6).
+- Assets live flat in `src/assets/found/`, resolved through `ResponsiveImage.astro` with `collection: 'found'` and per-print `widths`/`sizes` overrides.
 
 ### 6.2 `notes` collection
 
@@ -680,8 +676,7 @@ src/components/
   SiteHeader.astro        Global nav (title + Found/Notes/About links, aria-current on the active one)
   SiteFooter.astro        Copyright line, Instagram/email links, minimal
   WorkIndexList.astro     Renders the Home page's list of works (title, year, deck)
-  FoundIndexList.astro    Renders the Found index list (title, year, deck) — same shape as WorkIndexList,
-                           kept as a separate component rather than a shared/parameterized one (§7 note below)
+  FoundSequence.astro     Renders the Found page's prints at physical size (§3.6)
   NotesIndexList.astro    Renders the Notes index list (date, title)
   Sequence.astro          Iterates a `sequence` array, dispatches per block type; takes a `collection`
                            prop ('works' | 'found', default 'works') threaded down to ResponsiveImage
@@ -696,7 +691,7 @@ src/components/
 
 Component responsibilities are kept to exactly what's listed — no generic `<Card>`, `<Container>`, `<Section>`, or `<Grid>` components exist, because the design has no card/grid concept (source §6, §28: avoid fragmenting every HTML element into a component).
 
-`WorkIndexList.astro`/`FoundIndexList.astro` were implemented as two separate components rather than one generic `IndexList` taking a collection prop — the two lists are identical in markup today, but keeping them separate leaves room for the Found index to diverge later (e.g. showing `provenance`) without threading conditional branches through a shared component. Revisit only if a third identical list appears.
+(An earlier `FoundIndexList.astro` was removed when Found became a single page, §3.6.)
 
 `Sequence.astro` responsibility: given `sequence: SequenceBlock[]` and a `collection`, render each block via a conditional on `type`, passing `gapAfter` down as a CSS custom property (`style={`--gap-after: var(--space-${gapMap[block.gapAfter]})`}`) consumed by a shared `margin-block-end` rule, and forwarding `workSlug`/`collection` to each block component so it can resolve its own image paths — this keeps spacing and asset-resolution logic in one place rather than duplicated per block component.
 
@@ -715,13 +710,11 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 │  ├─ components/            (§7)
 │  ├─ layouts/
 │  │  ├─ BaseLayout.astro    <head>, header, footer, SEO tags
-│  │  ├─ WorkLayout.astro    BaseLayout + work-page-specific title/description block
-│  │  └─ FoundLayout.astro   BaseLayout + found-piece title/description/provenance block (§3.6)
+│  │  └─ WorkLayout.astro    BaseLayout + work-page-specific title/description block
 │  ├─ pages/
 │  │  ├─ index.astro                 → /
 │  │  ├─ works/[slug].astro          → /works/[slug]/
 │  │  ├─ found/index.astro           → /found/
-│  │  ├─ found/[slug].astro          → /found/[slug]/
 │  │  ├─ notes/index.astro           → /notes/
 │  │  ├─ notes/[slug].astro          → /notes/[slug]/
 │  │  ├─ about.astro                 → /about/
@@ -755,7 +748,7 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
    └─ og-default.jpg
 ```
 
-- Source images live under `src/assets/works/[slug]/` or `src/assets/found/[slug]/` (not `public/`) specifically so Astro's build-time image pipeline (`astro:assets`) processes every reference — anything placed in `public/` bypasses optimization entirely and must never be used for photographic content.
+- Source images live under `src/assets/works/[slug]/` or `src/assets/found/` (not `public/`) specifically so Astro's build-time image pipeline (`astro:assets`) processes every reference — anything placed in `public/` bypasses optimization entirely and must never be used for photographic content.
 - `sequence[].src` in frontmatter is a filename relative to that entry's asset folder; `ResponsiveImage.astro` resolves it via a single Vite `import.meta.glob` over `src/assets/{works,found}/**/*.{jpg,jpeg,png}` keyed by relative path, then looks up `` `/src/assets/${collection}/${src}` `` — one glob shared across both collections, rather than requiring a static `import` statement per image in a `.astro` file (which doesn't scale to dozens of photographs per work) or a separate glob per collection.
 
 ---
@@ -764,7 +757,7 @@ Component responsibilities are kept to exactly what's listed — no generic `<Ca
 
 ### 9.1 Source expectations
 
-- Archive masters (TIFF or high-res JPEG) are never committed to the web repository. Only web-ready derivatives that Astro will further process are committed under `src/assets/works/[slug]/` or `src/assets/found/[slug]/`.
+- Archive masters (TIFF or high-res JPEG) are never committed to the web repository. Only web-ready derivatives that Astro will further process are committed under `src/assets/works/[slug]/` or `src/assets/found/` (found scans: see §3.6).
 - Accepted input format for the pipeline: high-quality JPEG (quality ≥ 90 at source) or PNG, sRGB color profile embedded or convertible to sRGB at ingestion. Do not commit TIFFs into the repo (they bloat the git history and are unnecessary for a static site build).
 - Ingestion step (manual or scripted, outside the site build): from a TIFF master, export an sRGB JPEG at the image's true pixel dimensions (do not pre-downscale below what `full` size could ever need at the widest supported viewport × device-pixel-ratio — practically, ~2560px on the long edge is a sufficient ceiling given `--image-full-max` tops out at 1280 CSS px and accounting for 2x DPR).
 
@@ -821,8 +814,8 @@ Using Astro's built-in `astro:assets` (Sharp-based) image service:
 ## 11. SEO / Metadata
 
 - `BaseLayout.astro` sets, per page: `<title>`, `<meta name="description">` (from `deck`/`description` where present, else a page-specific fallback — Home has its own written description rather than sharing the site-wide default; never keyword-stuffed), canonical `<link rel="canonical">`, `<meta name="theme-color" content="#1B1917">`, Open Graph (`og:title`, `og:description`, `og:image`, `og:type`, `og:url`), and matching Twitter Card tags (`twitter:card` = `summary_large_image`, `twitter:title`, `twitter:description`, `twitter:image`) — added because Twitter/X doesn't reliably fall back to Open Graph alone.
-- `og:image`/`twitter:image`: revised from the original v1 plan — a work or found piece now automatically uses **its own first sequence photo** as the share-preview image (`src/utils/ogImage.ts` resolves the first `image`/`pair` block's photo through `astro:assets`' `getImage`, re-encoded at 1200px wide, absolute URL via `Astro.site`), falling back to the static `public/og-default.jpg` only when a piece has no sequence yet. `WorkLayout.astro`/`FoundLayout.astro` also pass `type="article"` (Home/Notes/About stay `type="website"`, the `BaseLayout` default).
-- `sitemap-index.xml` via `@astrojs/sitemap` integration, excluding any `status: hidden` work/note/found routes (they aren't built, so this is automatic) **and, additionally, all of `/found/`** via the integration's `filter` option in `astro.config.mjs` — Found is hidden from nav with no content yet (§3.6), so its routes are deliberately kept out of search indexing even though they still build. `FoundLayout.astro` and the Found index page also set `<meta name="robots" content="noindex">` (a `noindex` prop on `BaseLayout`) as a second line of defense in case a Found URL is ever discovered outside the sitemap.
+- `og:image`/`twitter:image`: revised from the original v1 plan — a work (and the Found page) now automatically uses **its own first photo** as the share-preview image (`src/utils/ogImage.ts` resolves the first `image`/`pair` block's photo through `astro:assets`' `getImage`, re-encoded at 1200px wide, absolute URL via `Astro.site`), falling back to the static `public/og-default.jpg` only when a piece has no sequence yet. `WorkLayout.astro` also passes `type="article"` (Home/Notes/About stay `type="website"`, the `BaseLayout` default).
+- `sitemap-index.xml` via `@astrojs/sitemap` integration, excluding any `status: hidden` work/note routes (they aren't built, so this is automatic) and the legacy `/ja/` duplicates (`filter` in `astro.config.mjs`). `/found/` was excluded and `noindex`ed while it had no content; since it went live (§3.6) it is indexed and listed like any other page.
 - `robots.txt` present, allowing all, pointing at the sitemap.
 - Structured data (JSON-LD): revised from the original v1 decision — `BaseLayout.astro` now emits a sitewide `WebSite` + `Person` graph (name, url, `jobTitle: "Photographer"`) on every page, to support richer search results for the photographer's name. Per-work `CreativeWork`/`ImageObject` structured data was considered but not added — the marginal SEO value didn't justify the added complexity given the per-work OG image already covers the main sharing use case.
 
@@ -879,7 +872,7 @@ Codex must **not** implement any of the following, even if they seem like natura
 
 **Found**
 - [ ] Renders only `published`/`ongoing` found pieces, same sort rule as Home (`order` then `year` desc then `title`).
-- [ ] `status: hidden` found piece produces no route in `astro build` output (`dist/found/[slug]/` absent), same as a hidden work.
+- [ ] `/found/` builds with every photo in `found.md`, has no `noindex`, and appears in the sitemap.
 - [ ] A found piece's sequence renders with the identical size/align/gapAfter/pair rules as a work page — no visual or behavioral divergence beyond the optional `provenance` line.
 - [ ] `/found/` still renders (heading only) with zero published entries — never a 404, never a "coming soon" message.
 
