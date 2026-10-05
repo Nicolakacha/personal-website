@@ -4,6 +4,11 @@ description: "When I go to flea markets and antique markets, I look for old phot
 descriptionJa: "蚤の市や骨董市に行くと、古い写真がないか探す。どれも、なぜ売りに出されたのかは分からない。ここに載せているのは、そうして集めてきた写真だ。撮った人も、写っている人も、いつ撮られたのかも分からない。"
 photos:
   - type: image
+    src: "found_20.jpg"
+    alt: "Women in kimono seated in a room beneath a painting of Mount Fuji."
+    altJa: "富士山の絵の下、部屋に座る着物の女性たち。"
+
+  - type: image
     src: "found_13.jpg"
     alt: "A shirtless young man in sunglasses lies on tatami."
     altJa: "サングラスをかけ、上半身裸で畳に寝転ぶ若い男性。"
@@ -22,6 +27,11 @@ photos:
     src: "found_18.jpg"
     alt: "A child in a striped shirt stands on an apartment walkway above a town."
     altJa: "町を見下ろすアパートの廊下に立つボーダーシャツの子ども。"
+
+  - type: image
+    src: "found_17.jpg"
+    alt: "A child with a backpack stands in a field before green hills."
+    altJa: "緑の山々を背に、野原に立つリュックの子ども。"
 
   - type: image
     src: "found_12.jpg"
@@ -62,11 +72,6 @@ photos:
     altJa: "地面に長い影を落とし、両腕を上げるデニムの幼い子ども。"
 
   - type: image
-    src: "found_20.jpg"
-    alt: "Women in kimono seated in a room beneath a painting of Mount Fuji."
-    altJa: "富士山の絵の下、部屋に座る着物の女性たち。"
-
-  - type: image
     src: "found_04.jpg"
     alt: "Children playing ball in a yard beside sheds and a bicycle."
     altJa: "小屋と自転車のある庭でボール遊びをする子どもたち。"
@@ -100,11 +105,6 @@ photos:
     src: "found_28.jpg"
     alt: "Three women eat at a round table crowded with dishes."
     altJa: "料理で埋まった丸いテーブルで食事をする三人の女性。"
-
-  - type: image
-    src: "found_17.jpg"
-    alt: "A child with a backpack stands in a field before green hills."
-    altJa: "緑の山々を背に、野原に立つリュックの子ども。"
 
   - type: break
     size: pause
