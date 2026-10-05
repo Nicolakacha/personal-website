@@ -1,7 +1,7 @@
 ---
 title: "Found"
-description: "Anonymous photographs I have found and collected."
-descriptionJa: "見つけて、集めてきた、撮り手の分からない写真。"
+description: "When I go to flea markets and antique markets, I look for old photographs. I don't know why any of them ended up for sale. These are the ones I've collected. I don't know who took them, who is in them, or when they were taken."
+descriptionJa: "蚤の市や骨董市に行くと、古い写真がないか探す。どれも、なぜ売りに出されたのかは分からない。ここに載せているのは、そうして集めてきた写真だ。撮った人も、写っている人も、いつ撮られたのかも分からない。"
 photos:
   - type: image
     src: "found_13.jpg"
