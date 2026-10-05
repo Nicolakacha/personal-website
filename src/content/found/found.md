@@ -5,8 +5,8 @@ descriptionJa: "蚤の市や骨董市に行くと、古い写真がないか探�
 photos:
   - type: image
     src: "found_20.jpg"
-    alt: "Women in kimono seated in a room beneath a painting of Mount Fuji."
-    altJa: "富士山の絵の下、部屋に座る着物の女性たち。"
+    alt: "Past two blurred women in the foreground, a woman in kimono sits beneath a painting of Mount Fuji."
+    altJa: "手前のぼやけた二人の女性の向こう、富士山の絵の下に座る着物の女性。"
 
   - type: image
     src: "found_13.jpg"
