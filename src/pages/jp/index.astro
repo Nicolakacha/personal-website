@@ -15,6 +15,11 @@ const mobileBackground = await getImage({ src: homeMobileBackground, format: 'we
   mobileBackgroundImage={mobileBackground.src}
   transparentNav
   lang="ja"
+  alternates={[
+    { hreflang: 'en', href: '/' },
+    { hreflang: 'ja', href: '/jp/' },
+    { hreflang: 'x-default', href: '/' },
+  ]}
 >
   <section class="page-grid">
     <h1 class="sr-only">Projects</h1>

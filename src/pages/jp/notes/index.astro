@@ -12,6 +12,11 @@ const notes = (await getCollection('notes', ({ data }) => data.status === 'publi
   description="写真家 Nicolas Tei によるノート。日々の記録と、短い文章。"
   bodyClass="footer-after-fold"
   lang="ja"
+  alternates={[
+    { hreflang: 'zh-TW', href: '/notes/' },
+    { hreflang: 'ja', href: '/jp/notes/' },
+    { hreflang: 'x-default', href: '/notes/' },
+  ]}
 >
   <section class="text-column">
     <h1>Notes</h1>

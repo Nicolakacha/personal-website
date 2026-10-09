@@ -13,6 +13,11 @@ const mobileBackground = await getImage({ src: homeMobileBackground, format: 'we
   description="Photography by Nicolas Tei — sequences of photographs presented as a photo-book, based in Japan."
   mobileBackgroundImage={mobileBackground.src}
   transparentNav
+  alternates={[
+    { hreflang: 'en', href: '/' },
+    { hreflang: 'ja', href: '/jp/' },
+    { hreflang: 'x-default', href: '/' },
+  ]}
 >
   <section class="page-grid">
     <h1 class="sr-only">Projects</h1>

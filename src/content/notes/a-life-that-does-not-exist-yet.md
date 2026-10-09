@@ -3,6 +3,7 @@ title: "還不存在的生活"
 routeSlug: a-life-that-does-not-exist-yet
 translationKey: a-life-that-does-not-exist-yet
 lang: zh
+description: 只去過兩次的地方，卻開始替一種還不存在的生活補上細節。
 status: published
 date: 2026-06-15
 ---

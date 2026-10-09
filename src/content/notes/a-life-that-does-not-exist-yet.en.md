@@ -3,6 +3,7 @@ title: "A Life That Doesn't Exist Yet"
 routeSlug: a-life-that-does-not-exist-yet
 translationKey: a-life-that-does-not-exist-yet
 lang: en
+description: I've only been there twice, and yet I've started filling in the details of a life that doesn't exist yet.
 status: published
 date: 2026-06-15
 ---

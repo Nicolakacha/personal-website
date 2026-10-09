@@ -5,7 +5,7 @@ import NoteContent from '../../../components/NoteContent.astro';
 
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) =>
-    data.status === 'published' && (data.lang === 'en' || data.lang === 'ja')
+    data.status === 'published' && data.lang === 'en'
   );
   return notes.map((note) => ({
     params: { lang: note.data.lang, slug: note.data.routeSlug },
@@ -35,11 +35,8 @@ const alternates = [
   })),
   { hreflang: 'x-default', href: `/notes/${note.data.routeSlug}/` },
 ];
-// This page's own /ja/notes/{slug}/ URL is now a legacy duplicate of the
-// canonical /jp/notes/{slug}/ page; /en/notes/{slug}/ is unaffected.
-const canonicalOverride = note.data.lang === 'ja' ? `/jp/notes/${note.data.routeSlug}/` : undefined;
 ---
 
-<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang={note.data.lang} alternates={alternates} canonicalOverride={canonicalOverride}>
+<BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} lang={note.data.lang} alternates={alternates}>
   <NoteContent note={note} languageLinks={languageLinks} />
 </BaseLayout>

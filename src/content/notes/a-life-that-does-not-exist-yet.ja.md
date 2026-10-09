@@ -3,6 +3,7 @@ title: "まだ存在しない生活"
 routeSlug: a-life-that-does-not-exist-yet
 translationKey: a-life-that-does-not-exist-yet
 lang: ja
+description: まだ二回しか行ったことのない場所で、まだ存在しない生活に細部を足しはじめている。
 status: published
 date: 2026-06-15
 ---

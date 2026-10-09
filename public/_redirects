@@ -6,3 +6,6 @@
 /jp/projects/staring-at-the-skin  /jp/projects/dear-world/  301
 /works/   /projects/   301
 /works/*  /projects/:splat  301
+/ja/about/  /jp/about/  301
+/ja/about  /jp/about/  301
+/ja/notes/*  /jp/notes/:splat  301
