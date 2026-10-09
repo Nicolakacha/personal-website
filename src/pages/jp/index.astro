@@ -10,7 +10,7 @@ const jpWorks = withJapaneseTitles(works);
 const mobileBackground = await getImage({ src: homeMobileBackground, format: 'webp', width: 1200, quality: 72 });
 ---
 <BaseLayout
-  title="Nicolas Tei"
+  title="Nicolas Tei — 大阪を拠点に活動する写真家"
   description="写真家 Nicolas Teiの作品。日本を拠点に制作された、フォトブックとして構成される写真のシークエンス。"
   mobileBackgroundImage={mobileBackground.src}
   transparentNav
@@ -22,7 +22,7 @@ const mobileBackground = await getImage({ src: homeMobileBackground, format: 'we
   ]}
 >
   <section class="page-grid">
-    <h1 class="sr-only">Projects</h1>
+    <h1 class="sr-only">Nicolas Tei</h1>
     <WorkIndexList works={jpWorks} dividers basePath="/jp/projects" />
   </section>
 </BaseLayout>

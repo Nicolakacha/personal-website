@@ -32,7 +32,7 @@ const works = defineCollection({
     title: z.string(), nativeTitle: z.string().optional(), titleJa: z.string().optional(),
     routeSlug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/), year: z.string(),
     status: z.enum(['published', 'hidden', 'ongoing']).default('hidden'), order: z.number().default(0),
-    deck: z.string().max(140).optional(), description: z.string().optional(), location: z.string().optional(), equipment: z.array(z.string()).optional(), equipmentPosition: z.enum(['afterSequence', 'beforeLastImage']).optional(),
+    deck: z.string().max(140).optional(), deckJa: z.string().max(140).optional(), description: z.string().optional(), location: z.string().optional(), equipment: z.array(z.string()).optional(), equipmentPosition: z.enum(['afterSequence', 'beforeLastImage']).optional(),
     sequence,
   }),
 });

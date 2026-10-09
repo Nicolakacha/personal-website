@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import ProjectEquipment from '../components/ProjectEquipment.astro';
 import { getEntryOgImage } from '../utils/ogImage';
+import { workDescription, workStructuredData } from '../utils/seo';
 const { work, titleOverride, lang, noindex } = Astro.props;
 const displayTitle = titleOverride ?? work.data.title;
 // /projects/{slug}/ and /jp/projects/{slug}/ share the same photographs, so
@@ -12,13 +13,17 @@ const alternates = [
   { hreflang: 'x-default', href: `/projects/${work.data.routeSlug}/` },
 ];
 const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'works', Astro.site);
+const pageLang = lang === 'ja' ? 'ja' : 'en';
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const description = workDescription(work, pageLang);
+const structuredData = [workStructuredData(work, canonicalUrl, pageLang, image)];
 const mobileEdgeToEdgeWorks = new Set([
   'how-much-silence',
   'dear-world',
   'the-room-was-not-dark',
 ]);
 ---
-<BaseLayout title={`${displayTitle} — Nicolas Tei`} description={work.data.deck ?? work.data.description} image={image} type="article" lang={lang} noindex={noindex} alternates={alternates}>
+<BaseLayout title={`${displayTitle} — Nicolas Tei`} description={description} image={image} structuredData={structuredData} type="article" lang={lang} noindex={noindex} alternates={alternates}>
   <article class:list={['work-article', { 'mobile-edge-to-edge': mobileEdgeToEdgeWorks.has(work.data.routeSlug) }]}>
     <header class="work-intro text-column">
       <h1>{displayTitle}</h1>

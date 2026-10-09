@@ -9,7 +9,7 @@ const works = await getVisibleWorks();
 const mobileBackground = await getImage({ src: homeMobileBackground, format: 'webp', width: 1200, quality: 72 });
 ---
 <BaseLayout
-  title="Nicolas Tei"
+  title="Nicolas Tei — Photographer based in Osaka, Japan"
   description="Photography by Nicolas Tei — sequences of photographs presented as a photo-book, based in Japan."
   mobileBackgroundImage={mobileBackground.src}
   transparentNav
@@ -20,7 +20,7 @@ const mobileBackground = await getImage({ src: homeMobileBackground, format: 'we
   ]}
 >
   <section class="page-grid">
-    <h1 class="sr-only">Projects</h1>
+    <h1 class="sr-only">Nicolas Tei</h1>
     <WorkIndexList works={works} dividers />
   </section>
 </BaseLayout>

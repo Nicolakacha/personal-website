@@ -4,8 +4,9 @@ import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-standa
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { getVisibleWorks, withJapaneseTitles } from '../utils/works';
+import { INSTAGRAM_URL, PERSON_ID } from '../utils/seo';
 
-interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; mobileBackgroundImage?: string; transparentNav?: boolean; canonicalOverride?: string; }
+interface Props { title: string; description?: string; image?: string; type?: 'website' | 'article'; noindex?: boolean; bodyClass?: string; lang?: string; alternates?: { hreflang: string; href: string }[]; mobileBackgroundImage?: string; transparentNav?: boolean; canonicalOverride?: string; structuredData?: Record<string, unknown>[]; publishedTime?: Date; }
 const {
   title,
   description = 'Photographs and notes by Nicolas Tei.',
@@ -18,26 +19,41 @@ const {
   mobileBackgroundImage,
   transparentNav = false,
   canonicalOverride,
+  structuredData = [],
+  publishedTime,
 } = Astro.props;
 const canonical = new URL(canonicalOverride ?? Astro.url.pathname, Astro.site);
 const works = await getVisibleWorks();
 const isJp = Astro.url.pathname === '/jp' || Astro.url.pathname.startsWith('/jp/');
 const navBasePath = isJp ? '/jp' : '';
 const navWorks = isJp ? withJapaneseTitles(works) : works;
+const ogLocales: Record<string, string> = { en: 'en_US', ja: 'ja_JP', 'zh-TW': 'zh_TW', zh: 'zh_TW' };
+const ogLocale = ogLocales[lang] ?? 'en_US';
+const ogAlternateLocales = [...new Set(alternates
+  .filter((alternate) => alternate.hreflang !== 'x-default')
+  .map((alternate) => ogLocales[alternate.hreflang])
+  .filter((locale): locale is string => Boolean(locale) && locale !== ogLocale))];
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'WebSite',
+      '@id': new URL('/#website', Astro.site).toString(),
       name: 'Nicolas Tei',
       url: Astro.site?.toString(),
+      inLanguage: ['en', 'ja', 'zh-TW'],
+      publisher: { '@id': PERSON_ID },
     },
     {
       '@type': 'Person',
+      '@id': PERSON_ID,
       name: 'Nicolas Tei',
       url: Astro.site?.toString(),
       jobTitle: 'Photographer',
+      homeLocation: { '@type': 'Place', name: 'Osaka, Japan' },
+      sameAs: [INSTAGRAM_URL],
     },
+    ...structuredData,
   ],
 };
 ---
@@ -63,6 +79,9 @@ const siteJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    {ogAlternateLocales.map((locale) => <meta property="og:locale:alternate" content={locale} />)}
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
