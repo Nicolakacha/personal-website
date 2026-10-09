@@ -2,14 +2,14 @@
 import SequenceBreak from './SequenceBreak.astro';
 import SequenceImage from './SequenceImage.astro';
 import SequencePair from './SequencePair.astro';
-const { sequence, workSlug, collection = 'works', viewportFrames: viewportFramesProp } = Astro.props;
+const { sequence, workSlug, collection = 'works', viewportFrames: viewportFramesProp, lang } = Astro.props;
 const requestedViewportFrames = viewportFramesProp ?? collection === 'works';
 const viewportFrames = requestedViewportFrames !== false;
 ---
 <section class="sequence" aria-label="Photograph sequence">
   {sequence.map((block: any, index: number) => {
     const isLast = index === sequence.length - 1;
-    return block.type === 'image' ? <SequenceImage block={block} index={index} workSlug={workSlug} collection={collection} isLast={isLast} viewportFrame={viewportFrames} showScrollHint={viewportFrames && index === 0} /> : block.type === 'pair' ? <SequencePair block={block} index={index} workSlug={workSlug} collection={collection} isLast={isLast} viewportFrame={viewportFrames} showScrollHint={viewportFrames && index === 0} /> : <SequenceBreak size={block.size} />;
+    return block.type === 'image' ? <SequenceImage block={block} index={index} workSlug={workSlug} collection={collection} lang={lang} isLast={isLast} viewportFrame={viewportFrames} showScrollHint={viewportFrames && index === 0} /> : block.type === 'pair' ? <SequencePair block={block} index={index} workSlug={workSlug} collection={collection} lang={lang} isLast={isLast} viewportFrame={viewportFrames} showScrollHint={viewportFrames && index === 0} /> : <SequenceBreak size={block.size} />;
   })}
 </section>
 <script>

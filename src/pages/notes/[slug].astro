@@ -31,7 +31,7 @@ const alternates = [
   })),
   { hreflang: 'x-default', href: `/notes/${note.data.routeSlug}/` },
 ];
-const structuredData = [noteStructuredData(note, new URL(Astro.url.pathname, Astro.site))];
+const structuredData = noteStructuredData(note, new URL(Astro.url.pathname, Astro.site));
 ---
 <BaseLayout title={`${note.data.title ?? 'Note'} — Nicolas Tei`} description={note.data.description} type="article" publishedTime={note.data.date} structuredData={structuredData} lang="zh-TW" alternates={alternates}>
   <NoteContent note={note} languageLinks={languageLinks} />

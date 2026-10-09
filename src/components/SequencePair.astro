@@ -1,12 +1,12 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug, collection = 'works', isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
+const { block, index, workSlug, collection = 'works', lang, isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
 const ratioClass = `ratio-${block.ratio}`;
 const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'sm';
 const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
 ---
 <figure class:list={['sequence-pair', `size-${block.size}`, ratioClass, `gap-${block.gapAfter}`, { 'work-frame': viewportFrame, 'is-first': index === 0, 'is-last': isLast }]} style={`--gap-after: ${gapValue}`}>
-  {block.images.map((image: any, imageIndex: number) => <div><ResponsiveImage src={`${workSlug}/${image.src}`} alt={image.alt} decorative={image.decorative} size={block.size} eager={index < 2} priority={index === 0 && imageIndex === 0} collection={collection} /></div>)}
+  {block.images.map((image: any, imageIndex: number) => <div><ResponsiveImage src={`${workSlug}/${image.src}`} alt={lang === 'ja' ? (image.altJa ?? image.alt) : image.alt} decorative={image.decorative} size={block.size} eager={index < 2} priority={index === 0 && imageIndex === 0} collection={collection} /></div>)}
   {block.caption && <figcaption>{block.caption}</figcaption>}
   {showScrollHint && <span class="scroll-hint" data-scroll-hint aria-hidden="true">↓</span>}
 </figure>

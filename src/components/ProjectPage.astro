@@ -22,18 +22,20 @@ const equipmentBeforeLastImage = work.data.equipmentPosition === 'beforeLastImag
 ---
 <WorkLayout work={work} titleOverride={titleOverride} lang={lang} noindex={noindex}>
   {work.data.routeSlug === 'inhabitant-portraits'
-    ? <WorkImageGallery sequence={work.data.sequence} workSlug={work.data.routeSlug} />
+    ? <WorkImageGallery sequence={work.data.sequence} workSlug={work.data.routeSlug} lang={lang} />
     : equipmentBeforeLastImage ? (
       <>
         <Sequence
           sequence={work.data.sequence.slice(0, -1)}
           workSlug={work.data.routeSlug}
+          lang={lang}
           viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
         />
         <ProjectEquipment items={equipmentBeforeLastImage} />
         <Sequence
           sequence={work.data.sequence.slice(-1)}
           workSlug={work.data.routeSlug}
+          lang={lang}
           viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
         />
       </>
@@ -41,6 +43,7 @@ const equipmentBeforeLastImage = work.data.equipmentPosition === 'beforeLastImag
       <Sequence
         sequence={work.data.sequence}
         workSlug={work.data.routeSlug}
+        lang={lang}
         viewportFrames={!continuousSequenceWorks.has(work.data.routeSlug)}
       />
     )}

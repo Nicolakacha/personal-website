@@ -1,6 +1,6 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-const { block, index, workSlug, collection = 'works', isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
+const { block, index, workSlug, collection = 'works', lang, isLast = false, viewportFrame = false, showScrollHint = false } = Astro.props;
 const effectiveAlign = ['large', 'full'].includes(block.size) ? 'center' : block.align;
 const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as Record<string, string>)[block.gapAfter] ?? 'sm';
 // The last block's own gapAfter is meant for spacing *between* blocks, not the
@@ -8,7 +8,7 @@ const gapToken = ({ tight: 'xs', normal: 'sm', large: 'lg', pause: 'pause' } as 
 const gapValue = isLast ? '0px' : `var(--space-${gapToken})`;
 ---
 <figure class:list={['sequence-image', `size-${block.size}`, `align-${effectiveAlign}`, `gap-${block.gapAfter}`, { 'work-frame': viewportFrame, 'is-first': index === 0, 'is-last': isLast }]} style={`--gap-after: ${gapValue}`}>
-  <ResponsiveImage src={`${workSlug}/${block.src}`} alt={block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} collection={collection} />
+  <ResponsiveImage src={`${workSlug}/${block.src}`} alt={lang === 'ja' ? (block.altJa ?? block.alt) : block.alt} decorative={block.decorative} size={block.size} eager={index < 2} priority={index === 0} collection={collection} />
   {block.caption && <figcaption>{block.caption}</figcaption>}
   {showScrollHint && <span class="scroll-hint" data-scroll-hint aria-hidden="true">↓</span>}
 </figure>

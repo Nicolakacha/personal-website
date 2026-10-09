@@ -1,7 +1,7 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
 
-const { sequence, workSlug } = Astro.props;
+const { sequence, workSlug, lang } = Astro.props;
 const images = sequence.filter((block: any) => block.type === 'image');
 ---
 
@@ -11,7 +11,7 @@ const images = sequence.filter((block: any) => block.type === 'image');
       <span class:list={['gallery-slide', { 'is-active': index === 0 }]} aria-hidden={index === 0 ? undefined : 'true'}>
         <ResponsiveImage
           src={`${workSlug}/${image.src}`}
-          alt={image.alt}
+          alt={lang === 'ja' ? (image.altJa ?? image.alt) : image.alt}
           decorative={image.decorative}
           size={image.size}
           eager={index === 0}

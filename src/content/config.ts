@@ -3,13 +3,14 @@ import { defineCollection, z } from 'astro:content';
 const altImage = z.object({
   src: z.string(),
   alt: z.string().optional(),
+  altJa: z.string().optional(),
   decorative: z.boolean().default(false),
 }).refine((image) => image.decorative || Boolean(image.alt?.trim()), {
   message: 'alt is required unless decorative: true',
 });
 
 const imageBlock = z.object({
-  src: z.string(), alt: z.string().optional(), decorative: z.boolean().default(false),
+  src: z.string(), alt: z.string().optional(), altJa: z.string().optional(), decorative: z.boolean().default(false),
   type: z.literal('image'),
   size: z.enum(['small', 'medium', 'large', 'full']).default('large'),
   align: z.enum(['left', 'center', 'right']).default('center'),

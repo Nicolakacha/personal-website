@@ -16,7 +16,7 @@ const image = await getEntryOgImage(work.data.routeSlug, work.data.sequence, 'wo
 const pageLang = lang === 'ja' ? 'ja' : 'en';
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const description = workDescription(work, pageLang);
-const structuredData = [workStructuredData(work, canonicalUrl, pageLang, image)];
+const structuredData = workStructuredData(work, canonicalUrl, pageLang, image);
 const mobileEdgeToEdgeWorks = new Set([
   'how-much-silence',
   'dear-world',
