@@ -1,6 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 
-export const INSTAGRAM_URL = 'https://instagram.com/teikoh_';
+export const INSTAGRAM_URL = 'https://instagram.com/nicolastei_photo';
 export const PERSON_ID = 'https://nicolastei.com/#person';
 
 const schemaLanguage = (lang: string) => (lang === 'zh' ? 'zh-TW' : lang);
