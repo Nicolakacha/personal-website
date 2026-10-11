@@ -4,3 +4,5 @@ lang: ja
 ---
 
 Nicolas Teiは台湾出身で、現在は一時的に大阪を拠点に活動しています。
+
+Instagram：[@nicolastei_photo](https://www.instagram.com/nicolastei_photo/)
